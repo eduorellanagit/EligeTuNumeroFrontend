@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel del creador — Rifalo</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/buttons.css" />
+  <link rel="stylesheet" href="css/badges.css" />
+  <link rel="stylesheet" href="css/modal.css" />
+  <link rel="stylesheet" href="css/creator-panel.css" />
+  <link rel="stylesheet" href="css/forms.css" />
+  <link rel="stylesheet" href="css/sidebar.css" />
+  <link rel="stylesheet" href="css/credit-balance.css" />
+  <link rel="stylesheet" href="css/profile-section.css" />
+  <link rel="stylesheet" href="css/payments-validator.css" />
+  <link rel="stylesheet" href="css/my-raffles.css" />
+  <link rel="stylesheet" href="css/credit-purchase.css" />
+  <link rel="stylesheet" href="css/confirmation.css" />
+  <link rel="stylesheet" href="css/create-raffle.css" />
+</head>
+<body>
+
+  <div class="panel-page">
+    <header class="panel-topbar">
+      <a href="index.html" class="panel-topbar__logo">Rifalo</a>
+      <button class="back-button" onclick="history.back()"><span data-icon="arrow-left"></span> Volver</button>
+    </header>
+
+    <div class="panel-body">
+      <aside class="sidebar">
+        <p class="sidebar__title">Panel del creador</p>
+        <nav>
+          <button class="sidebar__tab" data-tab="perfil">
+            <span data-icon="user"></span> Perfil y cobro
+          </button>
+          <button class="sidebar__tab" data-tab="crear">
+            <span data-icon="plus"></span> Crear rifa
+          </button>
+          <button class="sidebar__tab" data-tab="pagos">
+            <span data-icon="receipt"></span> Validar pagos
+          </button>
+          <button class="sidebar__tab is-active" data-tab="rifas">
+            <span data-icon="ticket"></span> Mis rifas y créditos
+          </button>
+        </nav>
+      </aside>
+
+      <main class="panel-content">
+
+        <!-- Sección: Perfil y datos de cobro -->
+        <section class="panel-section" data-section="perfil">
+          <h2 class="section-heading">Perfil y datos de cobro</h2>
+          <p class="section-subheading">
+            Esta información se usa para identificarte ante quienes compran números y para mostrar dónde
+            transferir.
+          </p>
+
+          <form class="profile-form" id="profile-form">
+            <div class="profile-form__readonly">
+              <span>Cuenta vinculada</span>
+              <strong id="profile-readonly"></strong>
+            </div>
+
+            <div class="profile-form__grid">
+              <label class="field">
+                <span>Nombre completo</span>
+                <input id="profile-name" required />
+              </label>
+              <label class="field">
+                <span>DNI / CUIL</span>
+                <input id="profile-dni" required />
+              </label>
+              <label class="field">
+                <span>WhatsApp de atención pública</span>
+                <input id="profile-whatsapp" required />
+              </label>
+              <label class="field">
+                <span>Titular de la cuenta bancaria</span>
+                <input id="profile-holder" required />
+              </label>
+              <label class="field">
+                <span>CBU / CVU</span>
+                <input id="profile-cbu" required />
+              </label>
+              <label class="field">
+                <span>Alias</span>
+                <input id="profile-alias" />
+              </label>
+            </div>
+
+            <div class="profile-form__footer">
+              <span class="profile-form__saved" id="profile-saved-note" style="display: none;">Cambios guardados.</span>
+              <button type="submit" class="btn btn-primary">Guardar cambios</button>
+            </div>
+          </form>
+        </section>
+
+        <!-- Sección: Crear rifa -->
+        <section class="panel-section" data-section="crear">
+          <h2 class="section-heading">Publicar una rifa nueva</h2>
+          <p class="section-subheading">
+            Se descuenta 1 crédito en el momento en que confirmás la publicación.
+          </p>
+
+          <p class="create-raffle-error" id="create-raffle-no-credits" style="margin-top: 16px;">
+            No tenés créditos disponibles. Comprá un paquete desde "Mis rifas y créditos" antes de publicar.
+          </p>
+
+          <form class="create-raffle-form" id="create-raffle-form">
+            <div class="form-card">
+              <h3>Datos generales</h3>
+              <div class="create-raffle-grid">
+                <label class="field field--full">
+                  <span>Título</span>
+                  <input id="cr-title" placeholder="Ej: Gran Sorteo Moto 110cc 0km" required />
+                </label>
+                <label class="field field--full">
+                  <span>Descripción y reglas</span>
+                  <textarea id="cr-description" placeholder="Contá de qué se trata el sorteo y las condiciones para participar." required></textarea>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-card">
+              <h3>Premios</h3>
+              <p class="form-card__hint">Cargá al menos 3 premios y hasta 10, uno por uno.</p>
+              <div class="prizes-grid" id="prizes-container"></div>
+              <button type="button" class="btn btn-secondary" id="add-prize-btn" style="margin-top: 16px;">
+                <span data-icon="plus"></span> Agregar premio
+              </button>
+            </div>
+
+            <div class="form-card">
+              <h3>Números y plazo</h3>
+              <div class="create-raffle-grid">
+                <label class="field">
+                  <span>Cantidad de números</span>
+                  <select id="cr-quantity">
+                    <option value="50">50</option>
+                    <option value="100" selected>100</option>
+                    <option value="200">200</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>Precio por número (en tu moneda local)</span>
+                  <input id="cr-price" type="number" min="1" step="1" value="3500" required />
+                </label>
+                <label class="field">
+                  <span>Plazo de vigencia</span>
+                  <select id="cr-duration">
+                    <option value="20">20 días</option>
+                    <option value="25">25 días</option>
+                    <option value="30" selected>30 días</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>Tiempo de espera para pagar</span>
+                  <select id="cr-hold-minutes">
+                    <option value="15" selected>15 minutos</option>
+                    <option value="30">30 minutos</option>
+                    <option value="60">1 hora</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+
+            <p class="create-raffle-error" id="create-raffle-error"></p>
+
+            <div class="form-footer">
+              <span class="form-footer__note">
+                Créditos disponibles: <strong id="create-raffle-credits-note">0</strong>
+              </span>
+              <button type="submit" class="btn btn-primary" id="create-raffle-submit">Publicar rifa</button>
+            </div>
+          </form>
+        </section>
+
+        <!-- Sección: Validador de pagos -->
+        <section class="panel-section" data-section="pagos">
+          <h2 class="section-heading">Validador de pagos</h2>
+          <p class="section-subheading">Cada fila es una reserva de número esperando que confirmes la transferencia.</p>
+
+          <div class="validator-tabs" id="validator-tabs">
+            <button class="validator-tab is-active" data-tab="pendientes">
+              Pendientes <span class="validator-tab__count" id="count-pendientes">0</span>
+            </button>
+            <button class="validator-tab" data-tab="aceptados">
+              Aceptados <span class="validator-tab__count" id="count-aceptados">0</span>
+            </button>
+            <button class="validator-tab" data-tab="rechazados">
+              Rechazados <span class="validator-tab__count" id="count-rechazados">0</span>
+            </button>
+          </div>
+
+          <div class="validator-list" id="validator-list"></div>
+        </section>
+
+        <!-- Sección: Mis rifas y créditos -->
+        <section class="panel-section is-active" data-section="rifas">
+          <h2 class="section-heading">Mis rifas y créditos</h2>
+          <p class="section-subheading">El saldo se descuenta en el momento en que publicás una rifa nueva.</p>
+
+          <div class="raffles-layout">
+            <div id="credit-balance-container"></div>
+            <div class="raffles-list" id="raffles-list"></div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Modal genérico, usado por el validador de pagos -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal-panel">
+      <div class="modal-header">
+        <h3 id="modal-title"></h3>
+        <button class="modal-close" id="modal-close-btn" aria-label="Cerrar"><span data-icon="close"></span></button>
+      </div>
+      <div class="modal-body" id="modal-body"></div>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/data/mock-data.js"></script>
+  <script src="js/common/icons.js"></script>
+  <script src="js/common/render-icons.js"></script>
+  <script src="js/common/modal.js"></script>
+  <script src="js/common/image-utils.js"></script>
+  <script src="js/auth/session.js"></script>
+  <script src="js/creator/tabs.js"></script>
+  <script src="js/creator/profile.js"></script>
+  <script src="js/creator/payments.js"></script>
+  <script src="js/creator/raffles.js"></script>
+  <script src="js/common/scroll-reveal.js"></script>
+  <script src="js/creator/create-raffle.js"></script>
+</body>
+</html>

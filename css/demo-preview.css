@@ -1,0 +1,138 @@
+/* Vista previa del producto que reemplaza al dibujo/ilustración en el hero. */
+.demo-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+  transition: transform 0.25s ease;
+}
+
+.demo-card:hover {
+  transform: translateY(-3px);
+}
+
+.demo-card__topbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: 12px var(--space-5);
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.demo-card__dots {
+  display: flex;
+  gap: 6px;
+}
+
+.demo-card__dots span {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--color-border);
+  display: inline-block;
+}
+
+.demo-card__url {
+  font-size: 0.8rem;
+  color: var(--color-text-faint);
+  font-family: monospace;
+}
+
+.demo-card__content {
+  padding: var(--space-6);
+}
+
+.demo-card__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: var(--space-5);
+}
+
+.demo-card__eyebrow {
+  color: var(--color-text-faint);
+  font-size: 0.85rem;
+  margin-bottom: 2px;
+}
+
+.demo-card__head h3 {
+  font-size: 1.3rem;
+}
+
+.demo-card__countdown {
+  text-align: center;
+  background: var(--color-surface-tint);
+  border-radius: var(--radius-sm);
+  padding: 6px 14px;
+}
+
+.demo-card__countdown strong {
+  display: block;
+  font-family: var(--font-heading);
+  color: var(--color-primary-ink);
+  font-size: 1.1rem;
+  line-height: 1.1;
+}
+
+.demo-card__countdown span {
+  font-size: 0.7rem;
+  color: var(--color-text-faint);
+}
+
+.demo-card__grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+}
+
+.demo-card__cell {
+  aspect-ratio: 1;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.demo-card__cell--disponible {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+}
+
+.demo-card__cell--reservado {
+  background: var(--color-warning-bg);
+  color: var(--color-warning);
+}
+
+.demo-card__cell--pagado {
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
+}
+
+.demo-card__legend {
+  display: flex;
+  gap: var(--space-5);
+  margin-top: var(--space-5);
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+}
+
+.demo-card__legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.demo-card__legend i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-available { background: var(--color-success); }
+.dot-reserved { background: var(--color-warning); }
+.dot-paid { background: var(--color-danger); }

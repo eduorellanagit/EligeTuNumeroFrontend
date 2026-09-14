@@ -1,0 +1,95 @@
+.raffles-layout {
+  margin-top: var(--space-6);
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: var(--space-6);
+  align-items: start;
+}
+
+.raffles-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.raffle-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.raffle-card:hover {
+  box-shadow: var(--shadow-sm);
+  border-color: var(--color-primary);
+}
+
+.raffle-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.raffle-card__header h3 {
+  font-size: 1.05rem;
+}
+
+.progress-track {
+  height: 8px;
+  background: var(--color-bg);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--color-primary);
+  border-radius: 999px;
+  transition: width 0.5s ease;
+}
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--space-2);
+  font-size: 0.8rem;
+  color: var(--color-text-faint);
+}
+
+.raffle-card__footer {
+  margin-top: var(--space-4);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.raffle-card__days-left {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+}
+
+.raffle-card__footer-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.raffle-card__view-link {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.raffle-card__view-link:hover {
+  color: var(--color-primary-dark);
+}
+
+@media (max-width: 860px) {
+  .raffles-layout {
+    grid-template-columns: 1fr;
+  }
+}

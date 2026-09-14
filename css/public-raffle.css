@@ -1,0 +1,218 @@
+.raffle-page {
+  min-height: 100vh;
+}
+
+.raffle-topbar {
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--space-4) var(--space-6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.raffle-topbar__logo {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: var(--color-primary-ink);
+}
+
+.raffle-content {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: var(--space-7) var(--space-5) 100px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.raffle-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.raffle-section__title {
+  font-size: 1.35rem;
+}
+
+.raffle-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-6);
+  flex-wrap: wrap;
+}
+
+.raffle-header__eyebrow {
+  color: var(--color-primary);
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+}
+
+.raffle-header h1 {
+  font-size: 2rem;
+}
+
+.raffle-header__organizer {
+  margin-top: var(--space-3);
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  color: var(--color-text-secondary);
+}
+
+.raffle-header__whatsapp {
+  color: var(--color-success);
+  font-weight: 700;
+}
+
+.raffle-header__countdown {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-6);
+  text-align: center;
+  flex: none;
+}
+
+.raffle-header__countdown strong {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  color: var(--color-primary-ink);
+  line-height: 1;
+}
+
+.raffle-header__countdown span {
+  font-size: 0.8rem;
+  color: var(--color-text-faint);
+}
+
+/* Galería de premios */
+.prize-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+}
+
+.prize-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  display: block;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.prize-card:hover {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-3px);
+}
+
+.prize-card__thumb {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--space-4);
+}
+
+.prize-card__place {
+  display: inline-block;
+  background: var(--color-surface-tint);
+  color: var(--color-primary-ink);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+  margin-bottom: var(--space-3);
+}
+
+.prize-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: var(--space-2);
+}
+
+.prize-card p {
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.prize-detail__image {
+  width: 100%;
+  max-width: 320px;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  margin: 0 auto var(--space-4);
+  display: block;
+}
+
+.prize-detail p {
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.grid-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.grid-header__price {
+  background: var(--color-surface-tint);
+  color: var(--color-primary-ink);
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+}
+
+/* Barra flotante de selección */
+.float-bar {
+  position: fixed;
+  bottom: var(--space-5);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-primary-ink);
+  color: #fff;
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-5);
+  display: none;
+  align-items: center;
+  gap: var(--space-6);
+  box-shadow: var(--shadow-lg);
+  z-index: 30;
+}
+
+.float-bar.is-visible {
+  display: flex;
+  animation: slideUpIn 0.25s ease both;
+}
+
+@media (max-width: 760px) {
+  .prize-gallery {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 500px) {
+  .float-bar {
+    flex-direction: column;
+    align-items: stretch;
+    width: calc(100% - 32px);
+    text-align: center;
+  }
+}

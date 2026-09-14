@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <rect width="400" height="400" fill="#FCF0DA"/>
+  <circle cx="200" cy="200" r="150" fill="#F9E6BE"/>
+
+  <!-- pantalla -->
+  <rect x="65" y="95" width="270" height="175" rx="18" fill="#131A2B"/>
+  <rect x="85" y="115" width="230" height="135" rx="8" fill="#234DE0"/>
+
+  <!-- boton play -->
+  <polygon points="180,150 180,215 240,182" fill="#FFFFFF"/>
+
+  <!-- barras de sonido decorativas -->
+  <rect x="95" y="225" width="8" height="18" rx="2" fill="#FFFFFF" opacity="0.6"/>
+  <rect x="108" y="215" width="8" height="28" rx="2" fill="#FFFFFF" opacity="0.6"/>
+
+  <!-- pie del tv -->
+  <rect x="185" y="270" width="30" height="36" fill="#131A2B"/>
+  <rect x="145" y="306" width="110" height="16" rx="8" fill="#131A2B"/>
+</svg>

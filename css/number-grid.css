@@ -1,0 +1,93 @@
+.grid-legend {
+  display: flex;
+  gap: var(--space-5);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-5);
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+.grid-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.grid-legend i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.grid-legend .dot-available {
+  background: var(--color-success);
+}
+
+.grid-legend .dot-reserved {
+  background: var(--color-warning);
+}
+
+.grid-legend .dot-paid {
+  background: var(--color-danger);
+}
+
+.number-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 8px;
+}
+
+.number-cell {
+  aspect-ratio: 1;
+  border-radius: 8px;
+  border: none;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: transform 0.12s ease, background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.number-cell--disponible:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.number-cell--disponible:active,
+.number-cell--selected:active {
+  transform: scale(0.92);
+}
+
+.number-cell--selected {
+  animation: popIn 0.15s ease both;
+}
+
+.number-cell--disponible {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+}
+
+.number-cell--reservado {
+  background: var(--color-warning-bg);
+  color: var(--color-warning);
+  cursor: not-allowed;
+  opacity: 0.85;
+}
+
+.number-cell--pagado {
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
+  cursor: not-allowed;
+  opacity: 0.85;
+}
+
+.number-cell--selected {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+@media (max-width: 700px) {
+  .number-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}

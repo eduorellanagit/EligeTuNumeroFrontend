@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <rect width="400" height="400" fill="#EAF0FF"/>
+  <circle cx="200" cy="200" r="150" fill="#DCE6FC"/>
+
+  <!-- ruedas -->
+  <circle cx="130" cy="280" r="52" fill="#131A2B"/>
+  <circle cx="130" cy="280" r="24" fill="#EAF0FF"/>
+  <circle cx="300" cy="280" r="52" fill="#131A2B"/>
+  <circle cx="300" cy="280" r="24" fill="#EAF0FF"/>
+
+  <!-- cuerpo -->
+  <path d="M130 280 L172 190 L255 190 L300 280" stroke="#234DE0" stroke-width="20" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="175" y="168" width="95" height="26" rx="12" fill="#234DE0"/>
+  <circle cx="172" cy="190" r="16" fill="#F2B705"/>
+
+  <!-- manubrio -->
+  <path d="M255 190 L282 150" stroke="#131A2B" stroke-width="14" stroke-linecap="round"/>
+  <line x1="262" y1="158" x2="304" y2="158" stroke="#131A2B" stroke-width="14" stroke-linecap="round"/>
+
+  <!-- caño de escape -->
+  <path d="M200 262 L275 262" stroke="#8A93A6" stroke-width="10" stroke-linecap="round"/>
+</svg>

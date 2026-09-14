@@ -1,0 +1,44 @@
+/* Paleta, tipografía, espaciados y radios: todo lo que define el estilo
+   vive acá para poder retocarlo desde un solo lugar. */
+:root {
+  --color-bg: #F5F7FB;
+  --color-surface: #FFFFFF;
+  --color-surface-tint: #EEF3FF;
+  --color-primary: #234DE0;
+  --color-primary-dark: #16309C;
+  --color-primary-ink: #0F1F73;
+  --color-text: #131A2B;
+  --color-text-secondary: #5B6376;
+  --color-text-faint: #8A93A6;
+  --color-border: #E3E8F2;
+  --color-success: #147A46;
+  --color-success-bg: #E4F6EC;
+  --color-warning: #B5720B;
+  --color-warning-bg: #FCF0DA;
+  --color-danger: #C22B3A;
+  --color-danger-bg: #FBE8EA;
+
+  --font-heading: 'Sora', 'Segoe UI', sans-serif;
+  --font-body: 'Manrope', 'Segoe UI', sans-serif;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+
+  --shadow-sm: 0 1px 2px rgba(19, 26, 43, 0.06);
+  --shadow-md: 0 10px 30px rgba(19, 26, 43, 0.08);
+  --shadow-lg: 0 20px 50px rgba(19, 26, 43, 0.12);
+
+  --container: 1160px;
+  --container-narrow: 760px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+}

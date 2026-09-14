@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <rect width="400" height="400" fill="#E4F6EC"/>
+  <circle cx="200" cy="200" r="150" fill="#CDEDDB"/>
+
+  <!-- licuadora -->
+  <rect x="140" y="95" width="90" height="22" rx="8" fill="#131A2B"/>
+  <path d="M150 117 L220 117 L206 235 L164 235 Z" fill="#234DE0"/>
+  <line x1="167" y1="150" x2="203" y2="150" stroke="#FFFFFF" stroke-width="6"/>
+  <line x1="169" y1="178" x2="201" y2="178" stroke="#FFFFFF" stroke-width="6"/>
+  <line x1="171" y1="206" x2="199" y2="206" stroke="#FFFFFF" stroke-width="6"/>
+  <rect x="150" y="235" width="70" height="34" rx="8" fill="#131A2B"/>
+
+  <!-- pava electrica -->
+  <path d="M255 190 h55 v70 a27.5 27.5 0 0 1 -55 0 Z" fill="#131A2B"/>
+  <rect x="248" y="178" width="70" height="16" rx="8" fill="#131A2B"/>
+  <path d="M310 205 a16 16 0 0 1 0 32" stroke="#131A2B" stroke-width="8" fill="none" stroke-linecap="round"/>
+  <circle cx="282" cy="210" r="5" fill="#F2B705"/>
+</svg>

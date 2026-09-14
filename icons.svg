@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <!--
+    Sprite de referencia. Se deja como archivo .svg suelto para poder
+    editar los íconos en un solo lugar, pero las páginas no lo cargan con
+    <use href="icons.svg#..."> porque esa referencia externa no funciona al
+    abrir el HTML directo desde el disco (file://) en la mayoría de los
+    navegadores. Para que funcione siempre, el mismo dibujo de cada ícono
+    está duplicado como texto en js/common/icons.js, que es lo que las
+    páginas usan de verdad. Si en algún momento esto se sirve desde un
+    servidor real, se puede volver a <use> sin problema.
+  -->
+  <symbol id="icon-user" viewBox="0 0 24 24">
+    <circle cx="12" cy="8" r="3.4" stroke="#131A2B" stroke-width="1.8" fill="none"/>
+    <path d="M4.5 19.5c0-4 3.4-6.7 7.5-6.7s7.5 2.7 7.5 6.7" stroke="#131A2B" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+  <symbol id="icon-plus" viewBox="0 0 24 24">
+    <line x1="12" y1="5" x2="12" y2="19" stroke="#131A2B" stroke-width="1.8" stroke-linecap="round"/>
+    <line x1="5" y1="12" x2="19" y2="12" stroke="#131A2B" stroke-width="1.8" stroke-linecap="round"/>
+  </symbol>
+
+  <symbol id="icon-receipt" viewBox="0 0 24 24">
+    <path d="M6 2.5h12v18.3l-2.2-1.4-2.1 1.4-2.2-1.4-2.1 1.4-2.2-1.4-1.2.8V2.5z" stroke="#131A2B" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <line x1="8.5" y1="7" x2="15.5" y2="7" stroke="#131A2B" stroke-width="1.6" stroke-linecap="round"/>
+    <line x1="8.5" y1="10.5" x2="15.5" y2="10.5" stroke="#131A2B" stroke-width="1.6" stroke-linecap="round"/>
+    <line x1="8.5" y1="14" x2="13" y2="14" stroke="#131A2B" stroke-width="1.6" stroke-linecap="round"/>
+  </symbol>
+
+  <symbol id="icon-ticket" viewBox="0 0 24 24">
+    <rect x="3" y="6.5" width="18" height="11" rx="2" stroke="#131A2B" stroke-width="1.8" fill="none"/>
+    <line x1="9.5" y1="6.5" x2="9.5" y2="17.5" stroke="#131A2B" stroke-width="1.8" stroke-dasharray="2.2 2.2"/>
+  </symbol>
+
+  <symbol id="icon-arrow-left" viewBox="0 0 24 24">
+    <line x1="19" y1="12" x2="5" y2="12" stroke="#131A2B" stroke-width="1.8" stroke-linecap="round"/>
+    <polyline points="11 6 5 12 11 18" stroke="#131A2B" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+  <symbol id="icon-close" viewBox="0 0 24 24">
+    <line x1="6" y1="6" x2="18" y2="18" stroke="#131A2B" stroke-width="1.8" stroke-linecap="round"/>
+    <line x1="18" y1="6" x2="6" y2="18" stroke="#131A2B" stroke-width="1.8" stroke-linecap="round"/>
+  </symbol>
+
+  <symbol id="icon-check" viewBox="0 0 24 24">
+    <polyline points="5 13 9.5 17.5 19 7" stroke="#131A2B" stroke-width="1.9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+  <symbol id="icon-minus" viewBox="0 0 24 24">
+    <line x1="5" y1="12" x2="19" y2="12" stroke="#131A2B" stroke-width="1.8" stroke-linecap="round"/>
+  </symbol>
+
+  <symbol id="icon-card" viewBox="0 0 24 24">
+    <rect x="2.5" y="6" width="19" height="13" rx="2" stroke="#131A2B" stroke-width="1.8" fill="none"/>
+    <line x1="2.5" y1="10" x2="21.5" y2="10" stroke="#131A2B" stroke-width="1.8"/>
+    <line x1="6" y1="14.5" x2="10" y2="14.5" stroke="#131A2B" stroke-width="1.8" stroke-linecap="round"/>
+  </symbol>
+</svg>

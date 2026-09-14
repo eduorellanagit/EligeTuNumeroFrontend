@@ -1,0 +1,56 @@
+.credit-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.credit-card__label {
+  color: var(--color-text-faint);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.credit-card__count {
+  font-family: var(--font-heading);
+  font-size: 2.6rem;
+  font-weight: 800;
+  color: var(--color-primary-ink);
+  line-height: 1;
+  margin-top: 4px;
+}
+
+.credit-card__plans {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.credit-card__plan {
+  flex: 1;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+}
+
+.credit-card__plan:hover {
+  border-color: var(--color-primary);
+}
+
+.credit-card__plan strong {
+  font-family: var(--font-heading);
+  color: var(--color-primary-ink);
+}
+
+.credit-card__plan span {
+  font-size: 0.75rem;
+  color: var(--color-text-faint);
+}

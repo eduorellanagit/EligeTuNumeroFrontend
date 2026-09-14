@@ -1,0 +1,32 @@
+.purchase-confirmed {
+  text-align: center;
+  padding: var(--space-5) 0;
+}
+
+.purchase-confirmed__icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--color-success-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--space-5);
+}
+
+.purchase-confirmed__icon .icon-svg {
+  width: 26px;
+  height: 26px;
+}
+
+.purchase-confirmed h4 {
+  font-size: 1.2rem;
+  margin-bottom: var(--space-3);
+}
+
+.purchase-confirmed p {
+  color: var(--color-text-secondary);
+  line-height: 1.55;
+  max-width: 380px;
+  margin: 0 auto var(--space-6);
+}
