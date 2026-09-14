@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rifalo — Rifas y sorteos digitales</title>
+  <meta name="description" content="Creá y gestioná rifas digitales sin comisiones. Vos cobrás, vos elegís, nosotros ordenamos." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/buttons.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/hero.css" />
+  <link rel="stylesheet" href="css/demo-preview.css" />
+  <link rel="stylesheet" href="css/how-it-works.css" />
+  <link rel="stylesheet" href="css/pricing.css" />
+  <link rel="stylesheet" href="css/faq.css" />
+  <link rel="stylesheet" href="css/footer.css" />
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="navbar__inner">
+      <a href="index.html" class="navbar__logo">Rifalo</a>
+      <nav class="navbar__links">
+        <a href="#como-funciona">Cómo funciona</a>
+        <a href="#precios">Precios</a>
+        <a href="#preguntas">Preguntas</a>
+      </nav>
+      <div class="navbar__actions">
+        <a href="login.html" class="navbar__login">Ingresar</a>
+        <a href="login.html" class="btn btn-primary">Crear mi rifa</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero__inner">
+        <div class="fade-in-up">
+          <h1 class="hero__title">Organizá tu rifa<br />sin vueltas.</h1>
+          <p class="hero__subtitle">
+            Publicá tu sorteo, compartí el link y recibí las transferencias directo en tu cuenta.
+            Vos validás cada pago, nosotros ordenamos los números.
+          </p>
+
+          <div class="hero__cta-row">
+            <a href="login.html" class="btn btn-primary">Crear mi primer sorteo</a>
+            <a href="#como-funciona" class="hero__secondary-link">Ver cómo funciona</a>
+          </div>
+
+          <div class="hero__stats">
+            <div>
+              <strong>0%</strong>
+              <span>de comisión por boleto</span>
+            </div>
+            <div>
+              <strong>100%</strong>
+              <span>de la plata va directo a vos</span>
+            </div>
+            <div>
+              <strong>10 min</strong>
+              <span>para tener tu rifa publicada</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vista previa del producto, en vez de una ilustración -->
+        <div class="demo-card fade-in-up" style="animation-delay: 0.1s;">
+          <div class="demo-card__topbar">
+            <div class="demo-card__dots">
+              <span></span><span></span><span></span>
+            </div>
+            <span class="demo-card__url">rifalo.app/juanperez/moto-110</span>
+          </div>
+
+          <div class="demo-card__content">
+            <div class="demo-card__head">
+              <div>
+                <p class="demo-card__eyebrow">Gran Sorteo</p>
+                <h3>Moto 110cc 0km</h3>
+              </div>
+              <div class="demo-card__countdown">
+                <strong>18</strong>
+                <span>días</span>
+              </div>
+            </div>
+
+            <div class="demo-card__grid">
+              <div class="demo-card__cell demo-card__cell--disponible">1</div>
+              <div class="demo-card__cell demo-card__cell--disponible">2</div>
+              <div class="demo-card__cell demo-card__cell--reservado">3</div>
+              <div class="demo-card__cell demo-card__cell--disponible">4</div>
+              <div class="demo-card__cell demo-card__cell--pagado">5</div>
+              <div class="demo-card__cell demo-card__cell--disponible">6</div>
+              <div class="demo-card__cell demo-card__cell--disponible">7</div>
+              <div class="demo-card__cell demo-card__cell--reservado">8</div>
+              <div class="demo-card__cell demo-card__cell--disponible">9</div>
+              <div class="demo-card__cell demo-card__cell--disponible">10</div>
+              <div class="demo-card__cell demo-card__cell--pagado">11</div>
+              <div class="demo-card__cell demo-card__cell--disponible">12</div>
+            </div>
+
+            <div class="demo-card__legend">
+              <span><i class="dot-available"></i> Disponible</span>
+              <span><i class="dot-reserved"></i> Reservado</span>
+              <span><i class="dot-paid"></i> Pagado</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cómo funciona -->
+    <section id="como-funciona" class="how">
+      <div class="container-narrow">
+        <h2 class="how__heading">De la idea al link compartible</h2>
+        <p class="how__lead">Cinco pasos, sin planillas ni grupos de WhatsApp para llevar la cuenta.</p>
+
+        <ol class="how__steps">
+          <li class="how__step reveal">
+            <span class="how__index">1</span>
+            <div>
+              <h3>Iniciá sesión</h3>
+              <p>Entrás con tu cuenta de Google o GitHub. Sin contraseñas nuevas que recordar.</p>
+            </div>
+          </li>
+          <li class="how__step reveal">
+            <span class="how__index">2</span>
+            <div>
+              <h3>Cargá tus datos de cobro</h3>
+              <p>DNI o CUIL, WhatsApp de atención y el CBU, CVU o alias donde vas a recibir la plata.</p>
+            </div>
+          </li>
+          <li class="how__step reveal">
+            <span class="how__index">3</span>
+            <div>
+              <h3>Comprá tus créditos</h3>
+              <p>Elegís un paquete de 1, 5 o 10 rifas. No vencen, los usás cuando quieras.</p>
+            </div>
+          </li>
+          <li class="how__step reveal">
+            <span class="how__index">4</span>
+            <div>
+              <h3>Publicá tu rifa</h3>
+              <p>Cargás premios, cantidad de números, precio y plazo. Te llevamos a un link único.</p>
+            </div>
+          </li>
+          <li class="how__step reveal">
+            <span class="how__index">5</span>
+            <div>
+              <h3>Compartí y cobrá</h3>
+              <p>La gente reserva números y te transfiere directo a vos. Vos validás cada comprobante.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Precios -->
+    <section id="precios" class="pricing">
+      <h2 class="pricing__heading">Un precio simple: pagás por publicar, no por vender</h2>
+      <p class="pricing__lead">Créditos de publicación sin vencimiento. Los usás cuando los necesitás.</p>
+
+      <div class="pricing__grid">
+        <div class="pricing-card reveal">
+          <h3>Básico</h3>
+          <p class="pricing-card__tagline">Para un sorteo puntual.</p>
+          <div class="pricing-card__price">
+            <span class="pricing-card__amount">$1</span>
+            <span class="pricing-card__unit">USD</span>
+          </div>
+          <p class="pricing-card__raffles">1 rifa</p>
+          <p class="pricing-card__per-raffle">≈ $1.00 por rifa</p>
+          <a href="login.html?plan=basico" class="btn btn-secondary btn-block pricing-card__cta">Elegir Básico</a>
+        </div>
+
+        <div class="pricing-card pricing-card--highlight reveal">
+          <span class="pricing-card__tag">Más elegido</span>
+          <h3>Estándar</h3>
+          <p class="pricing-card__tagline">20% menos por rifa.</p>
+          <div class="pricing-card__price">
+            <span class="pricing-card__amount">$4</span>
+            <span class="pricing-card__unit">USD</span>
+          </div>
+          <p class="pricing-card__raffles">5 rifas</p>
+          <p class="pricing-card__per-raffle">≈ $0.80 por rifa</p>
+          <a href="login.html?plan=estandar" class="btn btn-primary btn-block pricing-card__cta">Elegir Estándar</a>
+        </div>
+
+        <div class="pricing-card reveal">
+          <h3>Pro</h3>
+          <p class="pricing-card__tagline">30% menos por rifa.</p>
+          <div class="pricing-card__price">
+            <span class="pricing-card__amount">$7</span>
+            <span class="pricing-card__unit">USD</span>
+          </div>
+          <p class="pricing-card__raffles">10 rifas</p>
+          <p class="pricing-card__per-raffle">≈ $0.70 por rifa</p>
+          <a href="login.html?plan=pro" class="btn btn-secondary btn-block pricing-card__cta">Elegir Pro</a>
+        </div>
+      </div>
+
+      <p class="pricing__note">
+        Los precios se muestran en USD como referencia. Se cobran en tu moneda local a través de Mercado Pago.
+      </p>
+    </section>
+
+    <!-- Preguntas frecuentes -->
+    <section id="preguntas" class="faq">
+      <h2 class="faq__heading">Preguntas frecuentes</h2>
+
+      <div class="faq__list">
+        <div class="faq-item is-open reveal">
+          <button class="faq-item__question" aria-expanded="true">
+            <span>¿La plataforma guarda la plata de mi rifa?</span>
+            <span class="faq-item__icon">−</span>
+          </button>
+          <p class="faq-item__answer">
+            No. El dinero va directo por transferencia de quien compra el número a tu cuenta bancaria.
+            Nosotros no tocamos esa plata en ningún momento.
+          </p>
+        </div>
+
+        <div class="faq-item reveal">
+          <button class="faq-item__question" aria-expanded="false">
+            <span>¿Cuánto se quedan de comisión por cada boleto vendido?</span>
+            <span class="faq-item__icon">+</span>
+          </button>
+          <p class="faq-item__answer">
+            Cero. Te quedás con el 100% de lo que recaudás. Nuestro único cobro es el crédito para publicar la rifa.
+          </p>
+        </div>
+
+        <div class="faq-item reveal">
+          <button class="faq-item__question" aria-expanded="false">
+            <span>¿Los créditos que compro vencen?</span>
+            <span class="faq-item__icon">+</span>
+          </button>
+          <p class="faq-item__answer">
+            No vencen nunca. Podés comprar un paquete de 10 rifas y usarlas a lo largo de meses o años.
+          </p>
+        </div>
+
+        <div class="faq-item reveal">
+          <button class="faq-item__question" aria-expanded="false">
+            <span>¿Qué pasa si dos personas eligen el mismo número a la vez?</span>
+            <span class="faq-item__icon">+</span>
+          </button>
+          <p class="faq-item__answer">
+            El sistema bloquea el número apenas alguien lo selecciona, por 10 a 15 minutos. Si no llega el
+            comprobante en ese plazo, el número vuelve a estar disponible para otra persona.
+          </p>
+        </div>
+
+        <div class="faq-item reveal">
+          <button class="faq-item__question" aria-expanded="false">
+            <span>¿El comprador necesita crear una cuenta?</span>
+            <span class="faq-item__icon">+</span>
+          </button>
+          <p class="faq-item__answer">
+            No. Completa un formulario corto, transfiere y sube el comprobante. Nada de contraseñas ni
+            verificaciones de email.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__brand">
+        <span class="footer__logo">Rifalo</span>
+        <p>La herramienta para ordenar rifas y sorteos, vos cobrás directo.</p>
+      </div>
+
+      <div class="footer__col">
+        <h4>Producto</h4>
+        <a href="#como-funciona">Cómo funciona</a>
+        <a href="#precios">Precios</a>
+        <a href="login.html">Panel del creador</a>
+      </div>
+
+      <div class="footer__col">
+        <h4>Soporte</h4>
+        <a href="#preguntas">Preguntas frecuentes</a>
+        <a href="mailto:hola@rifalo.app">hola@rifalo.app</a>
+        <a href="terminos.html">Términos de servicio</a>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <span id="footer-year-text">© 2026 Rifalo. Hecho para organizadores, clubes y emprendedores.</span>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('footer-year-text').textContent =
+      '© ' + new Date().getFullYear() + ' Rifalo. Hecho para organizadores, clubes y emprendedores.'
+  </script>
+  <script src="js/landing/faq.js"></script>
+  <script src="js/common/scroll-reveal.js"></script>
+</body>
+</html>
