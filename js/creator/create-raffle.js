@@ -10,10 +10,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const submitBtn = document.getElementById('create-raffle-submit')
   const creditsNoteEl = document.getElementById('create-raffle-credits-note')
   const prizesContainer = document.getElementById('prizes-container')
+  const prizeNavContainer = document.getElementById('prize-nav-mobile')
   const addPrizeBtn = document.getElementById('add-prize-btn')
 
   const MIN_PRIZES = 3
-  const MAX_PRIZES = 10
+  const MAX_PRIZES = 9
 
   function emptyPrizes(count) {
     return Array.from({ length: count }, () => ({ title: '', description: '', image: null }))
@@ -23,15 +24,46 @@ document.addEventListener('DOMContentLoaded', () => {
   // tarjetas sin perder lo que ya se cargó en las demás.
   let prizes = emptyPrizes(MIN_PRIZES)
 
+  // En celulares se muestra un premio a la vez (ver css/create-raffle.css,
+  // media query de .prize-nav-mobile / .is-current-mobile); en desktop este
+  // índice no afecta nada porque ahí se ven todos en el grid.
+  let currentPrizeIndex = 0
+
   function escapeHtml(str) {
     return str.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]))
   }
 
+  function renderPrizeNav() {
+    if (!prizeNavContainer) return
+    prizeNavContainer.innerHTML = `
+      <button type="button" class="btn btn-secondary" id="prize-prev-btn" ${currentPrizeIndex === 0 ? 'disabled' : ''}>
+        ${Icons.arrowLeft} Anterior
+      </button>
+      <span class="prize-nav-mobile__counter">Premio ${currentPrizeIndex + 1} de ${prizes.length}</span>
+      <button type="button" class="btn btn-secondary" id="prize-next-btn" ${currentPrizeIndex === prizes.length - 1 ? 'disabled' : ''}>
+        Siguiente ${Icons.arrowRight}
+      </button>
+    `
+
+    document.getElementById('prize-prev-btn').addEventListener('click', () => {
+      currentPrizeIndex = Math.max(0, currentPrizeIndex - 1)
+      renderPrizes()
+    })
+    document.getElementById('prize-next-btn').addEventListener('click', () => {
+      currentPrizeIndex = Math.min(prizes.length - 1, currentPrizeIndex + 1)
+      renderPrizes()
+    })
+  }
+
   function renderPrizes() {
+    currentPrizeIndex = Math.min(currentPrizeIndex, prizes.length - 1)
+
+    renderPrizeNav()
+
     prizesContainer.innerHTML = prizes
       .map(
         (prize, idx) => `
-        <div class="prize-form-card">
+        <div class="prize-form-card ${idx === currentPrizeIndex ? 'is-current-mobile' : ''}">
           <div class="prize-form-card__header">
             <span class="prize-form-card__place">Premio N° ${idx + 1}</span>
             ${
@@ -44,16 +76,28 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
           <label class="field">
             <span>Título del premio</span>
-            <input data-prize-field="title" data-index="${idx}" value="${escapeHtml(prize.title)}" required />
+            <input data-prize-field="title" data-index="${idx}" value="${escapeHtml(prize.title)}" />
           </label>
           <label class="field">
             <span>Descripción</span>
-            <textarea data-prize-field="description" data-index="${idx}" required>${escapeHtml(prize.description)}</textarea>
+            <textarea data-prize-field="description" data-index="${idx}">${escapeHtml(prize.description)}</textarea>
           </label>
-          <label class="field">
-            <span>Imagen del premio (opcional, se recorta al cuadrado automáticamente)</span>
-            <input type="file" accept="image/*" data-prize-image="${idx}" />
-          </label>
+          <div class="field">
+            <span class="field-label-with-help">
+              Imagen del premio
+              <span class="help-badge">Recorte automático</span>
+              <button type="button" class="help-icon" aria-label="¿Qué hace el recorte automático?">
+                ${Icons.help}
+                <span class="help-icon__bubble">
+                  La imagen se recorta al centro en formato cuadrado (1:1), así todos los premios se ven parejos.
+                </span>
+              </button>
+            </span>
+            <label class="upload-btn">
+              <input type="file" accept="image/*" data-prize-image="${idx}" class="upload-btn__input" />
+              ${Icons.upload} ${prize.image ? 'Cambiar imagen' : 'Subir imagen'}
+            </label>
+          </div>
           ${
             prize.image
               ? `<div class="prize-form-card__preview">
@@ -118,6 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
   addPrizeBtn.addEventListener('click', () => {
     if (prizes.length >= MAX_PRIZES) return
     prizes.push({ title: '', description: '', image: null })
+    currentPrizeIndex = prizes.length - 1
     renderPrizes()
   })
 
@@ -160,6 +205,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (creatorProfile.credits <= 0) {
       refreshCreditsWarning()
+      return
+    }
+
+    // Los campos de cada premio no llevan "required": en celulares se ven de
+    // a uno, y un campo requerido oculto (display:none) puede hacer que el
+    // navegador no muestre ningún aviso al enviar. Por eso se valida acá a
+    // mano, y si falta algo, se navega directo a ese premio.
+    const invalidIndex = prizes.findIndex((p) => !p.title.trim() || !p.description.trim())
+    if (invalidIndex !== -1) {
+      currentPrizeIndex = invalidIndex
+      renderPrizes()
+      errorBox.textContent = `Completá el título y la descripción del premio N° ${invalidIndex + 1}.`
+      errorBox.classList.add('is-visible')
       return
     }
 
@@ -220,6 +278,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     form.reset()
     prizes = emptyPrizes(MIN_PRIZES)
+    currentPrizeIndex = 0
     renderPrizes()
     refreshCreditsWarning()
   })

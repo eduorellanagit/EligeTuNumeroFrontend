@@ -40,6 +40,10 @@
   color: #fff;
 }
 
+.sidebar__toggle {
+  display: none;
+}
+
 @media (max-width: 860px) {
   .sidebar {
     min-width: 0;
@@ -47,12 +51,53 @@
     border-right: none;
     border-bottom: 1px solid var(--color-border);
     padding: var(--space-4);
+    position: relative;
   }
-  .sidebar nav {
+
+  .sidebar__title {
+    display: none;
+  }
+
+  .sidebar__toggle {
     display: flex;
-    gap: var(--space-2);
+    align-items: center;
+    gap: var(--space-3);
+    width: 100%;
+    padding: 12px var(--space-4);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface);
+    font-weight: 700;
+    color: var(--color-text);
+    cursor: pointer;
   }
+
+  .sidebar__toggle:hover {
+    border-color: var(--color-primary);
+  }
+
+  #sidebar-nav {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    position: absolute;
+    top: calc(100% - var(--space-4) + 6px);
+    left: var(--space-4);
+    right: var(--space-4);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    padding: var(--space-2);
+    z-index: 20;
+  }
+
+  #sidebar-nav.is-open {
+    display: flex;
+    animation: modalPanelIn 0.18s ease both;
+  }
+
   .sidebar__tab {
-    justify-content: center;
+    justify-content: flex-start;
   }
 }

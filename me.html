@@ -40,7 +40,10 @@
     <div class="panel-body">
       <aside class="sidebar">
         <p class="sidebar__title">Panel del creador</p>
-        <nav>
+        <button class="sidebar__toggle" id="sidebar-toggle-btn" aria-expanded="false" aria-controls="sidebar-nav">
+          <span data-icon="menu"></span> Opciones
+        </button>
+        <nav id="sidebar-nav">
           <button class="sidebar__tab" data-tab="perfil">
             <span data-icon="user"></span> Perfil y cobro
           </button>
@@ -134,7 +137,8 @@
 
             <div class="form-card">
               <h3>Premios</h3>
-              <p class="form-card__hint">Cargá al menos 3 premios y hasta 10, uno por uno.</p>
+              <p class="form-card__hint">Cargá al menos 3 premios y hasta 9, uno por uno.</p>
+              <div class="prize-nav-mobile" id="prize-nav-mobile"></div>
               <div class="prizes-grid" id="prizes-container"></div>
               <button type="button" class="btn btn-secondary" id="add-prize-btn" style="margin-top: 16px;">
                 <span data-icon="plus"></span> Agregar premio
