@@ -92,11 +92,49 @@
   color: var(--color-text-faint);
 }
 
-/* Galería de premios */
-.prize-gallery {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+/* Carrusel de premios: 3 visibles en desktop, 2 en tablet, 1 en celular.
+   El "paso" siempre es de a un premio (ver scrollCarousel en number-grid.js),
+   lo que cambia según el ancho es cuántos se ven a la vez. */
+.prize-carousel {
+  overflow: hidden;
+}
+
+.prize-carousel__track {
+  display: flex;
   gap: var(--space-4);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.prize-carousel__track::-webkit-scrollbar {
+  display: none;
+}
+
+.prize-carousel__track .prize-card {
+  scroll-snap-align: start;
+  flex: 0 0 calc((100% - 2 * var(--space-4)) / 3);
+}
+
+.prize-carousel__controls {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+@media (max-width: 900px) {
+  .prize-carousel__track .prize-card {
+    flex: 0 0 calc((100% - var(--space-4)) / 2);
+  }
+}
+
+@media (max-width: 560px) {
+  .prize-carousel__track .prize-card {
+    flex: 0 0 100%;
+  }
 }
 
 .prize-card {
@@ -200,12 +238,6 @@
 .float-bar.is-visible {
   display: flex;
   animation: slideUpIn 0.25s ease both;
-}
-
-@media (max-width: 760px) {
-  .prize-gallery {
-    grid-template-columns: 1fr;
-  }
 }
 
 @media (max-width: 500px) {

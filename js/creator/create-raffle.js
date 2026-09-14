@@ -36,12 +36,12 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderPrizeNav() {
     if (!prizeNavContainer) return
     prizeNavContainer.innerHTML = `
-      <button type="button" class="btn btn-secondary" id="prize-prev-btn" ${currentPrizeIndex === 0 ? 'disabled' : ''}>
-        ${Icons.arrowLeft} Anterior
+      <button type="button" class="carousel-btn" id="prize-prev-btn" aria-label="Premio anterior" ${currentPrizeIndex === 0 ? 'disabled' : ''}>
+        ${Icons.arrowLeft}
       </button>
       <span class="prize-nav-mobile__counter">Premio ${currentPrizeIndex + 1} de ${prizes.length}</span>
-      <button type="button" class="btn btn-secondary" id="prize-next-btn" ${currentPrizeIndex === prizes.length - 1 ? 'disabled' : ''}>
-        Siguiente ${Icons.arrowRight}
+      <button type="button" class="carousel-btn" id="prize-next-btn" aria-label="Premio siguiente" ${currentPrizeIndex === prizes.length - 1 ? 'disabled' : ''}>
+        ${Icons.arrowRight}
       </button>
     `
 
@@ -85,13 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="field">
             <span class="field-label-with-help">
               Imagen del premio
-              <span class="help-badge">Recorte automático</span>
-              <button type="button" class="help-icon" aria-label="¿Qué hace el recorte automático?">
-                ${Icons.help}
-                <span class="help-icon__bubble">
-                  La imagen se recorta al centro en formato cuadrado (1:1), así todos los premios se ven parejos.
-                </span>
-              </button>
+              <span class="help-badge">Auto</span>
             </span>
             <label class="upload-btn">
               <input type="file" accept="image/*" data-prize-image="${idx}" class="upload-btn__input" />

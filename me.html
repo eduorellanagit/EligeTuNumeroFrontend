@@ -28,6 +28,7 @@
   <link rel="stylesheet" href="css/credit-purchase.css" />
   <link rel="stylesheet" href="css/confirmation.css" />
   <link rel="stylesheet" href="css/create-raffle.css" />
+  <link rel="stylesheet" href="css/carousel.css" />
 </head>
 <body>
 
@@ -138,8 +139,11 @@
             <div class="form-card">
               <h3>Premios</h3>
               <p class="form-card__hint">Cargá al menos 3 premios y hasta 9, uno por uno.</p>
-              <div class="prize-nav-mobile" id="prize-nav-mobile"></div>
+              <p class="form-card__hint form-card__hint--help">
+                <span data-icon="help"></span> Las fotos se recortan solas en cuadrado (1:1).
+              </p>
               <div class="prizes-grid" id="prizes-container"></div>
+              <div class="prize-nav-mobile" id="prize-nav-mobile"></div>
               <button type="button" class="btn btn-secondary" id="add-prize-btn" style="margin-top: 16px;">
                 <span data-icon="plus"></span> Agregar premio
               </button>

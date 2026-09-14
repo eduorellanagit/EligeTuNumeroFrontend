@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   renderHeader()
   renderPrizes()
+  setupPrizeCarousel()
   renderPrice()
   renderGrid()
   updateFloatBar()
@@ -74,6 +75,34 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
     `
     Modal.open(prize.title, html)
+  }
+
+  function setupPrizeCarousel() {
+    const track = galleryEl
+    const prevBtn = document.getElementById('prize-carousel-prev')
+    const nextBtn = document.getElementById('prize-carousel-next')
+    if (!track || !prevBtn || !nextBtn) return
+
+    function step(direction) {
+      const card = track.querySelector('.prize-card')
+      if (!card) return
+      const gap = parseFloat(getComputedStyle(track).gap) || 16
+      const amount = card.getBoundingClientRect().width + gap
+      track.scrollBy({ left: direction * amount, behavior: 'smooth' })
+    }
+
+    function updateButtons() {
+      const maxScroll = track.scrollWidth - track.clientWidth
+      prevBtn.disabled = track.scrollLeft <= 4
+      nextBtn.disabled = maxScroll <= 4 || track.scrollLeft >= maxScroll - 4
+    }
+
+    prevBtn.addEventListener('click', () => step(-1))
+    nextBtn.addEventListener('click', () => step(1))
+    track.addEventListener('scroll', updateButtons)
+    window.addEventListener('resize', updateButtons)
+
+    updateButtons()
   }
 
   function renderPrice() {

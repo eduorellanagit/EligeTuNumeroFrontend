@@ -19,6 +19,7 @@
   <link rel="stylesheet" href="css/modal.css" />
   <link rel="stylesheet" href="css/forms.css" />
   <link rel="stylesheet" href="css/public-raffle.css" />
+  <link rel="stylesheet" href="css/carousel.css" />
   <link rel="stylesheet" href="css/number-grid.css" />
   <link rel="stylesheet" href="css/purchase-modal.css" />
   <link rel="stylesheet" href="css/confirmation.css" />
@@ -37,7 +38,17 @@
 
       <section class="raffle-section">
         <h2 class="raffle-section__title">Premios en juego</h2>
-        <div class="prize-gallery" id="prize-gallery"></div>
+        <div class="prize-carousel">
+          <div class="prize-carousel__track" id="prize-gallery"></div>
+        </div>
+        <div class="prize-carousel__controls">
+          <button type="button" class="carousel-btn" id="prize-carousel-prev" aria-label="Premio anterior">
+            <span data-icon="arrow-left"></span>
+          </button>
+          <button type="button" class="carousel-btn" id="prize-carousel-next" aria-label="Premio siguiente">
+            <span data-icon="arrow-right"></span>
+          </button>
+        </div>
       </section>
 
       <section class="raffle-section">
