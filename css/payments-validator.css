@@ -2,6 +2,7 @@
   display: flex;
   gap: var(--space-3);
   margin: var(--space-6) 0 var(--space-4);
+  flex-wrap: wrap;
 }
 
 .validator-tab {
@@ -13,8 +14,27 @@
   border: 1px solid var(--color-border);
   background: var(--color-surface);
   font-weight: 700;
+  font-size: 0.95rem;
   color: var(--color-text-secondary);
   cursor: pointer;
+  white-space: nowrap;
+}
+
+@media (max-width: 500px) {
+  .validator-tabs {
+    gap: var(--space-2);
+  }
+
+  .validator-tab {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+    gap: 6px;
+  }
+
+  .validator-tab__count {
+    padding: 1px 6px;
+    font-size: 0.72rem;
+  }
 }
 
 .validator-tab.is-active {

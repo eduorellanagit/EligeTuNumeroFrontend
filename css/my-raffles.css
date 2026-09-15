@@ -35,6 +35,18 @@
 
 .raffle-card__header h3 {
   font-size: 1.05rem;
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+.raffle-card__header .badge {
+  flex-shrink: 0;
+}
+
+@media (max-width: 420px) {
+  .raffle-card__header {
+    flex-wrap: wrap;
+  }
 }
 
 .progress-track {

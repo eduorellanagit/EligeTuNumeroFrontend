@@ -103,10 +103,35 @@
 }
 
 .prizes-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  display: flex;
   gap: var(--space-4);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   min-width: 0;
+}
+
+.prizes-grid::-webkit-scrollbar {
+  display: none;
+}
+
+.prizes-grid .prize-form-card {
+  scroll-snap-align: start;
+  flex: 0 0 calc((100% - 2 * var(--space-4)) / 3);
+}
+
+@media (max-width: 900px) {
+  .prizes-grid .prize-form-card {
+    flex: 0 0 calc((100% - var(--space-4)) / 2);
+  }
+}
+
+@media (max-width: 560px) {
+  .prizes-grid .prize-form-card {
+    flex: 0 0 100%;
+  }
 }
 
 .prize-form-card {
@@ -286,35 +311,15 @@
 }
 
 .prize-nav-mobile {
-  display: none;
-}
-
-.prize-nav-mobile__counter {
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: var(--color-text-secondary);
-  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  margin-top: var(--space-4);
 }
 
 @media (max-width: 760px) {
-  .prize-nav-mobile {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-4);
-    margin-top: var(--space-4);
-  }
-
-  .prize-form-card {
-    display: none;
-  }
-
-  .prize-form-card.is-current-mobile {
-    display: flex;
-  }
-
-  .create-raffle-grid,
-  .prizes-grid {
+  .create-raffle-grid {
     grid-template-columns: 1fr;
   }
 }
