@@ -185,7 +185,10 @@ document.addEventListener('DOMContentLoaded', () => {
       card.innerHTML = `
         <div class="raffle-card__header">
           <h3>${raffle.title}</h3>
-          <span class="badge ${toneByStatus[raffle.status]}">${raffle.status}</span>
+        </div>
+        <div class="raffle-card__status-row">
+          <span class="badge badge--sm ${toneByStatus[raffle.status]}">${raffle.status}</span>
+          <span class="raffle-card__days-left">${daysLeftLabel}</span>
         </div>
         <div class="progress-track">
           <div class="progress-fill" style="width: ${progress}%"></div>
@@ -194,12 +197,9 @@ document.addEventListener('DOMContentLoaded', () => {
           <span>${raffle.sold} / ${raffle.totalNumbers} números vendidos</span>
           <span>${progress}%</span>
         </div>
-        <div class="raffle-card__footer">
-          <span class="raffle-card__days-left">${daysLeftLabel}</span>
-          <div class="raffle-card__footer-actions">
-            ${viewLinkHTML}
-            ${closeButtonHTML}
-          </div>
+        <div class="raffle-card__footer-actions">
+          ${viewLinkHTML}
+          ${closeButtonHTML}
         </div>
       `
       rafflesList.appendChild(card)

@@ -40,24 +40,42 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function updatePrizeCarouselButtons() {
+    const firstBtn = document.getElementById('prize-first-btn')
     const prevBtn = document.getElementById('prize-prev-btn')
     const nextBtn = document.getElementById('prize-next-btn')
+    const lastBtn = document.getElementById('prize-last-btn')
     if (!prevBtn || !nextBtn) return
     const maxScroll = prizesContainer.scrollWidth - prizesContainer.clientWidth
-    prevBtn.disabled = prizesContainer.scrollLeft <= 4
-    nextBtn.disabled = maxScroll <= 4 || prizesContainer.scrollLeft >= maxScroll - 4
+    const atStart = prizesContainer.scrollLeft <= 4
+    const atEnd = maxScroll <= 4 || prizesContainer.scrollLeft >= maxScroll - 4
+    prevBtn.disabled = atStart
+    nextBtn.disabled = atEnd
+    if (firstBtn) firstBtn.disabled = atStart
+    if (lastBtn) lastBtn.disabled = atEnd
   }
 
   function renderPrizeNav() {
     if (!prizeNavContainer) return
     prizeNavContainer.innerHTML = `
+      <button type="button" class="carousel-btn" id="prize-first-btn" aria-label="Primer premio">
+        ${Icons.chevronsLeft}
+      </button>
       <button type="button" class="carousel-btn" id="prize-prev-btn" aria-label="Premio anterior">
         ${Icons.arrowLeft}
       </button>
       <button type="button" class="carousel-btn" id="prize-next-btn" aria-label="Premio siguiente">
         ${Icons.arrowRight}
       </button>
+      <button type="button" class="carousel-btn" id="prize-last-btn" aria-label="Último premio">
+        ${Icons.chevronsRight}
+      </button>
     `
+    document.getElementById('prize-first-btn').addEventListener('click', () => {
+      prizesContainer.scrollTo({ left: 0, behavior: 'smooth' })
+    })
+    document.getElementById('prize-last-btn').addEventListener('click', () => {
+      prizesContainer.scrollTo({ left: prizesContainer.scrollWidth, behavior: 'smooth' })
+    })
     document.getElementById('prize-prev-btn').addEventListener('click', () => stepPrizeCarousel(-1))
     document.getElementById('prize-next-btn').addEventListener('click', () => stepPrizeCarousel(1))
     updatePrizeCarouselButtons()

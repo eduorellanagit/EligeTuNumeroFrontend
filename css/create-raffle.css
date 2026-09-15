@@ -102,15 +102,24 @@
   grid-column: 1 / -1;
 }
 
+.prize-carousel-wrapper {
+  overflow: hidden;
+  max-width: 100%;
+}
+
 .prizes-grid {
   display: flex;
   gap: var(--space-4);
   overflow-x: auto;
+  overflow-y: hidden;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  overscroll-behavior: contain;
+  touch-action: pan-x;
   min-width: 0;
+  max-width: 100%;
 }
 
 .prizes-grid::-webkit-scrollbar {

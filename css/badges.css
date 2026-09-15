@@ -9,6 +9,11 @@
   white-space: nowrap;
 }
 
+.badge--sm {
+  padding: 2px 9px;
+  font-size: 0.68rem;
+}
+
 .badge-success {
   background: var(--color-success-bg);
   color: var(--color-success);

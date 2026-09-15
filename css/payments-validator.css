@@ -2,12 +2,12 @@
   display: flex;
   gap: var(--space-3);
   margin: var(--space-6) 0 var(--space-4);
-  flex-wrap: wrap;
 }
 
 .validator-tab {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: var(--space-2);
   padding: 10px 18px;
   border-radius: var(--radius-sm);
@@ -20,20 +20,13 @@
   white-space: nowrap;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 560px) {
   .validator-tabs {
-    gap: var(--space-2);
+    flex-direction: column;
   }
 
   .validator-tab {
-    padding: 8px 12px;
-    font-size: 0.8rem;
-    gap: 6px;
-  }
-
-  .validator-tab__count {
-    padding: 1px 6px;
-    font-size: 0.72rem;
+    width: 100%;
   }
 }
 
@@ -66,9 +59,6 @@
 }
 
 .validator-row {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
@@ -76,11 +66,11 @@
 }
 
 .validator-row__main {
-  flex: 1;
+  width: 100%;
   display: grid;
-  grid-template-columns: 90px 110px 1fr 100px;
+  grid-template-columns: 1fr auto;
   align-items: center;
-  gap: var(--space-4);
+  gap: 4px var(--space-4);
   background: none;
   border: none;
   text-align: left;
@@ -89,7 +79,7 @@
 }
 
 .validator-row__main .badge {
-  justify-self: center;
+  justify-self: end;
 }
 
 .validator-row__number {
@@ -104,7 +94,7 @@
 
 .validator-row__amount {
   color: var(--color-text-faint);
-  text-align: right;
+  justify-self: end;
 }
 
 /* Detalle dentro del modal */
@@ -156,13 +146,6 @@
 }
 
 @media (max-width: 700px) {
-  .validator-row__main {
-    grid-template-columns: 60px 1fr;
-    row-gap: 6px;
-  }
-  .validator-row__amount {
-    text-align: left;
-  }
   .detail-grid {
     grid-template-columns: 1fr;
   }

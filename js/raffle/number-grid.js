@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
     galleryEl.innerHTML = currentRaffle.prizes
       .map(
         (prize, idx) => `
-        <button class="prize-card reveal" data-open-prize="${idx}" type="button">
+        <button class="prize-card" data-open-prize="${idx}" type="button">
           ${prize.image ? `<img class="prize-card__thumb" src="${prize.image}" alt="" />` : ''}
           <span class="prize-card__place">${prize.place}</span>
           <h3>${prize.title}</h3>
@@ -79,8 +79,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function setupPrizeCarousel() {
     const track = galleryEl
+    const firstBtn = document.getElementById('prize-carousel-first')
     const prevBtn = document.getElementById('prize-carousel-prev')
     const nextBtn = document.getElementById('prize-carousel-next')
+    const lastBtn = document.getElementById('prize-carousel-last')
     if (!track || !prevBtn || !nextBtn) return
 
     function step(direction) {
@@ -93,10 +95,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateButtons() {
       const maxScroll = track.scrollWidth - track.clientWidth
-      prevBtn.disabled = track.scrollLeft <= 4
-      nextBtn.disabled = maxScroll <= 4 || track.scrollLeft >= maxScroll - 4
+      const atStart = track.scrollLeft <= 4
+      const atEnd = maxScroll <= 4 || track.scrollLeft >= maxScroll - 4
+      prevBtn.disabled = atStart
+      nextBtn.disabled = atEnd
+      if (firstBtn) firstBtn.disabled = atStart
+      if (lastBtn) lastBtn.disabled = atEnd
     }
 
+    if (firstBtn) firstBtn.addEventListener('click', () => track.scrollTo({ left: 0, behavior: 'smooth' }))
+    if (lastBtn) lastBtn.addEventListener('click', () => track.scrollTo({ left: track.scrollWidth, behavior: 'smooth' }))
     prevBtn.addEventListener('click', () => step(-1))
     nextBtn.addEventListener('click', () => step(1))
     track.addEventListener('scroll', updateButtons)

@@ -26,27 +26,19 @@
 }
 
 .raffle-card__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-3);
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--space-3);
 }
 
 .raffle-card__header h3 {
   font-size: 1.05rem;
-  min-width: 0;
   overflow-wrap: break-word;
 }
 
-.raffle-card__header .badge {
-  flex-shrink: 0;
-}
-
-@media (max-width: 420px) {
-  .raffle-card__header {
-    flex-wrap: wrap;
-  }
+.raffle-card__status-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
 }
 
 .progress-track {
@@ -71,22 +63,17 @@
   color: var(--color-text-faint);
 }
 
-.raffle-card__footer {
-  margin-top: var(--space-4);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
 .raffle-card__days-left {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: var(--color-text-secondary);
   font-weight: 600;
 }
 
 .raffle-card__footer-actions {
+  margin-top: var(--space-4);
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: var(--space-4);
 }
 

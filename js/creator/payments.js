@@ -46,11 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const row = document.createElement('div')
       row.className = 'validator-row'
 
-      const acceptButtonHTML =
-        activeTab === 'pendientes'
-          ? `<button class="btn btn-secondary" data-quick-accept="${req.id}">Aceptar</button>`
-          : ''
-
       row.innerHTML = `
         <button class="validator-row__main" data-open-detail="${req.id}">
           <span class="validator-row__number">N° ${req.number}</span>
@@ -58,20 +53,12 @@ document.addEventListener('DOMContentLoaded', () => {
           <span class="validator-row__buyer">${req.buyer}</span>
           <span class="validator-row__amount">$${req.amount.toLocaleString('es-AR')}</span>
         </button>
-        ${acceptButtonHTML}
       `
       listEl.appendChild(row)
     })
 
     listEl.querySelectorAll('[data-open-detail]').forEach((btn) => {
       btn.addEventListener('click', () => openDetail(btn.dataset.openDetail))
-    })
-
-    listEl.querySelectorAll('[data-quick-accept]').forEach((btn) => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation()
-        moveRequest(btn.dataset.quickAccept, 'pendientes', 'aceptados')
-      })
     })
   }
 

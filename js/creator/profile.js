@@ -4,7 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('profile-form')
   if (!form) return
 
-  const emailField = document.getElementById('profile-readonly')
+  const emailField = document.getElementById('profile-readonly-email')
+  const providerField = document.getElementById('profile-readonly-provider')
   const nameInput = document.getElementById('profile-name')
   const dniInput = document.getElementById('profile-dni')
   const whatsappInput = document.getElementById('profile-whatsapp')
@@ -13,7 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const aliasInput = document.getElementById('profile-alias')
   const savedNote = document.getElementById('profile-saved-note')
 
-  emailField.textContent = creatorProfile.email + ' · ' + creatorProfile.authProvider
+  emailField.textContent = creatorProfile.email
+  providerField.textContent = creatorProfile.authProvider
   nameInput.value = creatorProfile.name
   dniInput.value = creatorProfile.dni
   whatsappInput.value = creatorProfile.whatsapp

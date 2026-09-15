@@ -19,6 +19,10 @@ const Icons = {
 
   menu: '<svg viewBox="0 0 24 24" class="icon-svg" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7" stroke="#131A2B" stroke-width="1.8" stroke-linecap="round"/><line x1="4" y1="12" x2="20" y2="12" stroke="#131A2B" stroke-width="1.8" stroke-linecap="round"/><line x1="4" y1="17" x2="20" y2="17" stroke="#131A2B" stroke-width="1.8" stroke-linecap="round"/></svg>',
 
+  chevronsLeft: '<svg viewBox="0 0 24 24" class="icon-svg" aria-hidden="true"><polyline points="12 6 6 12 12 18" stroke="#131A2B" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/><polyline points="18 6 12 12 18 18" stroke="#131A2B" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+
+  chevronsRight: '<svg viewBox="0 0 24 24" class="icon-svg" aria-hidden="true"><polyline points="6 6 12 12 6 18" stroke="#131A2B" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/><polyline points="12 6 18 12 12 18" stroke="#131A2B" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+
   close: '<svg viewBox="0 0 24 24" class="icon-svg" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18" stroke="#131A2B" stroke-width="1.8" stroke-linecap="round"/><line x1="18" y1="6" x2="6" y2="18" stroke="#131A2B" stroke-width="1.8" stroke-linecap="round"/></svg>',
 
   check: '<svg viewBox="0 0 24 24" class="icon-svg" aria-hidden="true"><polyline points="5 13 9.5 17.5 19 7" stroke="#131A2B" stroke-width="1.9" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',

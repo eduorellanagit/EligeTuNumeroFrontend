@@ -8,8 +8,8 @@
 
 .profile-form__readonly {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  gap: var(--space-2);
   background: var(--color-surface-tint);
   border-radius: var(--radius-sm);
   padding: var(--space-4);
@@ -17,7 +17,13 @@
   font-size: 0.9rem;
 }
 
-.profile-form__readonly span {
+.profile-form__readonly-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.profile-form__readonly-row span {
   color: var(--color-text-faint);
 }
 

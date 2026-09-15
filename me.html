@@ -72,8 +72,14 @@
 
           <form class="profile-form" id="profile-form">
             <div class="profile-form__readonly">
-              <span>Cuenta vinculada</span>
-              <strong id="profile-readonly"></strong>
+              <div class="profile-form__readonly-row">
+                <span>Email</span>
+                <strong id="profile-readonly-email"></strong>
+              </div>
+              <div class="profile-form__readonly-row">
+                <span>Proveedor</span>
+                <strong id="profile-readonly-provider"></strong>
+              </div>
             </div>
 
             <div class="profile-form__grid">
@@ -142,7 +148,9 @@
               <p class="form-card__hint form-card__hint--help">
                 <span data-icon="help"></span> Las fotos se recortan solas en cuadrado (1:1).
               </p>
-              <div class="prizes-grid" id="prizes-container"></div>
+              <div class="prize-carousel-wrapper">
+                <div class="prizes-grid" id="prizes-container"></div>
+              </div>
               <div class="prize-nav-mobile" id="prize-nav-mobile"></div>
               <button type="button" class="btn btn-secondary" id="add-prize-btn" style="margin-top: 16px;">
                 <span data-icon="plus"></span> Agregar premio

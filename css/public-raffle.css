@@ -103,10 +103,13 @@
   display: flex;
   gap: var(--space-4);
   overflow-x: auto;
+  overflow-y: hidden;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  overscroll-behavior: contain;
+  touch-action: pan-x;
 }
 
 .prize-carousel__track::-webkit-scrollbar {
@@ -147,13 +150,12 @@
   text-align: left;
   cursor: pointer;
   font-family: inherit;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .prize-card:hover {
   border-color: var(--color-primary);
   box-shadow: var(--shadow-sm);
-  transform: translateY(-3px);
 }
 
 .prize-card__thumb {
