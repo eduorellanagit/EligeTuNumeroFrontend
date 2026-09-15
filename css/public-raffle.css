@@ -103,13 +103,11 @@
   display: flex;
   gap: var(--space-4);
   overflow-x: auto;
-  overflow-y: hidden;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  overscroll-behavior: contain;
-  touch-action: pan-x;
+  overscroll-behavior-x: contain;
 }
 
 .prize-carousel__track::-webkit-scrollbar {

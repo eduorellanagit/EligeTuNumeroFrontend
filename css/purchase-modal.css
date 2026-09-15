@@ -61,18 +61,6 @@
   color: var(--color-primary-ink);
 }
 
-.file-field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.file-field > span:first-child {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--color-text-secondary);
-}
-
 .file-field__name {
   font-size: 0.8rem;
   color: var(--color-success);

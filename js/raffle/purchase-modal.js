@@ -92,11 +92,14 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
         </div>
 
-        <label class="file-field">
+        <div class="field">
           <span>Comprobante de transferencia</span>
-          <input type="file" id="pf-receipt" accept="image/*,application/pdf" required />
+          <label class="upload-btn">
+            <input type="file" id="pf-receipt" accept="image/*,application/pdf" required class="upload-btn__input" />
+            ${Icons.upload} Subir comprobante
+          </label>
           <span class="file-field__name" id="pf-receipt-name"></span>
-        </label>
+        </div>
 
         <div class="purchase-actions">
           <button type="button" class="btn btn-secondary" id="pf-back-btn">Volver</button>

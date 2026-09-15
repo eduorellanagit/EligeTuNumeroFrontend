@@ -30,3 +30,44 @@
   outline: none;
   box-shadow: 0 0 0 3px rgba(35, 77, 224, 0.12);
 }
+
+/* Botón de subir archivo (imagen o comprobante): el input real queda oculto
+   pero sigue siendo accesible — foco y validación nativa funcionan igual. */
+.upload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  padding: 9px 16px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.upload-btn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary-ink);
+  transform: translateY(-1px);
+}
+
+.upload-btn .icon-svg {
+  width: 16px;
+  height: 16px;
+}
+
+.upload-btn__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
