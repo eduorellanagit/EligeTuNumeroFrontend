@@ -87,6 +87,11 @@ document.addEventListener('DOMContentLoaded', () => {
         : ''
 
     const html = `
+      <div class="detail-raffle">
+        <span class="detail-label">Rifa</span>
+        <p>${req.raffleTitle}</p>
+      </div>
+
       <div class="detail-grid">
         <div>
           <span class="detail-label">Comprador</span>

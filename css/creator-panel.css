@@ -27,6 +27,7 @@
 
 .panel-content {
   flex: 1;
+  min-width: 0;
   padding: var(--space-7);
   max-width: 980px;
 }

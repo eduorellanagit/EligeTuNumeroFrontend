@@ -98,6 +98,19 @@
 }
 
 /* Detalle dentro del modal */
+.detail-raffle {
+  background: var(--color-surface-tint);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-5);
+}
+
+.detail-raffle p {
+  color: var(--color-primary-ink);
+  font-weight: 700;
+  margin-top: 2px;
+}
+
 .detail-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;

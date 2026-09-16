@@ -4,7 +4,67 @@ Misma plataforma de rifas y sorteos digitales, pero sin ningún framework ni pas
 build: abrís los archivos `.html` directamente en el navegador y funciona. Cada pieza
 visual tiene su propio archivo CSS, y cada pantalla tiene su propio archivo JS.
 
-## Cómo usarlo
+## Cómo usar la página
+
+### Si organizás una rifa
+
+1. **Ingresá** con tu cuenta de Google o GitHub — no hay contraseñas que crear ni
+   recordar. Si es tu primera vez, la cuenta se crea sola al continuar.
+2. **Completá tu perfil**, en "Perfil y cobro": tu DNI/CUIL, un WhatsApp de contacto
+   y los datos bancarios donde vas a recibir las transferencias.
+3. **Comprá créditos** en "Mis rifas y créditos" — elegís un paquete de 1, 5 o 10
+   rifas. No vencen, así que podés comprarlos con tiempo y usarlos cuando quieras.
+4. **Publicá la rifa** desde "Crear rifa": cargás el título, la descripción, entre
+   3 y 9 premios (con foto si querés), cuántos números va a tener, el precio de
+   cada uno, cuánto tiempo va a estar abierta y cuánto tiempo le das a alguien
+   para pagar antes de liberarle el número.
+5. **Compartí el link** que te da la plataforma. A partir de ahí, la gente entra,
+   elige sus números, transfiere directo a tu cuenta y sube el comprobante.
+6. **Validá los pagos** en "Validar pagos": por cada transferencia, revisás los
+   datos de quien compró y el comprobante, y aceptás o rechazás. Vos decidís,
+   nadie acepta nada por vos.
+
+### Si comprás un número
+
+1. Entrás al link de la rifa — no necesitás crear cuenta ni instalar nada.
+2. Elegís uno o varios números libres en la grilla.
+3. Completás tus datos (nombre, DNI, dirección, WhatsApp).
+4. Transferís el monto exacto a la cuenta que te muestra la pantalla y subís
+   una foto o PDF del comprobante.
+5. Esperás a que el organizador confirme tu pago — tu número queda reservado
+   mientras tanto, por el tiempo que haya definido esa rifa.
+
+## Beneficios
+
+- **Sin comisión por venta.** Se paga una sola vez, por publicar la rifa —
+  después, el 100% de lo que se recauda es para el organizador.
+- **La plata nunca pasa por la plataforma.** Va directo del comprador al
+  organizador por transferencia bancaria; nadie más la toca en el medio.
+- **Quien compra no necesita cuenta.** Completa un formulario corto y listo —
+  nada de contraseñas, emails a confirmar ni apps que instalar.
+- **Todo en un solo link.** Premios, números disponibles, precio y datos para
+  transferir quedan en una sola página, lista para compartir por WhatsApp o
+  redes.
+- **El organizador tiene el control.** Cada pago se acepta o rechaza a mano,
+  revisando el comprobante — no hay confirmaciones automáticas que puedan
+  fallar.
+- **Créditos que no vencen.** Se compran una vez y se usan cuando se necesitan,
+  sin fecha límite.
+
+## Comparación con otras plataformas de rifas
+
+Sin nombrar a nadie en particular, así suelen funcionar la mayoría de las
+alternativas que existen hoy — y en qué se diferencia Rifalo:
+
+| | Otras plataformas | Rifalo |
+|---|---|---|
+| Comisión | Suelen cobrar un % de cada boleto vendido | Cobra una vez, por publicar — 0% sobre lo vendido |
+| El dinero | Muchas lo retienen y lo liberan después | Va directo del comprador al organizador |
+| Cuenta del comprador | Casi siempre hay que registrarse | No hace falta crear ninguna cuenta |
+| Validación de pagos | Suele ser automática (y a veces falla) | La revisa el organizador, comprobante por comprobante |
+| Costo | Por lo general, mientras más vendés, más pagás | Precio fijo por rifa, sin sorpresas |
+
+## Configuración técnica
 
 No hace falta instalar nada. Alcanza con abrir `index.html` con doble clic, o —mejor
 todavía, para que los links entre páginas funcionen perfecto— servir la carpeta con

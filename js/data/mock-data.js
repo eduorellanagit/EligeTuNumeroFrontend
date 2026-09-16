@@ -48,6 +48,7 @@ const paymentRequests = {
   pendientes: [
     {
       id: 'p1',
+      raffleTitle: 'Gran Sorteo Moto 110cc 0km',
       number: 42,
       buyer: 'María Gómez',
       dni: '29.884.112',
@@ -58,6 +59,7 @@ const paymentRequests = {
     },
     {
       id: 'p2',
+      raffleTitle: 'Notebook Gamer + Combo Gaming',
       number: 17,
       buyer: 'Carlos Díaz',
       dni: '31.220.774',
@@ -68,6 +70,7 @@ const paymentRequests = {
     },
     {
       id: 'p3',
+      raffleTitle: 'Gran Sorteo Moto 110cc 0km',
       number: 88,
       buyer: 'Lucía Fernández',
       dni: '38.902.451',
@@ -80,6 +83,7 @@ const paymentRequests = {
   aceptados: [
     {
       id: 'a1',
+      raffleTitle: 'Gran Sorteo Moto 110cc 0km',
       number: 5,
       buyer: 'Roberto Suárez',
       dni: '27.114.998',
@@ -92,6 +96,7 @@ const paymentRequests = {
   rechazados: [
     {
       id: 'r1',
+      raffleTitle: 'Notebook Gamer + Combo Gaming',
       number: 63,
       buyer: 'Nadia Torres',
       dni: '40.556.123',
