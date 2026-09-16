@@ -79,7 +79,7 @@
 }
 
 .validator-row__main .badge {
-  justify-self: end;
+  justify-self: center;
 }
 
 .validator-row__number {
@@ -94,7 +94,7 @@
 
 .validator-row__amount {
   color: var(--color-text-faint);
-  justify-self: end;
+  justify-self: center;
 }
 
 /* Detalle dentro del modal */

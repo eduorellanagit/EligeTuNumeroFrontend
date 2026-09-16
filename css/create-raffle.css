@@ -102,10 +102,43 @@
   grid-column: 1 / -1;
 }
 
+.prize-carousel-wrapper {
+  overflow: hidden;
+  max-width: 100%;
+}
+
 .prizes-grid {
   display: flex;
-  flex-direction: column;
   gap: var(--space-4);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  overscroll-behavior-x: contain;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.prizes-grid::-webkit-scrollbar {
+  display: none;
+}
+
+.prizes-grid .prize-form-card {
+  scroll-snap-align: start;
+  flex: 0 0 calc((100% - 2 * var(--space-4)) / 3);
+}
+
+@media (max-width: 900px) {
+  .prizes-grid .prize-form-card {
+    flex: 0 0 calc((100% - var(--space-4)) / 2);
+  }
+}
+
+@media (max-width: 560px) {
+  .prizes-grid .prize-form-card {
+    flex: 0 0 100%;
+  }
 }
 
 .prize-form-card {
@@ -242,6 +275,14 @@
   font-size: 0.85rem;
   color: var(--color-primary-ink);
   word-break: break-all;
+}
+
+.prize-nav-mobile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  margin-top: var(--space-4);
 }
 
 @media (max-width: 760px) {

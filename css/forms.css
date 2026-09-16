@@ -34,6 +34,7 @@
 /* Botón de subir archivo (imagen o comprobante): el input real queda oculto
    pero sigue siendo accesible — foco y validación nativa funcionan igual. */
 .upload-btn {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -60,7 +61,7 @@
   height: 16px;
 }
 
-.upload-btn__input {
+.field .upload-btn__input {
   position: absolute;
   width: 1px;
   height: 1px;

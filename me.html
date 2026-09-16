@@ -28,6 +28,8 @@
   <link rel="stylesheet" href="css/credit-purchase.css" />
   <link rel="stylesheet" href="css/confirmation.css" />
   <link rel="stylesheet" href="css/create-raffle.css" />
+  <link rel="stylesheet" href="css/custom-select.css" />
+  <link rel="stylesheet" href="css/carousel.css" />
 </head>
 <body>
 
@@ -147,7 +149,10 @@
               <p class="form-card__hint form-card__hint--help">
                 <span data-icon="help"></span> Las fotos se recortan solas en cuadrado (1:1).
               </p>
-              <div class="prizes-grid" id="prizes-container"></div>
+              <div class="prize-carousel-wrapper">
+                <div class="prizes-grid" id="prizes-container"></div>
+              </div>
+              <div class="prize-nav-mobile" id="prize-nav-mobile"></div>
               <button type="button" class="btn btn-secondary" id="add-prize-btn" style="margin-top: 16px;">
                 <span data-icon="plus"></span> Agregar premio
               </button>
@@ -158,7 +163,7 @@
               <div class="create-raffle-grid">
                 <label class="field">
                   <span>Cantidad de números</span>
-                  <select id="cr-quantity">
+                  <select id="cr-quantity" data-custom-select>
                     <option value="50">50</option>
                     <option value="100" selected>100</option>
                     <option value="200">200</option>
@@ -170,7 +175,7 @@
                 </label>
                 <label class="field">
                   <span>Plazo de vigencia</span>
-                  <select id="cr-duration">
+                  <select id="cr-duration" data-custom-select>
                     <option value="20">20 días</option>
                     <option value="25">25 días</option>
                     <option value="30" selected>30 días</option>
@@ -178,7 +183,7 @@
                 </label>
                 <label class="field">
                   <span>Tiempo de espera para pagar</span>
-                  <select id="cr-hold-minutes">
+                  <select id="cr-hold-minutes" data-custom-select>
                     <option value="15" selected>15 minutos</option>
                     <option value="30">30 minutos</option>
                     <option value="60">1 hora</option>
@@ -247,6 +252,7 @@
   <script src="js/config.js"></script>
   <script src="js/data/mock-data.js"></script>
   <script src="js/common/icons.js"></script>
+  <script src="js/common/custom-select.js"></script>
   <script src="js/common/render-icons.js"></script>
   <script src="js/common/modal.js"></script>
   <script src="js/common/image-utils.js"></script>

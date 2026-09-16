@@ -23,6 +23,8 @@ const Icons = {
 
   chevronsRight: '<svg viewBox="0 0 24 24" class="icon-svg" aria-hidden="true"><polyline points="6 6 12 12 6 18" stroke="#131A2B" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/><polyline points="12 6 18 12 12 18" stroke="#131A2B" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',
 
+  chevronDown: '<svg viewBox="0 0 24 24" class="icon-svg" aria-hidden="true"><polyline points="6 9 12 15 18 9" stroke="#131A2B" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+
   close: '<svg viewBox="0 0 24 24" class="icon-svg" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18" stroke="#131A2B" stroke-width="1.8" stroke-linecap="round"/><line x1="18" y1="6" x2="6" y2="18" stroke="#131A2B" stroke-width="1.8" stroke-linecap="round"/></svg>',
 
   check: '<svg viewBox="0 0 24 24" class="icon-svg" aria-hidden="true"><polyline points="5 13 9.5 17.5 19 7" stroke="#131A2B" stroke-width="1.9" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',

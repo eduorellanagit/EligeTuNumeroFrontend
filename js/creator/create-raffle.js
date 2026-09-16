@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const submitBtn = document.getElementById('create-raffle-submit')
   const creditsNoteEl = document.getElementById('create-raffle-credits-note')
   const prizesContainer = document.getElementById('prizes-container')
+  const prizeNavContainer = document.getElementById('prize-nav-mobile')
   const addPrizeBtn = document.getElementById('add-prize-btn')
 
   const MIN_PRIZES = 3
@@ -20,15 +21,69 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Estado de los premios en memoria (no en el DOM), para poder agregar/quitar
-  // tarjetas sin perder lo que ya se cargó en las demás. Se muestran uno
-  // debajo del otro (sin carrusel ni scroll horizontal).
+  // tarjetas sin perder lo que ya se cargó en las demás.
   let prizes = emptyPrizes(MIN_PRIZES)
 
   function escapeHtml(str) {
     return str.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]))
   }
 
+  // Carrusel de premios: se ven 3 a la vez en desktop, 2 en tablet y 1 en
+  // celular (ver css/create-raffle.css), pero siempre se avanza de a uno,
+  // igual que en la página pública de la rifa.
+  function stepPrizeCarousel(direction) {
+    const card = prizesContainer.querySelector('.prize-form-card')
+    if (!card) return
+    const gap = parseFloat(getComputedStyle(prizesContainer).gap) || 16
+    const amount = card.getBoundingClientRect().width + gap
+    prizesContainer.scrollBy({ left: direction * amount, behavior: 'smooth' })
+  }
+
+  function updatePrizeCarouselButtons() {
+    const firstBtn = document.getElementById('prize-first-btn')
+    const prevBtn = document.getElementById('prize-prev-btn')
+    const nextBtn = document.getElementById('prize-next-btn')
+    const lastBtn = document.getElementById('prize-last-btn')
+    if (!prevBtn || !nextBtn) return
+    const maxScroll = prizesContainer.scrollWidth - prizesContainer.clientWidth
+    const atStart = prizesContainer.scrollLeft <= 4
+    const atEnd = maxScroll <= 4 || prizesContainer.scrollLeft >= maxScroll - 4
+    prevBtn.disabled = atStart
+    nextBtn.disabled = atEnd
+    if (firstBtn) firstBtn.disabled = atStart
+    if (lastBtn) lastBtn.disabled = atEnd
+  }
+
+  function renderPrizeNav() {
+    if (!prizeNavContainer) return
+    prizeNavContainer.innerHTML = `
+      <button type="button" class="carousel-btn" id="prize-first-btn" aria-label="Primer premio">
+        ${Icons.chevronsLeft}
+      </button>
+      <button type="button" class="carousel-btn" id="prize-prev-btn" aria-label="Premio anterior">
+        ${Icons.arrowLeft}
+      </button>
+      <button type="button" class="carousel-btn" id="prize-next-btn" aria-label="Premio siguiente">
+        ${Icons.arrowRight}
+      </button>
+      <button type="button" class="carousel-btn" id="prize-last-btn" aria-label="Último premio">
+        ${Icons.chevronsRight}
+      </button>
+    `
+    document.getElementById('prize-first-btn').addEventListener('click', () => {
+      prizesContainer.scrollTo({ left: 0, behavior: 'smooth' })
+    })
+    document.getElementById('prize-last-btn').addEventListener('click', () => {
+      prizesContainer.scrollTo({ left: prizesContainer.scrollWidth, behavior: 'smooth' })
+    })
+    document.getElementById('prize-prev-btn').addEventListener('click', () => stepPrizeCarousel(-1))
+    document.getElementById('prize-next-btn').addEventListener('click', () => stepPrizeCarousel(1))
+    updatePrizeCarouselButtons()
+  }
+
   function renderPrizes() {
+    renderPrizeNav()
+
     prizesContainer.innerHTML = prizes
       .map(
         (prize, idx) => `
@@ -120,22 +175,24 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     addPrizeBtn.disabled = prizes.length >= MAX_PRIZES
+    updatePrizeCarouselButtons()
   }
 
   addPrizeBtn.addEventListener('click', () => {
     if (prizes.length >= MAX_PRIZES) return
     prizes.push({ title: '', description: '', image: null })
     renderPrizes()
-    // El premio nuevo queda al final de la lista; lo mostramos en pantalla
-    // apenas se termina de pintar.
+    // El nuevo premio queda al final del carrusel; lo mostramos apenas se
+    // termina de pintar.
     requestAnimationFrame(() => {
-      const cards = prizesContainer.querySelectorAll('.prize-form-card')
-      const lastCard = cards[cards.length - 1]
-      if (lastCard) lastCard.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      prizesContainer.scrollTo({ left: prizesContainer.scrollWidth, behavior: 'smooth' })
+      updatePrizeCarouselButtons()
     })
   })
 
   renderPrizes()
+  prizesContainer.addEventListener('scroll', updatePrizeCarouselButtons)
+  window.addEventListener('resize', updatePrizeCarouselButtons)
 
   function slugify(text) {
     return text
@@ -183,7 +240,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const invalidIndex = prizes.findIndex((p) => !p.title.trim() || !p.description.trim())
     if (invalidIndex !== -1) {
       const invalidCard = prizesContainer.querySelectorAll('.prize-form-card')[invalidIndex]
-      if (invalidCard) invalidCard.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      if (invalidCard) invalidCard.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' })
       errorBox.textContent = `Completá el título y la descripción del premio N° ${invalidIndex + 1}.`
       errorBox.classList.add('is-visible')
       return
@@ -247,6 +304,7 @@ document.addEventListener('DOMContentLoaded', () => {
     form.reset()
     prizes = emptyPrizes(MIN_PRIZES)
     renderPrizes()
+    prizesContainer.scrollLeft = 0
     refreshCreditsWarning()
   })
 
