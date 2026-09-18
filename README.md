@@ -1,4 +1,4 @@
-# Rifalo — Frontend (HTML + CSS + JavaScript puro)
+# EligeTuNumero — Frontend (HTML + CSS + JavaScript puro)
 
 Misma plataforma de rifas y sorteos digitales, pero sin ningún framework ni paso de
 build: abrís los archivos `.html` directamente en el navegador y funciona. Cada pieza
@@ -54,9 +54,9 @@ visual tiene su propio archivo CSS, y cada pantalla tiene su propio archivo JS.
 ## Comparación con otras plataformas de rifas
 
 Sin nombrar a nadie en particular, así suelen funcionar la mayoría de las
-alternativas que existen hoy — y en qué se diferencia Rifalo:
+alternativas que existen hoy — y en qué se diferencia EligeTuNumero:
 
-| | Otras plataformas | Rifalo |
+| | Otras plataformas | EligeTuNumero |
 |---|---|---|
 | Comisión | Suelen cobrar un % de cada boleto vendido | Cobra una vez, por publicar — 0% sobre lo vendido |
 | El dinero | Muchas lo retienen y lo liberan después | Va directo del comprador al organizador |

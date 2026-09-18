@@ -3,6 +3,7 @@
 // (variable global `selectedNumbers`, que usa purchase-modal.js).
 let currentRaffle = null
 let selectedNumbers = []
+const MAX_SELECTABLE_NUMBERS = 5
 
 document.addEventListener('DOMContentLoaded', () => {
   const headerEl = document.getElementById('raffle-header')
@@ -122,12 +123,17 @@ document.addEventListener('DOMContentLoaded', () => {
       .map(({ number, status }) => {
         const isSelected = selectedNumbers.includes(number)
         const isAvailable = status === 'disponible'
-        const cssClass = isSelected ? 'number-cell--selected' : 'number-cell--' + status
+        const limitReached = !isSelected && isAvailable && selectedNumbers.length >= MAX_SELECTABLE_NUMBERS
+        const cssClass = isSelected
+          ? 'number-cell--selected'
+          : limitReached
+          ? 'number-cell--disponible number-cell--limit'
+          : 'number-cell--' + status
         return `
           <button
             class="number-cell ${cssClass}"
             data-number="${number}"
-            ${!isAvailable ? 'disabled' : ''}
+            ${!isAvailable || limitReached ? 'disabled' : ''}
           >${number}</button>
         `
       })
@@ -146,6 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (selectedNumbers.includes(number)) {
       selectedNumbers = selectedNumbers.filter((n) => n !== number)
     } else {
+      if (selectedNumbers.length >= MAX_SELECTABLE_NUMBERS) return
       selectedNumbers = [...selectedNumbers, number]
     }
     renderGrid()

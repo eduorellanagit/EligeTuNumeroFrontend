@@ -19,8 +19,8 @@
 
 .navbar__logo {
   font-family: var(--font-heading);
-  font-weight: 800;
-  font-size: 1.35rem;
+  font-weight: 750;
+  font-size: 1.26rem;
   color: var(--color-primary-ink);
 }
 

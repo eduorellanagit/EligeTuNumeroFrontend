@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const token = params.get('token')
   if (!token) return
 
-  localStorage.setItem('rifalo_token', token)
+  localStorage.setItem('eligetunumero_token', token)
   params.delete('token')
   const cleanQuery = params.toString()
   const cleanUrl = window.location.pathname + (cleanQuery ? '?' + cleanQuery : '')
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 function getAuthToken() {
-  return localStorage.getItem('rifalo_token')
+  return localStorage.getItem('eligetunumero_token')
 }
 
 // Headers listos para pegarle a cualquier endpoint de /api/v1/ que necesite
