@@ -50,7 +50,6 @@
 }
 
 .auth-providers {
-  margin-top: var(--space-7);
   display: flex;
   flex-direction: column;
   gap: var(--space-3);

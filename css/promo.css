@@ -1,0 +1,24 @@
+.promo-banner {
+  max-width: fit-content;
+  margin: var(--space-4) auto;
+  padding: 10px 20px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+  color: #fff;
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: 0 6px 16px rgba(35, 77, 224, 0.28);
+}
+
+.promo-banner strong {
+  font-weight: 800;
+}
+
+@media (max-width: 500px) {
+  .promo-banner {
+    font-size: 0.82rem;
+    padding: 9px 16px;
+    text-align: left;
+  }
+}

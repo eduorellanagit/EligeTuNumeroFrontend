@@ -112,7 +112,7 @@ además de que el botón "atrás" del navegador funciona normal en todo momento.
 Desde "Mis rifas y créditos", comprar créditos ahora es un flujo de 3 pasos dentro
 del modal, no una acción instantánea:
 
-1. **Elegís la cantidad** — radio buttons con los 3 paquetes (1, 5 o 10 rifas).
+1. **Elegís la cantidad** — radio buttons con los 3 paquetes (3, 10 o 20 rifas).
 2. **Continuar** — pantalla de confirmación con el resumen y el total.
 3. **Confirmar compra** — ahí se manda la solicitud HTTP (`fetch` a
    `/api/v1/creditos/comprar`, ver `js/creator/raffles.js`). Como esta demo no tiene
@@ -130,7 +130,7 @@ Nueva sección en el panel (`me.html` → "Crear rifa") con el formulario comple
 la especificación: título, descripción y reglas, entre 1 y 10 premios (se agregan
 de a uno, cada uno con título, descripción e imagen opcional), cantidad de números
 (50/100/200), precio por número, plazo de vigencia (20/25/30 días) y tiempo de
-espera para pagar antes de liberar un número (15/30 minutos o 1 hora). Al publicar:
+espera para pagar antes de liberar un número (30/60 minutos o 2 horas). Al publicar:
 
 - Se valida que tengas al menos 1 crédito (si no, se avisa y no se puede publicar).
 - Se descuenta 1 crédito en el momento de confirmar.

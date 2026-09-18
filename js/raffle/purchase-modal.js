@@ -73,8 +73,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function showPaymentStep() {
     const total = selectedNumbers.length * currentRaffle.pricePerNumber
     const bank = currentRaffle.bankDetails
-    const holdMinutes = currentRaffle.holdMinutes || 15
-    const holdLabel = holdMinutes >= 60 ? '1 hora' : holdMinutes + ' minutos'
+    const holdMinutes = currentRaffle.holdMinutes || 30
+    const holdLabel =
+      holdMinutes >= 120 ? Math.round(holdMinutes / 60) + ' horas' : holdMinutes >= 60 ? '1 hora' : holdMinutes + ' minutos'
 
     const html = `
       <form class="purchase-form" id="purchase-payment-step">

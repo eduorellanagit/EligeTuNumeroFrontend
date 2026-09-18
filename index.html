@@ -22,6 +22,7 @@
   <link rel="stylesheet" href="css/demo-preview.css" />
   <link rel="stylesheet" href="css/how-it-works.css" />
   <link rel="stylesheet" href="css/pricing.css" />
+  <link rel="stylesheet" href="css/promo.css" />
   <link rel="stylesheet" href="css/faq.css" />
   <link rel="stylesheet" href="css/footer.css" />
 </head>
@@ -146,7 +147,7 @@
             <span class="how__index">3</span>
             <div>
               <h3>Comprá tus créditos</h3>
-              <p>Elegís un paquete de 1, 5 o 10 rifas. No vencen, los usás cuando quieras.</p>
+              <p>Elegís un paquete de 3, 10 o 20 rifas. No vencen, los usás cuando quieras.</p>
             </div>
           </li>
           <li class="how__step reveal">
@@ -172,41 +173,45 @@
       <h2 class="pricing__heading">Un precio simple: pagás por publicar, no por vender</h2>
       <p class="pricing__lead">Créditos de publicación sin vencimiento. Los usás cuando los necesitás.</p>
 
+      <div class="promo-banner" data-promo id="pricing-promo-banner">
+        🎁 <strong>Cuentas nuevas:</strong> tu primer crédito va por nuestra cuenta.
+      </div>
+
       <div class="pricing__grid">
         <div class="pricing-card reveal">
           <h3>Básico</h3>
-          <p class="pricing-card__tagline">Para un sorteo puntual.</p>
+          <p class="pricing-card__tagline">Para arrancar.</p>
           <div class="pricing-card__price">
-            <span class="pricing-card__amount">$1</span>
+            <span class="pricing-card__amount">$4.99</span>
             <span class="pricing-card__unit">USD</span>
           </div>
-          <p class="pricing-card__raffles">1 rifa</p>
-          <p class="pricing-card__per-raffle">≈ $1.00 por rifa</p>
+          <p class="pricing-card__raffles">3 rifas</p>
+          <p class="pricing-card__per-raffle">≈ $1.66 por rifa</p>
           <a href="login.html?plan=basico" class="btn btn-secondary btn-block pricing-card__cta">Elegir Básico</a>
         </div>
 
         <div class="pricing-card pricing-card--highlight reveal">
           <span class="pricing-card__tag">Más elegido</span>
           <h3>Estándar</h3>
-          <p class="pricing-card__tagline">20% menos por rifa.</p>
+          <p class="pricing-card__tagline">~40% menos por rifa.</p>
           <div class="pricing-card__price">
-            <span class="pricing-card__amount">$4</span>
+            <span class="pricing-card__amount">$9.99</span>
             <span class="pricing-card__unit">USD</span>
           </div>
-          <p class="pricing-card__raffles">5 rifas</p>
-          <p class="pricing-card__per-raffle">≈ $0.80 por rifa</p>
+          <p class="pricing-card__raffles">10 rifas</p>
+          <p class="pricing-card__per-raffle">≈ $0.99 por rifa</p>
           <a href="login.html?plan=estandar" class="btn btn-primary btn-block pricing-card__cta">Elegir Estándar</a>
         </div>
 
         <div class="pricing-card reveal">
           <h3>Pro</h3>
-          <p class="pricing-card__tagline">30% menos por rifa.</p>
+          <p class="pricing-card__tagline">~55% menos por rifa.</p>
           <div class="pricing-card__price">
-            <span class="pricing-card__amount">$7</span>
+            <span class="pricing-card__amount">$14.99</span>
             <span class="pricing-card__unit">USD</span>
           </div>
-          <p class="pricing-card__raffles">10 rifas</p>
-          <p class="pricing-card__per-raffle">≈ $0.70 por rifa</p>
+          <p class="pricing-card__raffles">20 rifas</p>
+          <p class="pricing-card__per-raffle">≈ $0.75 por rifa</p>
           <a href="login.html?plan=pro" class="btn btn-secondary btn-block pricing-card__cta">Elegir Pro</a>
         </div>
       </div>
@@ -248,7 +253,7 @@
             <span class="faq-item__icon">+</span>
           </button>
           <p class="faq-item__answer">
-            No vencen nunca. Podés comprar un paquete de 10 rifas y usarlas a lo largo de meses o años.
+            No vencen nunca. Podés comprar un paquete de 20 rifas y usarlas a lo largo de meses o años.
           </p>
         </div>
 
@@ -258,7 +263,8 @@
             <span class="faq-item__icon">+</span>
           </button>
           <p class="faq-item__answer">
-            El sistema bloquea el número apenas alguien lo selecciona, por 10 a 15 minutos. Si no llega el
+            El sistema bloquea el número apenas alguien lo selecciona, por el tiempo que haya elegido
+            el organizador (30 minutos, 1 hora o 2 horas). Si no llega el
             comprobante en ese plazo, el número vuelve a estar disponible para otra persona.
           </p>
         </div>
@@ -309,6 +315,8 @@
     document.getElementById('footer-year-text').textContent =
       '© ' + new Date().getFullYear() + ' Rifalo. Hecho para organizadores, clubes y emprendedores.'
   </script>
+  <script src="js/config.js"></script>
+  <script src="js/common/promo.js"></script>
   <script src="js/landing/faq.js"></script>
   <script src="js/common/scroll-reveal.js"></script>
 </body>
