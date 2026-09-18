@@ -19,7 +19,7 @@
 }
 
 .pricing__grid {
-  margin-top: var(--space-7);
+  margin-top: var(--space-6);
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: var(--space-5);
