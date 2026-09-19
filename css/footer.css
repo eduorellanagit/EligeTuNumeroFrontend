@@ -1,7 +1,6 @@
 .footer {
   background: var(--color-primary-ink);
   color: #E4E9FA;
-  margin-top: var(--space-9);
 }
 
 .footer__inner {
