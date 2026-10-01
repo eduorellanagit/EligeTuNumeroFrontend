@@ -173,7 +173,7 @@ function getPublicRaffle(creatorId, raffleId) {
       whatsapp: '5493815551234',
     },
     daysLeft: 18,
-    holdMinutes: 30,
+    maxPerPurchase: 5,
     pricePerNumber: 3500,
     totalNumbers: total,
     numbers,

@@ -73,14 +73,11 @@ document.addEventListener('DOMContentLoaded', () => {
   function showPaymentStep() {
     const total = selectedNumbers.length * currentRaffle.pricePerNumber
     const bank = currentRaffle.bankDetails
-    const holdMinutes = currentRaffle.holdMinutes || 30
-    const holdLabel =
-      holdMinutes >= 120 ? Math.round(holdMinutes / 60) + ' horas' : holdMinutes >= 60 ? '1 hora' : holdMinutes + ' minutos'
 
     const html = `
       <form class="purchase-form" id="purchase-payment-step">
         <p class="purchase-hold-note">
-          Tus números quedan reservados por ${holdLabel}. Transferí y subí el comprobante antes de que se liberen.
+          Transferí el monto y subí el comprobante: tus números quedan reservados al enviar la reserva, hasta que el organizador valide tu pago.
         </p>
 
         <div class="bank-box">

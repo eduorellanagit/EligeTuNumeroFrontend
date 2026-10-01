@@ -3,7 +3,12 @@
 // (variable global `selectedNumbers`, que usa purchase-modal.js).
 let currentRaffle = null
 let selectedNumbers = []
-const MAX_SELECTABLE_NUMBERS = 5
+const DEFAULT_MAX_SELECTABLE_NUMBERS = 5
+
+// Máximo de números por compra que definió el organizador al crear la rifa.
+function getMaxSelectableNumbers() {
+  return (currentRaffle && currentRaffle.maxPerPurchase) || DEFAULT_MAX_SELECTABLE_NUMBERS
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   const headerEl = document.getElementById('raffle-header')
@@ -123,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
       .map(({ number, status }) => {
         const isSelected = selectedNumbers.includes(number)
         const isAvailable = status === 'disponible'
-        const limitReached = !isSelected && isAvailable && selectedNumbers.length >= MAX_SELECTABLE_NUMBERS
+        const limitReached = !isSelected && isAvailable && selectedNumbers.length >= getMaxSelectableNumbers()
         const cssClass = isSelected
           ? 'number-cell--selected'
           : limitReached
@@ -152,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (selectedNumbers.includes(number)) {
       selectedNumbers = selectedNumbers.filter((n) => n !== number)
     } else {
-      if (selectedNumbers.length >= MAX_SELECTABLE_NUMBERS) return
+      if (selectedNumbers.length >= getMaxSelectableNumbers()) return
       selectedNumbers = [...selectedNumbers, number]
     }
     renderGrid()

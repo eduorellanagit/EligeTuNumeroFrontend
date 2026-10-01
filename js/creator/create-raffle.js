@@ -251,7 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const totalNumbers = Number(document.getElementById('cr-quantity').value)
     const pricePerNumber = Number(document.getElementById('cr-price').value)
     const daysLeft = Number(document.getElementById('cr-duration').value)
-    const holdMinutes = Number(document.getElementById('cr-hold-minutes').value)
+    const maxPerPurchase = Number(document.getElementById('cr-max-per-purchase').value)
 
     const finalPrizes = prizes.map((prize, idx) => ({
       place: 'Premio N° ' + (idx + 1),
@@ -285,7 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
         whatsapp: creatorProfile.whatsapp.replace(/\D/g, ''),
       },
       daysLeft,
-      holdMinutes,
+      maxPerPurchase,
       pricePerNumber,
       totalNumbers,
       numbers: Array.from({ length: totalNumbers }, (_, i) => ({ number: i + 1, status: 'disponible' })),

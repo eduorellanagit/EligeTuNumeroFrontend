@@ -16,8 +16,8 @@ visual tiene su propio archivo CSS, y cada pantalla tiene su propio archivo JS.
    rifas. No vencen, así que podés comprarlos con tiempo y usarlos cuando quieras.
 4. **Publicá la rifa** desde "Crear rifa": cargás el título, la descripción, entre
    3 y 9 premios (con foto si querés), cuántos números va a tener, el precio de
-   cada uno, cuánto tiempo va a estar abierta y cuánto tiempo le das a alguien
-   para pagar antes de liberarle el número.
+   cada uno, cuántos números puede comprar cada persona como máximo (1, 3 o 5) y
+   cuánto tiempo va a estar abierta.
 5. **Compartí el link** que te da la plataforma. A partir de ahí, la gente entra,
    elige sus números, transfiere directo a tu cuenta y sube el comprobante.
 6. **Validá los pagos** en "Validar pagos": por cada transferencia, revisás los
@@ -31,8 +31,8 @@ visual tiene su propio archivo CSS, y cada pantalla tiene su propio archivo JS.
 3. Completás tus datos (nombre, DNI, dirección, WhatsApp).
 4. Transferís el monto exacto a la cuenta que te muestra la pantalla y subís
    una foto o PDF del comprobante.
-5. Esperás a que el organizador confirme tu pago — tu número queda reservado
-   mientras tanto, por el tiempo que haya definido esa rifa.
+5. Esperás a que el organizador confirme tu pago — tus números quedan reservados
+   mientras tanto, hasta que el organizador valide o rechace tu comprobante.
 
 ## Beneficios
 
@@ -129,8 +129,8 @@ solo con ese plan ya seleccionado.
 Nueva sección en el panel (`me.html` → "Crear rifa") con el formulario completo de
 la especificación: título, descripción y reglas, entre 1 y 10 premios (se agregan
 de a uno, cada uno con título, descripción e imagen opcional), cantidad de números
-(50/100/200), precio por número, plazo de vigencia (20/25/30 días) y tiempo de
-espera para pagar antes de liberar un número (30/60 minutos o 2 horas). Al publicar:
+(50/100/200), precio por número, máximo de números por compra (1/3/5) y plazo de
+vigencia (20/25/30 días). Al publicar:
 
 - Se valida que tengas al menos 1 crédito (si no, se avisa y no se puede publicar).
 - Se descuenta 1 crédito en el momento de confirmar.
