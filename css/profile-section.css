@@ -52,3 +52,10 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Error al guardar el perfil (datos inválidos o problema de conexión) */
+.profile-form__error {
+  color: var(--color-danger, #c0392b);
+  font-size: 0.9rem;
+  font-weight: 600;
+}

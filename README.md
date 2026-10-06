@@ -8,7 +8,7 @@ visual tiene su propio archivo CSS, y cada pantalla tiene su propio archivo JS.
 
 ### Si organizás una rifa
 
-1. **Ingresá** con tu cuenta de Google o GitHub — no hay contraseñas que crear ni
+1. **Ingresá** con tu cuenta de Google — no hay contraseñas que crear ni
    recordar. Si es tu primera vez, la cuenta se crea sola al continuar.
 2. **Completá tu perfil**, en "Perfil y cobro": tu DNI/CUIL, un WhatsApp de contacto
    y los datos bancarios donde vas a recibir las transferencias.
@@ -72,29 +72,33 @@ cualquier servidor estático:
 
 ```bash
 # con Python
-python3 -m http.server 8000
+python3 -m http.server 5500
 
 # con Node (si tenés npx)
-npx serve .
+npx serve -l 5500 .
 ```
 
-y entrar a `http://localhost:8000`.
+y entrar a `http://localhost:5500`. El puerto importa: el backend solo acepta
+llamadas desde el origen que tenga configurado como `FRONTEND_URL` (por defecto
+`http://localhost:5500`). **Abrir el HTML con doble clic (`file://`) ya no sirve**,
+porque el navegador no deja que una página local le hable a la API.
 
 ## Páginas
 
 - `index.html` — Landing pública (hero, cómo funciona, precios, preguntas frecuentes).
 - `login.html` — Ingresar / registrarse. Como describe la especificación, es solo
-  OAuth2 (Google o GitHub): no hay contraseña, y si es tu primera vez tu cuenta se
-  crea sola al continuar. Simula el ida y vuelta OAuth con un estado de carga breve
-  y te redirige a `me.html`.
+  OAuth2 con Google (GitHub todavía no está disponible en el backend): no hay
+  contraseña, y si es tu primera vez tu cuenta se crea sola al continuar. El botón
+  lleva al backend, que hace el ida y vuelta con Google y te devuelve a `me.html`.
 - `me.html` — Panel privado del creador: perfil y cobro, **crear rifa**, validador
   de pagos, mis rifas y créditos. Las cuatro secciones se muestran/ocultan con JS,
   no son páginas distintas.
 - `rifa.html?creador=juanperez&rifa=moto-110` — Página pública de una rifa (grilla de
   números, premios, modal de reserva + comprobante). Como es todo estático, usamos
   parámetros de URL (`?creador=...&rifa=...`) en vez de rutas tipo `/juanperez/moto-110`.
-  Si el id corresponde a una rifa que creaste desde el panel, se muestran sus datos
-  reales; si no, se muestra la rifa de ejemplo de la moto.
+  Los dos valores son los *slugs* que genera el backend (el del creador y el de la
+  rifa); el link completo te lo da el panel al publicar. Los datos se piden a
+  `GET /rifas/{creador}/{rifa}`.
 - `terminos.html` — Términos y condiciones + un resumen de privacidad.
 
 Desde el panel del creador (`me.html` → "Mis rifas y créditos"), cada rifa activa
@@ -105,7 +109,10 @@ misma pestaña** — ver la sección de navegación más abajo.
 
 Ningún link interno (ni los de WhatsApp) abre pestaña nueva. `me.html`, `rifa.html`
 y `login.html` tienen un botón **"← Volver"** en el encabezado (usa `history.back()`)
-además de que el botón "atrás" del navegador funciona normal en todo momento.
+además de que el botón "atrás" del navegador funciona normal en todo momento. La
+única excepción es el comprobante de transferencia dentro del detalle de un pago:
+se abre en otra pestaña para que el organizador no pierda la ventana desde la que
+acepta o rechaza.
 
 ### Flujo de compra de créditos (3 pasos)
 
@@ -114,15 +121,18 @@ del modal, no una acción instantánea:
 
 1. **Elegís la cantidad** — radio buttons con los 3 paquetes (3, 10 o 20 rifas).
 2. **Continuar** — pantalla de confirmación con el resumen y el total.
-3. **Confirmar compra** — ahí se manda la solicitud HTTP (`fetch` a
-   `/api/v1/creditos/comprar`, ver `js/creator/raffles.js`). Como esta demo no tiene
-   backend corriendo, si la request falla se simula que Mercado Pago aprobó el pago
-   para que puedas ver el flujo completo — el comentario en el código marca
-   exactamente dónde se conecta el backend real.
+3. **Confirmar compra** — se llama a `POST /creditos/comprar` (ver
+   `js/creator/raffles.js`), que crea la compra y devuelve un `checkoutUrl`; el
+   navegador va a esa página de **Mercado Pago** para pagar. Al terminar, Mercado
+   Pago devuelve al usuario a `me.html?pago=ok | error | pendiente`. Los créditos
+   los acredita el backend cuando Mercado Pago le avisa por webhook, así que con
+   `pago=ok` el panel consulta el saldo cada 3 segundos (hasta 30) hasta que
+   aparecen, y muestra el resultado.
 
 Si venís de la landing habiendo elegido un plan ("Elegir Estándar", etc.), pasás por
-`login.html?plan=estandar` → `me.html?plan=estandar`, y el modal de compra se abre
-solo con ese plan ya seleccionado.
+`login.html?plan=estandar` → Google → `me.html`, y el modal de compra se abre solo
+con ese plan ya seleccionado (el plan se guarda en `sessionStorage` durante el viaje a
+Google, porque ahí se pierde la URL).
 
 ### Crear rifa
 
@@ -176,7 +186,7 @@ simple al final, con link a Inicio y a Términos y condiciones.
 
 ### Logos reales de Google y GitHub
 
-En `login.html`, los botones de "Continuar con Google" y "Continuar con GitHub"
+En `login.html`, los botones de "Continuar con Google" y "GitHub (próximamente)"
 ya no muestran una letra suelta: tienen el logo real de cada uno (el "G" de cuatro
 colores de Google y la marca de GitHub) en SVG.
 
@@ -215,23 +225,26 @@ css/
                             → cada bloque de la página pública de la rifa
 
 js/
-  config.js                 → DEMO_MODE y API_BASE_URL, un solo lugar para apuntar al backend
-  data/mock-data.js         → datos de ejemplo (reemplazar por llamadas a /api/v1/*)
+  config.js                 → API_BASE_URL (un solo lugar para apuntar al backend) y la promo
+  api.js                    → cliente del backend: todas las llamadas, el manejo de errores en español
+                              y las utilidades para pintar datos de forma segura (escapeHtml, safeUrl)
+  data/plans.js             → los 3 paquetes de créditos que se muestran en el panel
   common/modal.js           → abrir/cerrar el modal genérico
   common/icons.js           → íconos de línea (svg embebido en JS) usados en todo el sitio
   common/render-icons.js    → pinta los <span data-icon="..."> del HTML estático
   common/image-utils.js     → recorta cualquier imagen subida a un cuadrado 1:1
   common/scroll-reveal.js   → animación de aparición al hacer scroll (clase .reveal)
   landing/faq.js            → acordeón de preguntas frecuentes
-  auth/login.js             → login OAuth2 (simulado en DEMO_MODE, real si no)
-  auth/session.js           → captura el token que devuelve el backend y arma authHeaders()
+  auth/login.js             → botón de Google: lleva al backend, que hace el login
+  auth/session.js           → captura el token (#token=...) que devuelve el backend, lo guarda y arma authHeaders()
   creator/tabs.js           → cambiar entre las 4 secciones del panel
-  creator/profile.js        → cargar y "guardar" el formulario de perfil
-  creator/create-raffle.js  → formulario de publicación (premios 1-10 con imagen) + descuento de crédito
-  creator/payments.js       → las 3 bandejas de pagos + modal de detalle (sin motivo de rechazo)
-  creator/raffles.js        → saldo de créditos, flujo de compra de 3 pasos (con fetch real), tarjetas de "mis rifas"
-  raffle/number-grid.js     → arma la rifa desde la URL, pinta la grilla y los premios (clicables), maneja selección
-  raffle/purchase-modal.js  → los 3 pasos de la reserva (datos → pago → confirmación)
+  creator/state.js          → datos del creador (GET /usuarios/me) compartidos entre las secciones del panel
+  creator/profile.js        → cargar y guardar el formulario de perfil
+  creator/create-raffle.js  → formulario de publicación (premios con imagen): sube las imágenes y crea la rifa
+  creator/payments.js       → las 3 bandejas de reservas + modal de detalle con el comprobante (aceptar / rechazar)
+  creator/raffles.js        → saldo de créditos, compra con Mercado Pago (3 pasos + vuelta del pago), tarjetas de "mis rifas"
+  raffle/number-grid.js     → trae la rifa del backend según la URL, pinta la grilla y los premios, maneja la selección
+  raffle/purchase-modal.js  → los 3 pasos de la reserva (datos → pago → confirmación) y su envío al backend
 ```
 
 ## Por qué `<script>` clásico y no `type="module"`
@@ -242,9 +255,11 @@ propósito: los módulos de ES6 no funcionan si abrís el HTML directo desde el 
 scripts clásicos, todo funciona apenas hacés doble clic en `index.html` — sin
 depender de tener un servidor corriendo.
 
-Como comparten el mismo scope global, `js/data/mock-data.js` declara los datos de
-ejemplo (`pricingPlans`, `creatorProfile`, etc.) y el resto de los scripts los usan
-directamente, siempre que `mock-data.js` esté incluido *antes* en el HTML.
+Como comparten el mismo scope global, `js/config.js`, `js/auth/session.js` y
+`js/api.js` declaran lo que usan los demás (`API_BASE_URL`, `getAuthToken()`, `Api`,
+`escapeHtml()`...), siempre que estén incluidos *antes* en el HTML. En el panel
+(`me.html`) el orden es: config, plans, ..., session, api, state, y recién después
+los scripts de cada sección.
 
 ## Estilo
 
@@ -258,108 +273,73 @@ Mismos tokens de diseño que la versión en React, ahora todos en `css/tokens.cs
 - Tipografía: **Sora** para títulos, **Manrope** para texto, cargadas desde Google
   Fonts en el `<head>` de cada página.
 
-## Qué es simulado (no hay backend todavía)
+## Cómo se conecta con el backend
 
-Todo lo de abajo se controla desde un solo lugar: `js/config.js`.
+Todo lo que habla con el servidor está en `js/api.js` (una función por endpoint) y la
+URL base se cambia en un solo lugar: `js/config.js`.
 
 ```js
-const DEMO_MODE = true                          // false cuando el backend ya esté levantado
-const API_BASE_URL = 'http://localhost:8080/api/v1'
+const API_BASE_URL = 'https://bagging-exuberant-cascade.ngrok-free.dev/api/v1'   // túnel de ngrok al backend local
 ```
 
-Con `DEMO_MODE en true` (el valor por defecto):
+Con ngrok gratuito, el navegador recibe una página de aviso la primera vez que entra al
+dominio; `js/api.js` manda el header `ngrok-skip-browser-warning` en las llamadas `fetch` para
+saltearla (solo si la URL es de ngrok). El login es una navegación de página, así que ahí la
+página de aviso aparece una vez y alcanza con tocar "Visit Site". Para trabajar sin túnel,
+poné `http://localhost:8080/api/v1`.
 
-- El login con Google/GitHub no hace ningún OAuth real: solo un estado de carga y
-  una redirección a `me.html`.
-- Elegir números, abrir el modal de reserva, "subir" un comprobante y ver la
-  confirmación: todo pasa en el navegador, en memoria.
-- Aceptar/rechazar pagos y cerrar una rifa en el panel del creador: actualiza el
-  objeto de datos en JS y vuelve a pintar la pantalla, pero no persiste si recargás
-  la página.
-- **Comprar créditos sí manda una solicitud HTTP real** (`fetch` a
-  `API_BASE_URL + '/creditos/comprar'` desde `js/creator/raffles.js`) — como no hay
-  servidor detrás en esta demo, la request falla y el código lo captura para
-  simular que Mercado Pago aprobó el pago, pero el llamado a `fetch` con su body,
-  headers y `credentials` ya está armado tal como lo necesitaría el backend real.
-- **Crear una rifa** también queda solo en memoria: se pierde al recargar la página,
-  igual que el resto de los datos.
+### Qué endpoint usa cada pantalla
 
-## Conectar con el backend real (OAuth2 + CORS)
+| Pantalla | Qué hace | Endpoint |
+|---|---|---|
+| Login | Inicia sesión con Google | `GET /usuarios/login` (navegación, no `fetch`) |
+| Panel | Datos y créditos del creador | `GET /usuarios/me` |
+| Mi perfil | Guardar datos de cobro | `PUT /usuarios/me/perfil` |
+| Mis rifas | Listar / cerrar | `GET /rifas/me` · `POST /rifas/{slug}/cerrar` |
+| Crear rifa | Subir imagen de un premio / publicar | `POST /rifas/imagen` · `POST /rifas` |
+| Validar pagos | Ver / aceptar / rechazar reservas | `GET /reservas?estado=` · `POST /reservas/{id}/aceptar` · `/rechazar` |
+| Comprar créditos | Crear la compra y pagar en Mercado Pago | `POST /creditos/comprar` |
+| Página pública | Ver la rifa / reservar números | `GET /rifas/{creador}/{rifa}` · `POST /rifas/{id}/reservar` |
 
-### 1. Apagar el modo demo
+### Sesión
 
-En `js/config.js`, poné `DEMO_MODE = false` y ajustá `API_BASE_URL` si tu backend
-no corre en `http://localhost:8080/api/v1`.
+El login lo hace el backend. Al terminar, redirige a `me.html#token=...` (el token va en
+el *fragmento* de la URL, que el navegador no manda a ningún servidor).
+`js/auth/session.js` lo guarda en `localStorage` y limpia la URL con
+`history.replaceState`. Desde ahí, `Api` manda `Authorization: Bearer <token>` en cada
+llamada que lo necesita. Si el servidor responde 401 (token vencido), se borra la sesión
+y se vuelve a `login.html`. Las páginas que exigen sesión (`me.html`) llevan
+`data-requires-auth` en el `<body>`.
 
-### 2. Login con OAuth2
+### Errores
 
-Con `DEMO_MODE` en `false`, los botones de `login.html` (`js/auth/login.js`) dejan
-de simular y navegan directo a:
+El resultado del pago de créditos (realizado / pendiente / rechazado) se muestra en `js/creator/raffles.js`.
 
-```
-GET {API_BASE_URL}/auth/google?redirect_uri=...
-GET {API_BASE_URL}/auth/github?redirect_uri=...
-```
+`apiRequest` traduce los códigos HTTP a mensajes en español (por ejemplo, 402 → "No
+tenés créditos suficientes", 409 → "Algo cambió mientras tanto..."). Si el backend manda un
+detalle propio en los errores 400 y 409, se muestra ese.
 
-Eso es una navegación de página completa, no un `fetch` — por eso el login en sí
-**no tiene problemas de CORS**: Spring Security hace todo el intercambio OAuth2 con
-Google/GitHub del lado del servidor y, cuando termina, redirige al navegador de
-vuelta al `redirect_uri` agregando `?token=...`.
+### Seguridad al pintar datos
 
-`js/auth/session.js` (cargado en `me.html`) espera exactamente eso: agarra el
-`token` de la URL, lo guarda en `localStorage` y limpia la URL con
-`history.replaceState` para que no quede a la vista ni en el historial. De ahí en
-adelante, `authHeaders()` (del mismo archivo) devuelve
-`{ Authorization: 'Bearer <token>' }` para mandarlo en cualquier `fetch` al backend
-— ya se usa así en la compra de créditos.
+Todo lo que escribe una persona (títulos de rifas, nombres y direcciones de compradores,
+descripciones...) pasa por `escapeHtml()` antes de meterse en el HTML, y las URLs de
+imágenes y comprobantes por `safeUrl()` (solo `http`/`https`).
 
-Si tu backend en cambio maneja la sesión con una cookie (típico de Spring Security
-con OAuth2 Login "clásico"), no necesitás nada de esto: alcanza con que la cookie
-sea `httpOnly` y que los `fetch` sigan mandando `credentials: 'include'` (ya lo
-hacen).
+### CORS y cómo servir el frontend
 
-### 3. CORS para las llamadas a la API
+El navegador solo deja que esta web le hable a la API si el backend la autoriza. El backend
+permite `http://localhost:5500` y, además, el origen que tenga en `FRONTEND_URL`. En
+producción, poné ahí la URL pública de este frontend (sin barra final) y cambiá
+`API_BASE_URL` por la del backend. Esa misma variable es la que usa el backend para volver
+acá después de iniciar sesión (`/me.html#token=...`) y después de pagar en Mercado Pago
+(`/me.html?pago=...`).
 
-El login en sí no necesita CORS (es una navegación, no un `fetch`), pero **la
-compra de créditos y cualquier otra llamada a la API sí lo necesitan**, porque el
-frontend y el backend corren en orígenes distintos (por ejemplo, el frontend
-servido en `http://localhost:5500` o `http://127.0.0.1:8000`, y el backend en
-`http://localhost:8080`).
+### Qué quedó fuera
 
-En el backend (Spring Boot), algo así:
-
-```java
-@Configuration
-public class CorsConfig {
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/api/v1/**")
-                    // el/los orígenes desde donde serví este frontend — nunca "*" si usás cookies
-                    .allowedOrigins("http://localhost:5500", "http://127.0.0.1:5500")
-                    .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                    .allowedHeaders("*")
-                    .allowCredentials(true);
-            }
-        };
-    }
-}
-```
-
-Puntos importantes:
-
-- `allowedOrigins` tiene que coincidir *exacto* con el origen desde donde abrís
-  este frontend (protocolo + host + puerto). Si usás VS Code Live Server suele ser
-  `http://127.0.0.1:5500`; con `python3 -m http.server` es `http://localhost:8000`
-  (o el puerto que le pases).
-- Abrir el HTML con doble clic (`file://...`) **no funciona** para llamar a un
-  backend real: el navegador manda `Origin: null` y ningún backend debería
-  aceptar eso. Para conectar con el backend, serví esta carpeta con un servidor
-  HTTP simple (ver "Cómo usarlo" más arriba).
-- Si `allowCredentials` es `true`, `allowedOrigins` no puede ser `"*"` — es una
-  regla del estándar CORS, no una limitación de Spring.
+- **Login con GitHub:** el botón está visible pero deshabilitado ("próximamente"), porque el
+  backend solo implementa Google.
+- **Cerrar sesión:** el panel no tiene botón para eso (la sesión se cierra sola al vencer
+  el token).
 
 ## Animaciones
 
@@ -370,9 +350,3 @@ una transición de alto en vez de aparecer de golpe. Los keyframes compartidos
 viven en `css/animations.css`; cada componente agrega su propio `transition` en su
 propio archivo. Si el sistema tiene `prefers-reduced-motion` activado, la regla
 global en `base.css` desactiva todas las animaciones y transiciones del sitio.
-
-Cuando conectes esto a la API real (Spring Boot, según la especificación), lo que
-más cambia es `js/data/mock-data.js` (pasa a pedir los datos con `fetch`, usando
-`API_BASE_URL` y `authHeaders()`) y los puntos donde hoy se actualiza el estado en
-memoria (crear rifa, aceptar/rechazar pagos), que pasan a hacer su propio `fetch`
-al backend con el mismo patrón que ya tiene la compra de créditos.

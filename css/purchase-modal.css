@@ -77,3 +77,15 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Error al enviar la reserva (comprobante faltante, número ya reservado, etc.) */
+.purchase-error {
+  display: none;
+  color: var(--color-danger, #c0392b);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.purchase-error.is-visible {
+  display: block;
+}

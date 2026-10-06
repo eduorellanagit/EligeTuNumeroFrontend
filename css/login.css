@@ -106,3 +106,9 @@
 .auth-loading.is-visible {
   display: block;
 }
+
+/* Proveedor todavía no disponible (GitHub) */
+.auth-provider-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}

@@ -33,7 +33,7 @@
   <link rel="stylesheet" href="css/custom-select.css" />
   <link rel="stylesheet" href="css/carousel.css" />
 </head>
-<body>
+<body data-requires-auth>
 
   <div class="panel-page">
     <header class="panel-topbar">
@@ -88,32 +88,33 @@
             <div class="profile-form__grid">
               <label class="field">
                 <span>Nombre completo</span>
-                <input id="profile-name" required />
+                <input id="profile-name" required maxlength="120" />
               </label>
               <label class="field">
-                <span>DNI / CUIL</span>
-                <input id="profile-dni" required />
+                <span>DNI (sin puntos)</span>
+                <input id="profile-dni" required inputmode="numeric" maxlength="10" placeholder="Ej: 34567890" />
               </label>
               <label class="field">
                 <span>WhatsApp de atención pública</span>
-                <input id="profile-whatsapp" required />
+                <input id="profile-whatsapp" required maxlength="30" placeholder="Ej: +54 9 381 555-1234" />
               </label>
               <label class="field">
                 <span>Titular de la cuenta bancaria</span>
-                <input id="profile-holder" required />
+                <input id="profile-holder" required maxlength="120" />
               </label>
               <label class="field">
                 <span>CBU / CVU</span>
-                <input id="profile-cbu" required />
+                <input id="profile-cbu" required inputmode="numeric" maxlength="30" placeholder="22 dígitos" />
               </label>
               <label class="field">
                 <span>Alias</span>
-                <input id="profile-alias" />
+                <input id="profile-alias" required maxlength="60" />
               </label>
             </div>
 
             <div class="profile-form__footer">
               <span class="profile-form__saved" id="profile-saved-note" style="display: none;">Cambios guardados.</span>
+              <span class="profile-form__error" id="profile-error" style="display: none;"></span>
               <button type="submit" class="btn btn-primary">Guardar cambios</button>
             </div>
           </form>
@@ -130,17 +131,21 @@
             No tenés créditos disponibles. Comprá un paquete desde "Mis rifas y créditos" antes de publicar.
           </p>
 
+          <p class="create-raffle-error" id="create-raffle-incomplete-profile" style="margin-top: 16px;">
+            Antes de publicar, completá tus datos de cobro en "Mi perfil": los compradores los usan para transferirte.
+          </p>
+
           <form class="create-raffle-form" id="create-raffle-form">
             <div class="form-card">
               <h3>Datos generales</h3>
               <div class="create-raffle-grid">
                 <label class="field field--full">
                   <span>Título</span>
-                  <input id="cr-title" placeholder="Ej: Gran Sorteo Moto 110cc 0km" required />
+                  <input id="cr-title" placeholder="Ej: Gran Sorteo Moto 110cc 0km" required maxlength="160" />
                 </label>
                 <label class="field field--full">
                   <span>Descripción y reglas</span>
-                  <textarea id="cr-description" placeholder="Contá de qué se trata el sorteo y las condiciones para participar." required></textarea>
+                  <textarea id="cr-description" placeholder="Contá de qué se trata el sorteo y las condiciones para participar." required maxlength="2000"></textarea>
                 </label>
               </div>
             </div>
@@ -252,13 +257,15 @@
   </div>
 
   <script src="js/config.js"></script>
-  <script src="js/data/mock-data.js"></script>
+  <script src="js/data/plans.js"></script>
   <script src="js/common/icons.js"></script>
   <script src="js/common/custom-select.js"></script>
   <script src="js/common/render-icons.js"></script>
   <script src="js/common/modal.js"></script>
   <script src="js/common/image-utils.js"></script>
   <script src="js/auth/session.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/creator/state.js"></script>
   <script src="js/creator/tabs.js"></script>
   <script src="js/creator/profile.js"></script>
   <script src="js/creator/payments.js"></script>

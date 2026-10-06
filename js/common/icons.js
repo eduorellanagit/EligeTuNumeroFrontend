@@ -29,6 +29,8 @@ const Icons = {
 
   check: '<svg viewBox="0 0 24 24" class="icon-svg" aria-hidden="true"><polyline points="5 13 9.5 17.5 19 7" stroke="#131A2B" stroke-width="1.9" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',
 
+  clock: '<svg viewBox="0 0 24 24" class="icon-svg" aria-hidden="true"><circle cx="12" cy="12" r="8.5" stroke="#131A2B" stroke-width="1.8" fill="none"/><polyline points="12 7.5 12 12 15.5 14" stroke="#131A2B" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+
   minus: '<svg viewBox="0 0 24 24" class="icon-svg" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" stroke="#131A2B" stroke-width="1.8" stroke-linecap="round"/></svg>',
 
   card: '<svg viewBox="0 0 24 24" class="icon-svg" aria-hidden="true"><rect x="2.5" y="6" width="19" height="13" rx="2" stroke="#131A2B" stroke-width="1.8" fill="none"/><line x1="2.5" y1="10" x2="21.5" y2="10" stroke="#131A2B" stroke-width="1.8"/><line x1="6" y1="14.5" x2="10" y2="14.5" stroke="#131A2B" stroke-width="1.8" stroke-linecap="round"/></svg>',

@@ -30,3 +30,12 @@
   max-width: 380px;
   margin: 0 auto var(--space-6);
 }
+
+/* Variantes de la pantalla de resultado: pago pendiente (ámbar) y pago rechazado (rojo) */
+.purchase-confirmed__icon--pending {
+  background: var(--color-warning-bg);
+}
+
+.purchase-confirmed__icon--error {
+  background: var(--color-danger-bg);
+}

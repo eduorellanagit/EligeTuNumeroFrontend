@@ -1,8 +1,7 @@
-// Botones de "Continuar con Google/GitHub". En DEMO_MODE (ver js/config.js)
-// se simula el ida y vuelta OAuth2 con un estado de carga y se redirige al
-// panel. Con el backend real, en cambio, se navega directo al endpoint de
-// autenticación de Spring Security, que hace el intercambio OAuth2 de
-// verdad y termina redirigiendo a me.html con un token.
+// Botón "Continuar con Google". El inicio de sesión lo hace el backend: acá se navega
+// directo a /usuarios/login, que redirige a Google; al terminar, el backend vuelve a
+// me.html#token=... (ese token lo captura js/auth/session.js) o a login.html?error=1.
+// GitHub todavía no está disponible en el backend, por eso el botón queda deshabilitado.
 document.addEventListener('DOMContentLoaded', () => {
   const providerButtons = document.querySelectorAll('.auth-provider-btn')
   const loadingEl = document.getElementById('auth-loading')
@@ -10,28 +9,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const params = new URLSearchParams(window.location.search)
   const plan = params.get('plan')
-  const redirectTarget = plan ? 'me.html?plan=' + encodeURIComponent(plan) : 'me.html'
+
+  // Si ya hay sesión, no hace falta volver a loguearse.
+  if (getAuthToken()) {
+    window.location.replace(plan ? 'me.html?plan=' + encodeURIComponent(plan) : 'me.html')
+    return
+  }
+
+  function showMessage(text) {
+    loadingEl.textContent = text
+    loadingEl.classList.add('is-visible')
+  }
+
+  if (params.get('error')) showMessage('No pudimos iniciar sesión con Google. Probá de nuevo.')
+  else if (params.get('expired')) showMessage('Tu sesión venció. Iniciá sesión de nuevo.')
 
   providerButtons.forEach((btn) => {
+    if (btn.dataset.provider !== 'Google') {
+      btn.disabled = true
+      return
+    }
+
     btn.addEventListener('click', () => {
       providerButtons.forEach((b) => (b.disabled = true))
-      const provider = btn.dataset.provider
-      loadingEl.textContent = 'Conectando con ' + provider + '...'
-      loadingEl.classList.add('is-visible')
+      showMessage('Conectando con Google...')
 
-      if (DEMO_MODE) {
-        setTimeout(() => {
-          window.location.href = redirectTarget
-        }, 700)
-        return
-      }
+      // El plan elegido en la landing se guarda acá porque el viaje a Google y de vuelta pierde la URL.
+      if (plan) sessionStorage.setItem(PENDING_PLAN_KEY, plan)
+      else sessionStorage.removeItem(PENDING_PLAN_KEY)
 
-      // Backend real: Spring Security se encarga del OAuth2 con Google/GitHub
-      // y redirige de vuelta a redirect_uri con ?token=... (lo captura
-      // js/auth/session.js). Ver README → "Conectar con el backend real".
-      const redirectUri = window.location.origin + window.location.pathname.replace('login.html', '') + redirectTarget
-      const authUrl = API_BASE_URL + '/auth/' + provider.toLowerCase() + '?redirect_uri=' + encodeURIComponent(redirectUri)
-      window.location.href = authUrl
+      window.location.href = API_BASE_URL + '/usuarios/login'
     })
   })
 })

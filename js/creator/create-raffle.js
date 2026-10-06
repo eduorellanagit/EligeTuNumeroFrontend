@@ -1,12 +1,13 @@
-// Publicar una rifa nueva: valida que haya crédito disponible, descuenta 1
-// crédito al confirmar (igual que describe la especificación) y deja la rifa
-// tanto en "Mis rifas" como con su página pública completa en rifa.html.
+// Publicar una rifa nueva. Primero se suben las imágenes de los premios (POST /rifas/imagen,
+// una por una) y después se crea la rifa con POST /rifas, que descuenta 1 crédito en el
+// servidor. La rifa queda en "Mis rifas" y con su página pública en rifa.html.
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('create-raffle-form')
   if (!form) return
 
   const errorBox = document.getElementById('create-raffle-error')
   const noCreditsNote = document.getElementById('create-raffle-no-credits')
+  const incompleteProfileNote = document.getElementById('create-raffle-incomplete-profile')
   const submitBtn = document.getElementById('create-raffle-submit')
   const creditsNoteEl = document.getElementById('create-raffle-credits-note')
   const prizesContainer = document.getElementById('prizes-container')
@@ -23,10 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Estado de los premios en memoria (no en el DOM), para poder agregar/quitar
   // tarjetas sin perder lo que ya se cargó en las demás.
   let prizes = emptyPrizes(MIN_PRIZES)
-
-  function escapeHtml(str) {
-    return str.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]))
-  }
 
   // Carrusel de premios: se ven 3 a la vez en desktop, 2 en tablet y 1 en
   // celular (ver css/create-raffle.css), pero siempre se avanza de a uno,
@@ -100,11 +97,11 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
           <label class="field">
             <span>Título del premio</span>
-            <input data-prize-field="title" data-index="${idx}" value="${escapeHtml(prize.title)}" />
+            <input data-prize-field="title" data-index="${idx}" maxlength="120" value="${escapeHtml(prize.title)}" />
           </label>
           <label class="field">
             <span>Descripción</span>
-            <textarea data-prize-field="description" data-index="${idx}">${escapeHtml(prize.description)}</textarea>
+            <textarea data-prize-field="description" data-index="${idx}" maxlength="500">${escapeHtml(prize.description)}</textarea>
           </label>
           <div class="field">
             <span class="field-label-with-help">
@@ -194,42 +191,44 @@ document.addEventListener('DOMContentLoaded', () => {
   prizesContainer.addEventListener('scroll', updatePrizeCarouselButtons)
   window.addEventListener('resize', updatePrizeCarouselButtons)
 
-  function slugify(text) {
-    return text
-      .toString()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .toLowerCase()
-      .trim()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/(^-|-$)/g, '')
-  }
-
-  function uniqueId(base) {
-    let id = base || 'rifa'
-    let suffix = 2
-    while (myRafflesData.some((r) => r.id === id)) {
-      id = base + '-' + suffix
-      suffix += 1
-    }
-    return id
-  }
-
+  // Hacen falta créditos y el perfil completo (los compradores ven tus datos de cobro).
   function refreshCreditsWarning() {
     const hasCredits = creatorProfile.credits > 0
-    noCreditsNote.classList.toggle('is-visible', !hasCredits)
-    submitBtn.disabled = !hasCredits
+    const profileReady = creatorProfile.profileComplete
+    noCreditsNote.classList.toggle('is-visible', creatorProfile.loaded && !hasCredits)
+    incompleteProfileNote.classList.toggle('is-visible', creatorProfile.loaded && !profileReady)
+    submitBtn.disabled = !(creatorProfile.loaded && hasCredits && profileReady)
     creditsNoteEl.textContent = creatorProfile.credits
   }
 
   refreshCreditsWarning()
   window.refreshCreateRaffleCredits = refreshCreditsWarning
+  loadCreatorProfile()
+    .then(refreshCreditsWarning)
+    .catch((err) => {
+      errorBox.textContent = err.message
+      errorBox.classList.add('is-visible')
+    })
 
-  form.addEventListener('submit', (e) => {
+  function showError(message) {
+    errorBox.textContent = message
+    errorBox.classList.add('is-visible')
+  }
+
+  // Sube la imagen de un premio (está guardada como dataURL, ya recortada a cuadrado) y
+  // devuelve la URL pública que guardó el servidor.
+  async function uploadPrizeImage(dataUrl, index) {
+    const blob = await (await fetch(dataUrl)).blob()
+    const file = new File([blob], 'premio-' + (index + 1) + '.jpg', { type: blob.type || 'image/jpeg' })
+    const uploaded = await Api.uploadPrizeImage(file)
+    return uploaded.url
+  }
+
+  form.addEventListener('submit', async (e) => {
     e.preventDefault()
     errorBox.classList.remove('is-visible')
 
-    if (creatorProfile.credits <= 0) {
+    if (creatorProfile.credits <= 0 || !creatorProfile.profileComplete) {
       refreshCreditsWarning()
       return
     }
@@ -241,8 +240,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (invalidIndex !== -1) {
       const invalidCard = prizesContainer.querySelectorAll('.prize-form-card')[invalidIndex]
       if (invalidCard) invalidCard.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' })
-      errorBox.textContent = `Completá el título y la descripción del premio N° ${invalidIndex + 1}.`
-      errorBox.classList.add('is-visible')
+      showError(`Completá el título y la descripción del premio N° ${invalidIndex + 1}.`)
       return
     }
 
@@ -253,73 +251,67 @@ document.addEventListener('DOMContentLoaded', () => {
     const daysLeft = Number(document.getElementById('cr-duration').value)
     const maxPerPurchase = Number(document.getElementById('cr-max-per-purchase').value)
 
-    const finalPrizes = prizes.map((prize, idx) => ({
-      place: 'Premio N° ' + (idx + 1),
-      title: prize.title.trim(),
-      description: prize.description.trim(),
-      image: prize.image || null,
-    }))
+    // Mientras se publica el botón queda bloqueado: un doble clic descontaría 2 créditos.
+    const submitLabel = submitBtn.textContent
+    submitBtn.disabled = true
+    submitBtn.textContent = 'Publicando...'
 
-    const id = uniqueId(slugify(title))
+    try {
+      const finalPrizes = []
+      for (let idx = 0; idx < prizes.length; idx++) {
+        const prize = prizes[idx]
+        finalPrizes.push({
+          titulo: prize.title.trim(),
+          descripcion: prize.description.trim(),
+          imagenUrl: prize.image ? await uploadPrizeImage(prize.image, idx) : null,
+        })
+      }
 
-    // Se descuenta 1 crédito en el instante en que se confirma la publicación.
-    creatorProfile.credits -= 1
+      // El servidor responde con "slugDelCreador/slugDeLaRifa"
+      const created = String(
+        await Api.createRaffle({
+          titulo: title,
+          descripcion: description,
+          premios: finalPrizes,
+          totalNumeros: totalNumbers,
+          precioPorNumero: pricePerNumber,
+          maximoPorCompra: maxPerPurchase,
+          diasVigencia: daysLeft,
+        })
+      ).replace(/"/g, '')
+      const [ownerSlug, raffleSlug] = created.includes('/') ? created.split('/') : [creatorProfile.slug, created]
 
-    myRafflesData.unshift({
-      id,
-      title,
-      status: 'ACTIVA',
-      totalNumbers,
-      sold: 0,
-      daysLeft,
-    })
+      // El crédito ya se descontó en el servidor: se actualiza el saldo y la lista de rifas.
+      await loadCreatorProfile(true).catch(() => {})
+      if (window.refreshRafflesPanel) window.refreshRafflesPanel()
+      showCreatedSuccess(ownerSlug, raffleSlug, title)
 
-    createdRaffleDetails[id] = {
-      creatorId: 'juanperez',
-      raffleId: id,
-      title,
-      description,
-      organizer: {
-        name: creatorProfile.name,
-        dni: creatorProfile.dni,
-        whatsapp: creatorProfile.whatsapp.replace(/\D/g, ''),
-      },
-      daysLeft,
-      maxPerPurchase,
-      pricePerNumber,
-      totalNumbers,
-      numbers: Array.from({ length: totalNumbers }, (_, i) => ({ number: i + 1, status: 'disponible' })),
-      prizes: finalPrizes,
-      bankDetails: {
-        cbu: creatorProfile.cbu,
-        alias: creatorProfile.alias,
-        bank: 'Transferencia bancaria',
-        holder: creatorProfile.accountHolder,
-      },
+      form.reset()
+      prizes = emptyPrizes(MIN_PRIZES)
+      renderPrizes()
+      prizesContainer.scrollLeft = 0
+    } catch (err) {
+      showError(err.message)
+    } finally {
+      submitBtn.textContent = submitLabel
+      refreshCreditsWarning()
     }
-
-    if (window.refreshRafflesPanel) window.refreshRafflesPanel()
-    showCreatedSuccess(id, title)
-
-    form.reset()
-    prizes = emptyPrizes(MIN_PRIZES)
-    renderPrizes()
-    prizesContainer.scrollLeft = 0
-    refreshCreditsWarning()
   })
 
-  function showCreatedSuccess(id, title) {
+  function showCreatedSuccess(ownerSlug, raffleSlug, title) {
     const link =
       window.location.origin +
       window.location.pathname.replace('me.html', '') +
-      'rifa.html?creador=juanperez&rifa=' +
-      id
+      'rifa.html?creador=' +
+      encodeURIComponent(ownerSlug) +
+      '&rifa=' +
+      encodeURIComponent(raffleSlug)
     const html = `
       <div class="purchase-confirmed">
         <div class="purchase-confirmed__icon">${Icons.check}</div>
-        <h4>¡"${title}" está publicada!</h4>
+        <h4>¡"${escapeHtml(title)}" está publicada!</h4>
         <p>Compartí este link para que la gente empiece a elegir números.</p>
-        <div class="raffle-created__link-box">${link}</div>
+        <div class="raffle-created__link-box">${escapeHtml(link)}</div>
         <button class="btn btn-primary" id="created-go-to-raffles" style="margin-top: 20px;">Ver en Mis rifas</button>
       </div>
     `

@@ -56,6 +56,14 @@
   font-size: 2rem;
 }
 
+.raffle-header__description {
+  margin-top: var(--space-3);
+  max-width: 60ch;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  white-space: pre-line;
+}
+
 .raffle-header__organizer {
   margin-top: var(--space-3);
   display: flex;
