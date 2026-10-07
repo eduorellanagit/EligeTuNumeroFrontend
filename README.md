@@ -107,12 +107,13 @@ misma pestaña** — ver la sección de navegación más abajo.
 
 ### Navegación: todo en una sola pestaña, con botón de volver
 
-Ningún link interno (ni los de WhatsApp) abre pestaña nueva. `me.html`, `rifa.html`
+Ningún link interno (ni los de WhatsApp) abre pestaña nueva, salvo los dos casos de abajo. `me.html`, `rifa.html`
 y `login.html` tienen un botón **"← Volver"** en el encabezado (usa `history.back()`)
-además de que el botón "atrás" del navegador funciona normal en todo momento. La
-única excepción es el comprobante de transferencia dentro del detalle de un pago:
-se abre en otra pestaña para que el organizador no pierda la ventana desde la que
-acepta o rechaza.
+además de que el botón "atrás" del navegador funciona normal en todo momento. Las
+excepciones: (1) el comprobante de transferencia dentro del detalle de un pago (PDF o
+imagen, siempre como enlace), que se abre en otra pestaña para que el organizador no
+pierda la ventana desde la que acepta o rechaza, y (2) el pago en Mercado Pago, que se
+abre en una pestaña nueva.
 
 ### Flujo de compra de créditos (3 pasos)
 
@@ -122,8 +123,8 @@ del modal, no una acción instantánea:
 1. **Elegís la cantidad** — radio buttons con los 3 paquetes (3, 10 o 20 rifas).
 2. **Continuar** — pantalla de confirmación con el resumen y el total.
 3. **Confirmar compra** — se llama a `POST /creditos/comprar` (ver
-   `js/creator/raffles.js`), que crea la compra y devuelve un `checkoutUrl`; el
-   navegador va a esa página de **Mercado Pago** para pagar. Al terminar, Mercado
+   `js/creator/raffles.js`), que crea la compra y devuelve un `checkoutUrl`; se
+   abre esa página de **Mercado Pago** en una pestaña nueva para pagar. Al terminar, Mercado
    Pago devuelve al usuario a `me.html?pago=ok | error | pendiente`. Los créditos
    los acredita el backend cuando Mercado Pago le avisa por webhook, así que con
    `pago=ok` el panel consulta el saldo cada 3 segundos (hasta 30) hasta que

@@ -114,7 +114,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     })
   }
 
-  // Le pide al backend crear la compra y lleva al usuario a pagar a Mercado Pago.
+  // Le pide al backend crear la compra y abre Mercado Pago en una pestaña nueva.
+  // La pestaña se abre en el momento del click (antes de esperar al servidor); si se abriera
+  // después, los navegadores (sobre todo en celular) la bloquean como ventana emergente.
   async function confirmPurchase(plan, confirmBtn) {
     const backBtn = document.getElementById('credit-purchase-back')
     const statusEl = document.getElementById('credit-purchase-status')
@@ -122,18 +124,40 @@ document.addEventListener('DOMContentLoaded', async () => {
     backBtn.disabled = true
     statusEl.textContent = 'Preparando el pago con Mercado Pago...'
 
+    const checkoutWindow = window.open('', '_blank')
+    if (checkoutWindow) {
+      checkoutWindow.opener = null
+      checkoutWindow.document.write(
+        '<p style="font-family: sans-serif; padding: 24px;">Preparando el pago con Mercado Pago...</p>'
+      )
+    }
+
     try {
       const purchase = await Api.buyCredits(plan.id)
       const checkoutUrl = safeUrl(purchase && purchase.checkoutUrl)
       if (!checkoutUrl) throw new Error('No recibimos el link de pago. Probá de nuevo.')
 
-      sessionStorage.setItem(
+      // localStorage (y no sessionStorage) porque Mercado Pago vuelve en la pestaña nueva,
+      // y sessionStorage es propio de cada pestaña.
+      localStorage.setItem(
         PENDING_PURCHASE_KEY,
         JSON.stringify({ plan: plan.id, creditsBefore: creatorProfile.credits })
       )
-      statusEl.textContent = 'Te llevamos a Mercado Pago para completar el pago...'
-      window.location.href = checkoutUrl
+
+      if (checkoutWindow && !checkoutWindow.closed) {
+        checkoutWindow.location.href = checkoutUrl
+        statusEl.textContent =
+          'Abrimos Mercado Pago en una pestaña nueva. Cuando termines el pago, el resultado se muestra ahí.'
+      } else {
+        // El navegador bloqueó la pestaña nueva: se ofrece el link para abrirla a mano.
+        statusEl.innerHTML = `Tu navegador bloqueó la ventana de pago. <a href="${escapeHtml(checkoutUrl)}" target="_blank" rel="noopener">Abrir Mercado Pago ↗</a>`
+      }
+      backBtn.textContent = 'Cerrar'
+      backBtn.disabled = false
+      backBtn.replaceWith(backBtn.cloneNode(true))
+      document.getElementById('credit-purchase-back').addEventListener('click', () => Modal.close())
     } catch (err) {
+      if (checkoutWindow) checkoutWindow.close()
       statusEl.textContent = err.message
       confirmBtn.disabled = false
       backBtn.disabled = false
@@ -224,11 +248,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     const result = String(rawResult).toLowerCase()
     let pending = null
     try {
-      pending = JSON.parse(sessionStorage.getItem(PENDING_PURCHASE_KEY))
+      pending = JSON.parse(localStorage.getItem(PENDING_PURCHASE_KEY))
     } catch (err) {
       pending = null
     }
-    sessionStorage.removeItem(PENDING_PURCHASE_KEY)
+    localStorage.removeItem(PENDING_PURCHASE_KEY)
     const plan = pending ? pricingPlans.find((p) => p.id === pending.plan) : null
 
     if (result === 'error') {

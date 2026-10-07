@@ -137,15 +137,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Comprobante: una imagen se muestra, un PDF (o cualquier otro archivo) se abre en otra pestaña.
+  // Comprobante: tanto el PDF como una imagen se muestran como un enlace que se abre en otra pestaña.
   function receiptHTML(url) {
     const safe = safeUrl(url)
     if (!safe) return 'Sin comprobante'
     const escaped = escapeHtml(safe)
-    if (/\.pdf(\?|#|$)/i.test(safe)) {
-      return `<a href="${escaped}" target="_blank" rel="noopener">Abrir comprobante (PDF) ↗</a>`
-    }
-    return `<a href="${escaped}" target="_blank" rel="noopener"><img src="${escaped}" alt="Comprobante de transferencia" /></a>`
+    const kind = /\.pdf(\?|#|$)/i.test(safe) ? 'PDF' : 'imagen'
+    return `<a href="${escaped}" target="_blank" rel="noopener">Abrir comprobante (${kind}) ↗</a>`
   }
 
   function openDetail(id) {
@@ -221,12 +219,12 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   })
 
-  // Cada vez que se entra a "Validar pagos" se vuelven a pedir, para ver las reservas nuevas.
+  // Las 3 bandejas se piden solo al entrar a "Validar pagos" (y cada vez que se entra, para ver las reservas nuevas).
   const paymentsTab = document.querySelector('.sidebar__tab[data-tab="pagos"]')
   if (paymentsTab) paymentsTab.addEventListener('click', loadAll)
 
   window.refreshPaymentsPanel = loadAll
 
+  // No se pide nada al cargar la página: las bandejas se piden recién al entrar a "Validar pagos".
   render()
-  loadAll()
 })
