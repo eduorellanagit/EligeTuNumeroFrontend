@@ -91,7 +91,7 @@ porque el navegador no deja que una página local le hable a la API.
   contraseña, y si es tu primera vez tu cuenta se crea sola al continuar. El botón
   lleva al backend, que hace el ida y vuelta con Google y te devuelve a `me.html`.
 - `me.html` — Panel privado del creador: perfil y cobro, **crear rifa**, validador
-  de pagos, mis rifas y créditos. Las cuatro secciones se muestran/ocultan con JS,
+  de pagos, mis rifas y créditos. Las cinco secciones (la última es "Cuenta y privacidad") se muestran/ocultan con JS,
   no son páginas distintas.
 - `rifa.html?creador=juanperez&rifa=moto-110` — Página pública de una rifa (grilla de
   números, premios, modal de reserva + comprobante). Como es todo estático, usamos
@@ -99,7 +99,8 @@ porque el navegador no deja que una página local le hable a la API.
   Los dos valores son los *slugs* que genera el backend (el del creador y el de la
   rifa); el link completo te lo da el panel al publicar. Los datos se piden a
   `GET /rifas/{creador}/{rifa}`.
-- `terminos.html` — Términos y condiciones + un resumen de privacidad.
+- `terminos-y-condiciones.html`, `privacidad.html` y `cookies.html` — páginas legales, por ahora solo con el título (el texto final se carga después).
+- `terminos.html` — versión anterior de los términos y condiciones; ya no está linkeada desde ningún lado.
 
 Desde el panel del creador (`me.html` → "Mis rifas y créditos"), cada rifa activa
 tiene un link "Ver página pública ↗" que abre `rifa.html` con esos datos, **en la
@@ -107,13 +108,12 @@ misma pestaña** — ver la sección de navegación más abajo.
 
 ### Navegación: todo en una sola pestaña, con botón de volver
 
-Ningún link interno (ni los de WhatsApp) abre pestaña nueva, salvo los dos casos de abajo. `me.html`, `rifa.html`
-y `login.html` tienen un botón **"← Volver"** en el encabezado (usa `history.back()`)
-además de que el botón "atrás" del navegador funciona normal en todo momento. Las
-excepciones: (1) el comprobante de transferencia dentro del detalle de un pago (PDF o
-imagen, siempre como enlace), que se abre en otra pestaña para que el organizador no
-pierda la ventana desde la que acepta o rechaza, y (2) el pago en Mercado Pago, que se
-abre en una pestaña nueva.
+Ningún link interno (ni los de WhatsApp) abre pestaña nueva, salvo el caso de abajo. `me.html` y
+`login.html` tienen un botón **"← Volver"** en el encabezado (usa `history.back()`); el de
+`rifa.html` lleva a `me.html` si hay sesión iniciada y a `index.html` si no. Además de que el botón "atrás" del navegador funciona normal en todo momento. La
+excepción es el comprobante de transferencia dentro del detalle de un pago (PDF o
+imagen, siempre como enlace): se abre en otra pestaña para que el organizador no
+pierda la ventana desde la que acepta o rechaza.
 
 ### Flujo de compra de créditos (3 pasos)
 
@@ -123,11 +123,11 @@ del modal, no una acción instantánea:
 1. **Elegís la cantidad** — radio buttons con los 3 paquetes (3, 10 o 20 rifas).
 2. **Continuar** — pantalla de confirmación con el resumen y el total.
 3. **Confirmar compra** — se llama a `POST /creditos/comprar` (ver
-   `js/creator/raffles.js`), que crea la compra y devuelve un `checkoutUrl`; se
-   abre esa página de **Mercado Pago** en una pestaña nueva para pagar. Al terminar, Mercado
+   `js/creator/raffles.js`), que crea la compra y devuelve un `checkoutUrl`; el
+   navegador va a esa página de **Mercado Pago** para pagar. Al terminar, Mercado
    Pago devuelve al usuario a `me.html?pago=ok | error | pendiente`. Los créditos
    los acredita el backend cuando Mercado Pago le avisa por webhook, así que con
-   `pago=ok` el panel consulta el saldo cada 3 segundos (hasta 30) hasta que
+   `pago=ok` el panel consulta el saldo cada segundo (hasta 10 segundos) hasta que
    aparecen, y muestra el resultado.
 
 Si venís de la landing habiendo elegido un plan ("Elegir Estándar", etc.), pasás por
@@ -156,11 +156,11 @@ puede rechazar directamente, sin justificar por qué.
 
 ### Términos y condiciones
 
-Nueva página `terminos.html` con los términos de servicio y una explicación breve
+Página `terminos.html` (versión anterior, hoy sin links) con los términos de servicio y una explicación breve
 de privacidad de datos, escrita para este modelo de negocio puntual (quién es
-responsable de qué, cómo se usan el DNI/CBU/WhatsApp que se piden, etc.). Está
-linkeada desde el footer de la landing, desde la nota de `login.html` y desde el
-footer de todas las páginas.
+responsable de qué, cómo se usan el DNI/CBU/WhatsApp que se piden, etc.). Los
+footers de la landing, `login.html` y `rifa.html` ahora linkean a tres páginas separadas:
+Términos y condiciones, Privacidad de uso y Política de cookies (vacías por ahora).
 
 ### Fotos de premios + ver detalle tocando el premio
 
@@ -183,7 +183,14 @@ temporal, para reemplazar el día que tengas fotos reales de los premios.
 ### Footer en login y en la página de boletos
 
 `login.html` y `rifa.html` (donde se marcan los números) ahora tienen un footer
-simple al final, con link a Inicio y a Términos y condiciones.
+simple al final, con link a Inicio y a las tres páginas legales.
+
+### Cuenta y privacidad (maqueta)
+
+Nueva sección en el panel (`me.html`) con cuatro botones: Pedir mis datos, Solicitar
+devolución de los créditos, Contactar a soporte y Desactivar cuenta. Por ahora solo
+son maqueta: los botones no hacen nada (cada uno trae un `data-account-action` para
+conectarlos más adelante).
 
 ### Logos reales de Google y GitHub
 
@@ -200,6 +207,9 @@ login.html
 me.html
 rifa.html
 terminos.html
+terminos-y-condiciones.html
+privacidad.html
+cookies.html
 icons.svg
 
 assets/sample-prizes/    → imágenes de ejemplo para la rifa de la moto (temporal)
@@ -213,8 +223,9 @@ css/
   modal.css                → el modal genérico (overlay + panel), con su animación de entrada
   forms.css                 → .field, compartido por el perfil, crear rifa y la reserva
   confirmation.css          → pantalla de "listo ✓" compartida por varios flujos
-  legal.css                  → términos y condiciones (prosa larga)
-  simple-footer.css          → footer chico de login, rifa y términos
+  legal.css                  → páginas legales (prosa larga)
+  account-section.css        → sección "Cuenta y privacidad" del panel
+  simple-footer.css          → footer chico de login, rifa y páginas legales
   navbar.css / footer.css  → header y footer grande de la landing
   hero.css / demo-preview.css / how-it-works.css / pricing.css / faq.css
                             → cada bloque de la landing
@@ -238,7 +249,7 @@ js/
   landing/faq.js            → acordeón de preguntas frecuentes
   auth/login.js             → botón de Google: lleva al backend, que hace el login
   auth/session.js           → captura el token (#token=...) que devuelve el backend, lo guarda y arma authHeaders()
-  creator/tabs.js           → cambiar entre las 4 secciones del panel
+  creator/tabs.js           → cambiar entre las 5 secciones del panel
   creator/state.js          → datos del creador (GET /usuarios/me) compartidos entre las secciones del panel
   creator/profile.js        → cargar y guardar el formulario de perfil
   creator/create-raffle.js  → formulario de publicación (premios con imagen): sube las imágenes y crea la rifa

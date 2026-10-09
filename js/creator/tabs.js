@@ -1,4 +1,4 @@
-// Cambia entre las 4 secciones del panel mostrando y ocultando los bloques
+// Cambia entre las 5 secciones del panel mostrando y ocultando los bloques
 // .panel-section correspondientes. En celulares, las opciones quedan atrás
 // de un botón "Opciones" en vez de mostrarse todas apretadas en una fila.
 document.addEventListener('DOMContentLoaded', () => {

@@ -46,13 +46,15 @@
   }
 
   .simple-footer__inner {
-    flex-wrap: nowrap;
+    flex-direction: column;
     justify-content: center;
     gap: var(--space-3);
   }
 
   .simple-footer__links {
-    gap: var(--space-3);
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-2) var(--space-4);
     font-size: 0.76rem;
   }
 

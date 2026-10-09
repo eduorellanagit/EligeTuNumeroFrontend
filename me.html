@@ -25,6 +25,7 @@
   <link rel="stylesheet" href="css/sidebar.css" />
   <link rel="stylesheet" href="css/credit-balance.css" />
   <link rel="stylesheet" href="css/profile-section.css" />
+  <link rel="stylesheet" href="css/account-section.css" />
   <link rel="stylesheet" href="css/payments-validator.css" />
   <link rel="stylesheet" href="css/my-raffles.css" />
   <link rel="stylesheet" href="css/credit-purchase.css" />
@@ -59,6 +60,9 @@
           </button>
           <button class="sidebar__tab is-active" data-tab="rifas">
             <span data-icon="ticket"></span> Mis rifas y créditos
+          </button>
+          <button class="sidebar__tab" data-tab="cuenta">
+            <span data-icon="shield"></span> Cuenta y privacidad
           </button>
         </nav>
       </aside>
@@ -238,6 +242,46 @@
           <div class="raffles-layout">
             <div id="credit-balance-container"></div>
             <div class="raffles-list" id="raffles-list"></div>
+          </div>
+        </section>
+
+        <!-- Sección: Cuenta y privacidad (por ahora los botones no hacen nada) -->
+        <section class="panel-section" data-section="cuenta">
+          <h2 class="section-heading">Cuenta y privacidad</h2>
+          <p class="section-subheading">Pedidos sobre tus datos, tus créditos y tu cuenta.</p>
+
+          <div class="account-actions">
+            <div class="account-action">
+              <div class="account-action__text">
+                <h3>Pedir mis datos</h3>
+                <p>Pedí una copia de los datos personales que guardamos de tu cuenta.</p>
+              </div>
+              <button type="button" class="btn btn-secondary" data-account-action="export-data">Pedir mis datos</button>
+            </div>
+
+            <div class="account-action">
+              <div class="account-action__text">
+                <h3>Devolución de créditos</h3>
+                <p>Pedí que te devolvamos los créditos que compraste y no usaste.</p>
+              </div>
+              <button type="button" class="btn btn-secondary" data-account-action="refund-credits">Solicitar devolución de los créditos</button>
+            </div>
+
+            <div class="account-action">
+              <div class="account-action__text">
+                <h3>Soporte</h3>
+                <p>Escribinos si tenés una duda o un problema con tu cuenta o tus rifas.</p>
+              </div>
+              <button type="button" class="btn btn-secondary" data-account-action="contact-support">Contactar a soporte</button>
+            </div>
+
+            <div class="account-action account-action--danger">
+              <div class="account-action__text">
+                <h3>Desactivar cuenta</h3>
+                <p>Dejá de usar tu cuenta de creador.</p>
+              </div>
+              <button type="button" class="btn btn-danger" data-account-action="deactivate-account">Desactivar cuenta</button>
+            </div>
           </div>
         </section>
 

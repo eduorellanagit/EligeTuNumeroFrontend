@@ -32,7 +32,7 @@
   <div class="raffle-page">
     <header class="raffle-topbar">
       <a href="index.html" class="raffle-topbar__logo">EligeTuNumero</a>
-      <button class="back-button" onclick="history.back()"><span data-icon="arrow-left"></span> Volver</button>
+      <button class="back-button" id="raffle-back-btn"><span data-icon="arrow-left"></span> Volver</button>
     </header>
 
     <main class="raffle-content">
@@ -81,7 +81,9 @@
         <span class="simple-footer__logo">EligeTuNumero</span>
         <div class="simple-footer__links">
           <a href="index.html">Inicio</a>
-          <a href="terminos.html">Términos y condiciones</a>
+          <a href="terminos-y-condiciones.html">Términos y condiciones</a>
+          <a href="privacidad.html">Privacidad de uso</a>
+          <a href="cookies.html">Política de cookies</a>
         </div>
         <span class="simple-footer__copy" id="raffle-footer-year">© 2026 EligeTuNumero</span>
       </div>
@@ -115,6 +117,10 @@
   <script src="js/common/scroll-reveal.js"></script>
   <script src="js/raffle/purchase-modal.js"></script>
   <script>
+    // "Volver": con sesión iniciada lleva al panel (Mis rifas); sin sesión, al inicio.
+    document.getElementById('raffle-back-btn').addEventListener('click', () => {
+      window.location.href = getAuthToken() ? 'me.html' : 'index.html'
+    })
     document.getElementById('raffle-footer-year').textContent = '© ' + new Date().getFullYear() + ' EligeTuNumero'
   </script>
 </body>

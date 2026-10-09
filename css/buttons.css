@@ -41,6 +41,18 @@
   transform: translateY(-1px);
 }
 
+.btn-danger {
+  background: var(--color-surface);
+  color: var(--color-danger);
+  border-color: var(--color-danger-bg);
+}
+
+.btn-danger:hover {
+  background: var(--color-danger-bg);
+  border-color: var(--color-danger);
+  transform: translateY(-1px);
+}
+
 .btn-block {
   width: 100%;
 }

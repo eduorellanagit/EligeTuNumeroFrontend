@@ -114,9 +114,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     })
   }
 
-  // Le pide al backend crear la compra y abre Mercado Pago en una pestaña nueva.
-  // La pestaña se abre en el momento del click (antes de esperar al servidor); si se abriera
-  // después, los navegadores (sobre todo en celular) la bloquean como ventana emergente.
+  // Le pide al backend crear la compra y lleva al usuario a pagar a Mercado Pago (en la misma pestaña).
   async function confirmPurchase(plan, confirmBtn) {
     const backBtn = document.getElementById('credit-purchase-back')
     const statusEl = document.getElementById('credit-purchase-status')
@@ -124,40 +122,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     backBtn.disabled = true
     statusEl.textContent = 'Preparando el pago con Mercado Pago...'
 
-    const checkoutWindow = window.open('', '_blank')
-    if (checkoutWindow) {
-      checkoutWindow.opener = null
-      checkoutWindow.document.write(
-        '<p style="font-family: sans-serif; padding: 24px;">Preparando el pago con Mercado Pago...</p>'
-      )
-    }
-
     try {
       const purchase = await Api.buyCredits(plan.id)
       const checkoutUrl = safeUrl(purchase && purchase.checkoutUrl)
       if (!checkoutUrl) throw new Error('No recibimos el link de pago. Probá de nuevo.')
 
-      // localStorage (y no sessionStorage) porque Mercado Pago vuelve en la pestaña nueva,
-      // y sessionStorage es propio de cada pestaña.
-      localStorage.setItem(
+      sessionStorage.setItem(
         PENDING_PURCHASE_KEY,
         JSON.stringify({ plan: plan.id, creditsBefore: creatorProfile.credits })
       )
-
-      if (checkoutWindow && !checkoutWindow.closed) {
-        checkoutWindow.location.href = checkoutUrl
-        statusEl.textContent =
-          'Abrimos Mercado Pago en una pestaña nueva. Cuando termines el pago, el resultado se muestra ahí.'
-      } else {
-        // El navegador bloqueó la pestaña nueva: se ofrece el link para abrirla a mano.
-        statusEl.innerHTML = `Tu navegador bloqueó la ventana de pago. <a href="${escapeHtml(checkoutUrl)}" target="_blank" rel="noopener">Abrir Mercado Pago ↗</a>`
-      }
-      backBtn.textContent = 'Cerrar'
-      backBtn.disabled = false
-      backBtn.replaceWith(backBtn.cloneNode(true))
-      document.getElementById('credit-purchase-back').addEventListener('click', () => Modal.close())
+      statusEl.textContent = 'Te llevamos a Mercado Pago para completar el pago...'
+      window.location.href = checkoutUrl
     } catch (err) {
-      if (checkoutWindow) checkoutWindow.close()
       statusEl.textContent = err.message
       confirmBtn.disabled = false
       backBtn.disabled = false
@@ -193,7 +169,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   function showPaymentPendingStep(reason) {
     const text =
       reason === 'crediting'
-        ? 'Recibimos tu pago, pero los créditos todavía no figuran en tu cuenta. Aparecen apenas Mercado Pago le confirma el pago a nuestro sistema (puede tardar unos minutos). No hace falta que vuelvas a pagar.'
+        ? 'Tu pago está pendiente de confirmación. Los créditos se suman solos a tu cuenta apenas Mercado Pago lo confirme; podés volver a revisar en unos minutos. No hace falta que vuelvas a pagar.'
         : 'Mercado Pago todavía no confirmó el pago. Apenas lo apruebe, los créditos se suman solos a tu cuenta. No hace falta que vuelvas a pagar.'
     const html = `
       <div class="purchase-confirmed">
@@ -225,22 +201,27 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('credit-purchase-retry').addEventListener('click', () => openBuyCreditsModal(null))
   }
 
-  // Consulta el saldo cada 3 segundos (hasta 30) esperando que el backend acredite la compra.
+  // Consulta el saldo cada segundo (hasta 10 segundos) esperando que el backend acredite la compra.
+  // Si en ese tiempo no aparecen los créditos, se muestra el aviso de pago pendiente.
+  const CREDIT_WAIT_MS = 10000
+  const CREDIT_POLL_MS = 1000
+
   async function waitForCredits(creditsBefore) {
     if (creditsBefore === null) {
       await loadCreatorProfile(true).catch(() => {})
       return false
     }
-    for (let attempt = 0; attempt < 10; attempt++) {
+    const deadline = Date.now() + CREDIT_WAIT_MS
+    while (true) {
       try {
         await loadCreatorProfile(true)
         if (creatorProfile.credits > creditsBefore) return true
       } catch (err) {
         // se reintenta en la próxima vuelta
       }
-      await new Promise((resolve) => setTimeout(resolve, 3000))
+      if (Date.now() + CREDIT_POLL_MS > deadline) return false
+      await new Promise((resolve) => setTimeout(resolve, CREDIT_POLL_MS))
     }
-    return false
   }
 
   // Mercado Pago devuelve al usuario a me.html?pago=ok | error | pendiente
@@ -248,11 +229,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     const result = String(rawResult).toLowerCase()
     let pending = null
     try {
-      pending = JSON.parse(localStorage.getItem(PENDING_PURCHASE_KEY))
+      pending = JSON.parse(sessionStorage.getItem(PENDING_PURCHASE_KEY))
     } catch (err) {
       pending = null
     }
-    localStorage.removeItem(PENDING_PURCHASE_KEY)
+    sessionStorage.removeItem(PENDING_PURCHASE_KEY)
     const plan = pending ? pricingPlans.find((p) => p.id === pending.plan) : null
 
     if (result === 'error') {

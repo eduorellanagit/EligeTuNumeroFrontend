@@ -38,4 +38,6 @@ const Icons = {
   help: '<svg viewBox="0 0 24 24" class="icon-svg" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="#131A2B" stroke-width="1.6" fill="none"/><path d="M9.3 9.3a2.7 2.7 0 1 1 3.9 2.4c-.7.4-1.2.9-1.2 1.8v.3" stroke="#131A2B" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="16.7" r="1" fill="#131A2B"/></svg>',
 
   upload: '<svg viewBox="0 0 24 24" class="icon-svg" aria-hidden="true"><path d="M12 15V4" stroke="#131A2B" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/><polyline points="7 9 12 4 17 9" stroke="#131A2B" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" stroke="#131A2B" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+
+  shield: '<svg viewBox="0 0 24 24" class="icon-svg" aria-hidden="true"><path d="M12 3l7.5 2.8v5.6c0 4.6-3.1 8.4-7.5 9.9-4.4-1.5-7.5-5.3-7.5-9.9V5.8L12 3z" stroke="#131A2B" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><polyline points="8.8 12.2 11.2 14.6 15.4 9.8" stroke="#131A2B" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',
 }

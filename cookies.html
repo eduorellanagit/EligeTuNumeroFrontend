@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Política de cookies — EligeTuNumero</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="icon" type="image/svg+xml" href="assets/logo/logito.svg">
+
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/buttons.css" />
+  <link rel="stylesheet" href="css/legal.css" />
+  <link rel="stylesheet" href="css/simple-footer.css" />
+</head>
+<body>
+
+  <header class="legal-topbar">
+    <a href="index.html" class="legal-topbar__logo">EligeTuNumero</a>
+    <button class="back-button" onclick="history.back()"><span data-icon="arrow-left"></span> Volver</button>
+  </header>
+
+  <main class="legal-main">
+    <h1>Política de cookies</h1>
+    <!-- Contenido pendiente: se reemplaza cuando esté listo el texto final. -->
+  </main>
+
+  <footer class="simple-footer">
+    <div class="simple-footer__inner">
+      <span class="simple-footer__logo">EligeTuNumero</span>
+      <div class="simple-footer__links">
+        <a href="index.html">Inicio</a>
+        <a href="terminos-y-condiciones.html">Términos y condiciones</a>
+        <a href="privacidad.html">Privacidad de uso</a>
+        <a href="cookies.html">Política de cookies</a>
+      </div>
+      <span class="simple-footer__copy" id="legal-footer-year">© 2026 EligeTuNumero</span>
+    </div>
+  </footer>
+
+  <script src="js/common/icons.js"></script>
+  <script src="js/common/render-icons.js"></script>
+  <script src="js/common/scroll-reveal.js"></script>
+  <script>
+    document.getElementById('legal-footer-year').textContent = '© ' + new Date().getFullYear() + ' EligeTuNumero'
+  </script>
+</body>
+</html>

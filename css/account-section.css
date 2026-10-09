@@ -1,0 +1,52 @@
+.account-actions {
+  margin-top: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.account-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5) var(--space-6);
+}
+
+.account-action--danger {
+  border-color: var(--color-danger-bg);
+}
+
+.account-action__text h3 {
+  font-size: 1rem;
+}
+
+.account-action__text p {
+  margin-top: var(--space-1);
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+.account-action .btn {
+  flex-shrink: 0;
+  min-width: 290px;
+  white-space: normal;
+  text-align: center;
+}
+
+@media (max-width: 700px) {
+  .account-action {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-4);
+    padding: var(--space-5);
+  }
+
+  .account-action .btn {
+    width: 100%;
+    min-width: 0;
+  }
+}
