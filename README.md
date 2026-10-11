@@ -91,7 +91,7 @@ porque el navegador no deja que una página local le hable a la API.
   contraseña, y si es tu primera vez tu cuenta se crea sola al continuar. El botón
   lleva al backend, que hace el ida y vuelta con Google y te devuelve a `me.html`.
 - `me.html` — Panel privado del creador: perfil y cobro, **crear rifa**, validador
-  de pagos, mis rifas y créditos. Las cinco secciones (la última es "Cuenta y privacidad") se muestran/ocultan con JS,
+  de pagos, mis rifas y créditos. Las seis secciones (la última, solo para soporte, es "Panel de control") se muestran/ocultan con JS,
   no son páginas distintas.
 - `rifa.html?creador=juanperez&rifa=moto-110` — Página pública de una rifa (grilla de
   números, premios, modal de reserva + comprobante). Como es todo estático, usamos
@@ -185,12 +185,25 @@ temporal, para reemplazar el día que tengas fotos reales de los premios.
 `login.html` y `rifa.html` (donde se marcan los números) ahora tienen un footer
 simple al final, con link a Inicio y a las tres páginas legales.
 
-### Cuenta y privacidad (maqueta)
+### Cuenta y privacidad
 
-Nueva sección en el panel (`me.html`) con cuatro botones: Pedir mis datos, Solicitar
-devolución de los créditos, Contactar a soporte y Desactivar cuenta. Por ahora solo
-son maqueta: los botones no hacen nada (cada uno trae un `data-account-action` para
-conectarlos más adelante).
+Sección del panel (`me.html`, `js/creator/account.js`) con cuatro botones:
+- **Pedir mis datos**: `GET /usuarios/me/data` y descarga un `.json`.
+- **Solicitar devolución de los créditos**: pide confirmación y manda `POST /requests/devolucion`.
+- **Contactar a soporte**: formulario (motivo + descripción de 10 a 500 caracteres) que manda
+  `POST /requests/request` (motivos: SOPORTE, ERROR y OTRO; DEVOLUCION tiene su propio botón).
+- **Desactivar cuenta**: todavía sin backend, el botón no hace nada.
+
+### Panel de control (solo soporte)
+
+Sección extra del panel (`me.html`, `js/creator/control-panel.js`). La opción del menú
+solo aparece si el email que devuelve `GET /usuarios/me` es `eligetunumero.soporte@gmail.com`.
+Tiene tres bandejas, "Recibidos", "Revisados" y "Todos" (`GET /requests/request/{status}` y
+`GET /requests/all`); cada fila abre un detalle con la solicitud completa y botones
+"Cerrar" y "Revisado" (`PUT /requests/update/{id}`, solo si todavía no está revisada). Se piden
+recién al entrar a la sección. Los estados del backend son `RECIBIDA` y `RESUELTA`; en pantalla
+`RESUELTA` se muestra como "Revisada". Ocultar la sección es solo visual: el backend debe validar que solo soporte
+pueda usar esos endpoints.
 
 ### Logos reales de Google y GitHub
 
@@ -249,7 +262,7 @@ js/
   landing/faq.js            → acordeón de preguntas frecuentes
   auth/login.js             → botón de Google: lleva al backend, que hace el login
   auth/session.js           → captura el token (#token=...) que devuelve el backend, lo guarda y arma authHeaders()
-  creator/tabs.js           → cambiar entre las 5 secciones del panel
+  creator/tabs.js           → cambiar entre las 6 secciones del panel
   creator/state.js          → datos del creador (GET /usuarios/me) compartidos entre las secciones del panel
   creator/profile.js        → cargar y guardar el formulario de perfil
   creator/create-raffle.js  → formulario de publicación (premios con imagen): sube las imágenes y crea la rifa

@@ -174,6 +174,19 @@ const Api = {
   acceptReservation: (id) => apiRequest('/reservas/' + encodeURIComponent(id) + '/aceptar', { method: 'POST', auth: true }),
   rejectReservation: (id) => apiRequest('/reservas/' + encodeURIComponent(id) + '/rechazar', { method: 'POST', auth: true }),
 
+  // --- Datos de la cuenta ("Pedir mis datos")
+  getMyData: () => apiRequest('/usuarios/me/data', { auth: true }),
+
+  // --- Solicitudes (/requests): soporte, devolución de créditos y panel de control (solo soporte).
+  //     createRequest recibe { requestsType, description } (description: de 10 a 500 caracteres).
+  createRequest: (data) => apiRequest('/requests/request', { method: 'POST', body: data, auth: true }),
+  requestCreditRefund: () => apiRequest('/requests/devolucion', { method: 'POST', auth: true }),
+  listRequestsByStatus: (status) =>
+    apiRequest('/requests/request/' + encodeURIComponent(status), { auth: true }),
+  listAllRequests: () => apiRequest('/requests/all', { auth: true }),
+  markRequestReviewed: (id) =>
+    apiRequest('/requests/update/' + encodeURIComponent(id), { method: 'PUT', auth: true }),
+
   // --- Créditos: devuelve { id, plan, monto, estado, checkoutUrl } (a checkoutUrl se redirige para pagar)
   buyCredits: (planId) => apiRequest('/creditos/comprar', { method: 'POST', body: { planId }, auth: true }),
 }

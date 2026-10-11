@@ -64,6 +64,10 @@
           <button class="sidebar__tab" data-tab="cuenta">
             <span data-icon="shield"></span> Cuenta y privacidad
           </button>
+          <!-- Solo la cuenta de soporte la ve: control-panel.js le quita "hidden" -->
+          <button class="sidebar__tab" data-tab="control" id="control-tab" hidden>
+            <span data-icon="receipt"></span> Panel de control
+          </button>
         </nav>
       </aside>
 
@@ -254,7 +258,7 @@
             <div class="account-action">
               <div class="account-action__text">
                 <h3>Pedir mis datos</h3>
-                <p>Pedí una copia de los datos personales que guardamos de tu cuenta.</p>
+                <p>Descargá una copia de los datos personales que guardamos de tu cuenta.</p>
               </div>
               <button type="button" class="btn btn-secondary" data-account-action="export-data">Pedir mis datos</button>
             </div>
@@ -262,7 +266,7 @@
             <div class="account-action">
               <div class="account-action__text">
                 <h3>Devolución de créditos</h3>
-                <p>Pedí que te devolvamos los créditos que compraste y no usaste.</p>
+                <p>Pedí la devolución de tus compras de créditos de los últimos 10 días.</p>
               </div>
               <button type="button" class="btn btn-secondary" data-account-action="refund-credits">Solicitar devolución de los créditos</button>
             </div>
@@ -283,6 +287,26 @@
               <button type="button" class="btn btn-danger" data-account-action="deactivate-account">Desactivar cuenta</button>
             </div>
           </div>
+        </section>
+
+        <!-- Sección: Panel de control (solo para la cuenta de soporte) -->
+        <section class="panel-section" data-section="control">
+          <h2 class="section-heading">Panel de control</h2>
+          <p class="section-subheading">Solicitudes enviadas por los usuarios.</p>
+
+          <div class="validator-tabs" id="requests-tabs">
+            <button class="validator-tab is-active" data-tab="recibidos">
+              Recibidos <span class="validator-tab__count" id="count-recibidos">0</span>
+            </button>
+            <button class="validator-tab" data-tab="revisados">
+              Revisados <span class="validator-tab__count" id="count-revisados">0</span>
+            </button>
+            <button class="validator-tab" data-tab="todos">
+              Todos <span class="validator-tab__count" id="count-todos">0</span>
+            </button>
+          </div>
+
+          <div class="validator-list" id="requests-list"></div>
         </section>
 
       </main>
@@ -314,6 +338,8 @@
   <script src="js/creator/profile.js"></script>
   <script src="js/creator/payments.js"></script>
   <script src="js/creator/raffles.js"></script>
+  <script src="js/creator/account.js"></script>
+  <script src="js/creator/control-panel.js"></script>
   <script src="js/common/scroll-reveal.js"></script>
   <script src="js/creator/create-raffle.js"></script>
 </body>

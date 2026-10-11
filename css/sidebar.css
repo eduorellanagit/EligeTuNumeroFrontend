@@ -30,6 +30,10 @@
   transition: background-color 0.15s ease, color 0.15s ease;
 }
 
+.sidebar__tab[hidden] {
+  display: none;
+}
+
 .sidebar__tab:hover {
   background: var(--color-surface-tint);
   color: var(--color-primary-ink);

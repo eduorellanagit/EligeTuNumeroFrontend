@@ -172,3 +172,13 @@
   margin: 0 auto;
   border-radius: 8px;
 }
+
+/* Descripción de un reporte (panel de control): texto libre, con saltos de línea */
+.detail-receipt-box.report-description {
+  text-align: left;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--color-text);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
