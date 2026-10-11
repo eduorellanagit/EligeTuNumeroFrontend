@@ -50,3 +50,55 @@
     min-width: 0;
   }
 }
+
+/* Modal "Tus datos": cada dato en su propia línea, uno debajo de otro */
+.data-title {
+  margin: var(--space-5) 0 var(--space-3);
+  font-size: 1rem;
+}
+
+.data-modal .data-title:first-child {
+  margin-top: 0;
+}
+
+.data-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.data-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.data-row span {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--color-text-faint);
+}
+
+.data-row strong {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+  white-space: pre-line;
+}
+
+.data-card {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-4);
+  margin-bottom: var(--space-3);
+}
+
+.data-card .data-row:last-child {
+  border-bottom: none;
+}
+
+.data-empty {
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}

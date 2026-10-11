@@ -176,6 +176,8 @@ const Api = {
 
   // --- Datos de la cuenta ("Pedir mis datos")
   getMyData: () => apiRequest('/usuarios/me/data', { auth: true }),
+  // Desactiva la cuenta (el backend no devuelve nada).
+  deactivateAccount: () => apiRequest('/usuarios/me/desactivar', { method: 'POST', auth: true }),
 
   // --- Solicitudes (/requests): soporte, devolución de créditos y panel de control (solo soporte).
   //     createRequest recibe { requestsType, description } (description: de 10 a 500 caracteres).

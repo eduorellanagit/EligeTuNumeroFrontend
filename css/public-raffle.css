@@ -41,7 +41,7 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: var(--space-6);
+  gap: var(--space-4) var(--space-6);
   flex-wrap: wrap;
 }
 
@@ -56,12 +56,13 @@
   font-size: 2rem;
 }
 
+/* La descripción ocupa todo el ancho, en una fila propia debajo del título y la cuenta regresiva */
 .raffle-header__description {
-  margin-top: var(--space-3);
-  max-width: 60ch;
+  flex: 0 0 100%;
   color: var(--color-text-secondary);
   line-height: 1.6;
   white-space: pre-line;
+  overflow-wrap: anywhere;
 }
 
 .raffle-header__organizer {

@@ -89,3 +89,21 @@
 .purchase-error.is-visible {
   display: block;
 }
+
+/* Casilla de confirmación (mayor de edad) */
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: 0.92rem;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.checkbox-field input {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+}

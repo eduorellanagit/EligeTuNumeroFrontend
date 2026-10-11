@@ -124,7 +124,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       <div>
         <p class="raffle-header__eyebrow">${eyebrows[currentRaffle.status] || 'Rifa'}</p>
         <h1>${escapeHtml(currentRaffle.title)}</h1>
-        ${descriptionHTML}
         <div class="raffle-header__organizer">
           <span>Organiza <strong>${escapeHtml(currentRaffle.organizer.name)}</strong> · DNI ${escapeHtml(currentRaffle.organizer.dni)}</span>
           ${whatsappHTML}
@@ -133,6 +132,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       <div class="raffle-header__countdown">
         ${countdownHTML}
       </div>
+      ${descriptionHTML}
     `
   }
 

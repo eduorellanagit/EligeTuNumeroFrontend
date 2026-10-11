@@ -188,11 +188,11 @@ simple al final, con link a Inicio y a las tres páginas legales.
 ### Cuenta y privacidad
 
 Sección del panel (`me.html`, `js/creator/account.js`) con cuatro botones:
-- **Pedir mis datos**: `GET /usuarios/me/data` y descarga un `.json`.
-- **Solicitar devolución de los créditos**: pide confirmación y manda `POST /requests/devolucion`.
+- **Pedir mis datos**: `GET /usuarios/me/data`, muestra los datos en un modal (personales, bancarios, rifas, compras de créditos y solicitudes) y recién ahí un botón descarga el `.json`.
+- **Solicitar devolución de los créditos**: pide confirmación y manda `POST /requests/devolucion`; el aviso final muestra el código, los créditos devueltos y el monto a reintegrar.
 - **Contactar a soporte**: formulario (motivo + descripción de 10 a 500 caracteres) que manda
   `POST /requests/request` (motivos: SOPORTE, ERROR y OTRO; DEVOLUCION tiene su propio botón).
-- **Desactivar cuenta**: todavía sin backend, el botón no hace nada.
+- **Desactivar cuenta**: pide confirmación y manda `POST /usuarios/me/desactivar` (sin respuesta). Si sale bien, borra la sesión y lleva a `index.html`.
 
 ### Panel de control (solo soporte)
 
@@ -269,7 +269,7 @@ js/
   creator/payments.js       → las 3 bandejas de reservas + modal de detalle con el comprobante (aceptar / rechazar)
   creator/raffles.js        → saldo de créditos, compra con Mercado Pago (3 pasos + vuelta del pago), tarjetas de "mis rifas"
   raffle/number-grid.js     → trae la rifa del backend según la URL, pinta la grilla y los premios, maneja la selección
-  raffle/purchase-modal.js  → los 3 pasos de la reserva (datos → pago → confirmación) y su envío al backend
+  raffle/purchase-modal.js  → los 3 pasos de la reserva (datos → pago con comprobante y casilla de mayor de edad → confirmación) y su envío al backend
 ```
 
 ## Por qué `<script>` clásico y no `type="module"`

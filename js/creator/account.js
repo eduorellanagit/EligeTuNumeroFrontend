@@ -1,8 +1,8 @@
 // Sección "Cuenta y privacidad". Cada botón del HTML trae un data-account-action:
-//   export-data      → descarga un JSON con los datos de la cuenta   (GET /usuarios/me/data)
+//   export-data      → muestra los datos de la cuenta y permite descargarlos (GET /usuarios/me/data)
 //   refund-credits   → pide la devolución de las compras recientes   (POST /requests/devolucion)
 //   contact-support  → envía una solicitud a soporte                 (POST /requests/request)
-//   deactivate-account → todavía sin backend: el botón no hace nada
+//   deactivate-account → pide confirmación y desactiva la cuenta     (POST /usuarios/me/desactivar)
 document.addEventListener('DOMContentLoaded', () => {
   // Valores del enum RequestsType del backend. DEVOLUCION no está: tiene su propio botón.
   const SUPPORT_REQUEST_TYPES = [
@@ -24,23 +24,143 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('info-modal-ok').addEventListener('click', () => Modal.close())
   }
 
-  // ---- Pedir mis datos: se descarga como archivo .json
+  // ---- Pedir mis datos: se muestran en un modal y desde ahí se descargan como .json
+  const ENUM_LABELS = {
+    RECIBIDA: 'Recibida',
+    RESUELTA: 'Revisada',
+    DEVOLUCION: 'Devolución',
+    SOPORTE: 'Soporte',
+    ERROR: 'Error',
+    OTRO: 'Otro',
+  }
+
+  function dataValue(value) {
+    return value === null || value === undefined || value === '' ? '—' : String(value)
+  }
+
+  function dataEnum(value) {
+    if (!value) return '—'
+    const key = String(value).toUpperCase()
+    if (ENUM_LABELS[key]) return ENUM_LABELS[key]
+    const clean = key.replace(/_/g, ' ').toLowerCase()
+    return clean.charAt(0).toUpperCase() + clean.slice(1)
+  }
+
+  function dataDate(value) {
+    if (!value) return '—'
+    const date = new Date(value)
+    return isNaN(date.getTime()) ? String(value) : date.toLocaleString('es-AR', { dateStyle: 'short', timeStyle: 'short' })
+  }
+
+  function dataMoney(value) {
+    const number = Number(value)
+    return isNaN(number) ? '—' : '$' + number.toLocaleString('es-AR')
+  }
+
+  function dataRows(rows) {
+    return `<div class="data-list">${rows
+      .map(([label, value]) => `<div class="data-row"><span>${label}</span><strong>${escapeHtml(value)}</strong></div>`)
+      .join('')}</div>`
+  }
+
+  // Cada elemento de una lista (rifa, compra, solicitud) es un bloque con sus propios datos.
+  function dataGroup(title, items, toRows, emptyText) {
+    const body = items && items.length
+      ? items.map((item) => `<div class="data-card">${dataRows(toRows(item))}</div>`).join('')
+      : `<p class="data-empty">${emptyText}</p>`
+    return `<h4 class="data-title">${title}</h4>${body}`
+  }
+
+  function downloadJson(data) {
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = 'mis-datos-eligetunumero.json'
+    document.body.appendChild(link)
+    link.click()
+    link.remove()
+    URL.revokeObjectURL(url)
+  }
+
+  function openDataModal(data) {
+    const html = `
+      <div class="data-modal">
+        <h4 class="data-title">Datos personales</h4>
+        ${dataRows([
+          ['Nombre', dataValue(data.nombre)],
+          ['DNI', dataValue(data.dni)],
+          ['WhatsApp', dataValue(data.whatsapp)],
+          ['Email', dataValue(data.email)],
+          ['Inicio de sesión con', dataEnum(data.provider)],
+          ['Enlace de tus rifas', dataValue(data.slug)],
+          ['Cuenta creada', dataDate(data.creadoEn)],
+          ['Créditos disponibles', dataValue(data.creditosDisponibles)],
+        ])}
+
+        <h4 class="data-title">Datos bancarios</h4>
+        ${dataRows([
+          ['Banco', dataValue(data.nombreBanco)],
+          ['Titular', dataValue(data.titularCuenta)],
+          ['CBU', dataValue(data.cbu)],
+          ['Alias', dataValue(data.alias)],
+        ])}
+
+        ${dataGroup(
+          'Mis rifas',
+          data.listRaffle,
+          (r) => [
+            ['Título', dataValue(r.titulo)],
+            ['Enlace', dataValue(r.slug)],
+            ['Estado', dataEnum(r.raffleStatus)],
+            ['Creada', dataDate(r.creadoEn)],
+            ['Precio por número', dataMoney(r.precioNumero)],
+            ['Total de números', dataValue(r.totalNumeros)],
+            ['Reservas recibidas', dataValue(r.reservasRecibidas)],
+          ],
+          'Todavía no creaste rifas.'
+        )}
+
+        ${dataGroup(
+          'Compras de créditos',
+          data.listCompraCredito,
+          (c) => [
+            ['Plan', dataEnum(c.creditPlan)],
+            ['Monto', dataMoney(c.monto)],
+            ['Estado', dataEnum(c.planStatus)],
+            ['Fecha de compra', dataDate(c.creadoEn)],
+            ['Confirmada', dataDate(c.confirmadoEn)],
+          ],
+          'Todavía no compraste créditos.'
+        )}
+
+        ${dataGroup(
+          'Solicitudes',
+          data.listSolicitud,
+          (q) => [
+            ['Código', dataValue(q.codigo)],
+            ['Tipo', dataEnum(q.tipo)],
+            ['Estado', dataEnum(q.estado)],
+            ['Descripción', dataValue(q.descripcion)],
+            ['Creada', dataDate(q.creadoEn)],
+            ['Última actualización', dataDate(q.actualizadoEn)],
+          ],
+          'Todavía no enviaste solicitudes.'
+        )}
+
+        <button class="btn btn-primary btn-block" id="data-download-btn" style="margin-top: 24px;">Descargar archivo</button>
+      </div>
+    `
+    Modal.open('Tus datos', html)
+    document.getElementById('data-download-btn').addEventListener('click', () => downloadJson(data))
+  }
+
   async function exportData(button) {
     const label = button.textContent
     button.disabled = true
-    button.textContent = 'Preparando...'
+    button.textContent = 'Cargando...'
     try {
-      const data = await Api.getMyData()
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
-      const url = URL.createObjectURL(blob)
-      const link = document.createElement('a')
-      link.href = url
-      link.download = 'mis-datos-eligetunumero.json'
-      document.body.appendChild(link)
-      link.click()
-      link.remove()
-      URL.revokeObjectURL(url)
-      showInfoModal('Tus datos', 'Descargamos un archivo con los datos de tu cuenta.')
+      openDataModal(await Api.getMyData())
     } catch (err) {
       showErrorModal(err.message)
     } finally {
@@ -50,6 +170,21 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ---- Solicitar devolución de los créditos
+  // Arma el mensaje con lo que devuelve el backend: código, créditos devueltos y monto del reintegro.
+  function refundMessage(refund) {
+    let message = 'Recibimos tu solicitud de devolución de créditos.'
+    if (!refund) return message
+    if (refund.codigo) message += ` Tu código es ${refund.codigo}.`
+    if (refund.creditosDevueltos !== undefined && refund.creditosDevueltos !== null) {
+      message += ` Créditos devueltos: ${refund.creditosDevueltos}.`
+    }
+    const amount = Number(refund.montoReintegro)
+    if (refund.montoReintegro !== undefined && refund.montoReintegro !== null && !isNaN(amount)) {
+      message += ` Monto a reintegrar: $${amount.toLocaleString('es-AR')}.`
+    }
+    return message
+  }
+
   function openRefundModal() {
     Modal.open(
       'Devolución de créditos',
@@ -71,8 +206,8 @@ document.addEventListener('DOMContentLoaded', () => {
       confirmBtn.disabled = true
       errorEl.classList.remove('is-visible')
       try {
-        await Api.requestCreditRefund()
-        showInfoModal('Devolución solicitada', 'Recibimos tu solicitud de devolución de créditos.')
+        const refund = await Api.requestCreditRefund()
+        showInfoModal('Devolución solicitada', refundMessage(refund))
         // La devolución puede cambiar el saldo de créditos.
         if (window.refreshRafflesPanel) window.refreshRafflesPanel()
       } catch (err) {
@@ -139,10 +274,57 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   }
 
+  // ---- Desactivar cuenta
+  function openDeactivateModal() {
+    Modal.open(
+      'Desactivar cuenta',
+      `<div class="purchase-confirmed">
+        <p>¿Estás seguro de que querés desactivar tu cuenta?</p>
+        <p class="create-raffle-error" id="deactivate-error" style="margin-top: 16px;"></p>
+        <div class="detail-actions">
+          <button class="btn btn-secondary" id="deactivate-cancel-btn">Cancelar</button>
+          <button class="btn btn-danger" id="deactivate-confirm-btn">Continuar</button>
+        </div>
+      </div>`
+    )
+    const cancelBtn = document.getElementById('deactivate-cancel-btn')
+    const confirmBtn = document.getElementById('deactivate-confirm-btn')
+    const errorEl = document.getElementById('deactivate-error')
+    cancelBtn.addEventListener('click', () => Modal.close())
+    confirmBtn.addEventListener('click', async () => {
+      cancelBtn.disabled = true
+      confirmBtn.disabled = true
+      errorEl.classList.remove('is-visible')
+      try {
+        await Api.deactivateAccount()
+      } catch (err) {
+        cancelBtn.disabled = false
+        confirmBtn.disabled = false
+        errorEl.textContent = err.message
+        errorEl.classList.add('is-visible')
+        return
+      }
+
+      // La cuenta ya está desactivada: se borra la sesión y, al cerrar el aviso, se vuelve al inicio.
+      clearAuthToken()
+      const goHome = () => window.location.replace('index.html')
+      Modal.open(
+        'Cuenta desactivada',
+        `<div class="purchase-confirmed">
+          <p>Tu cuenta fue desactivada.</p>
+          <button class="btn btn-primary" id="deactivate-done-btn" style="margin-top: 20px;">Listo</button>
+        </div>`,
+        goHome
+      )
+      document.getElementById('deactivate-done-btn').addEventListener('click', () => Modal.close())
+    })
+  }
+
   const handlers = {
     'export-data': exportData,
     'refund-credits': openRefundModal,
     'contact-support': openSupportModal,
+    'deactivate-account': openDeactivateModal,
   }
 
   document.querySelectorAll('[data-account-action]').forEach((button) => {

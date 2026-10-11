@@ -9,17 +9,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let formData = { firstName: '', lastName: '', dni: '', address: '', whatsapp: '' }
   let receiptFile = null
+  let adultConfirmed = false
 
   floatBarBtn.addEventListener('click', () => {
     if (selectedNumbers.length === 0 || !isRaffleActive()) return
     formData = { firstName: '', lastName: '', dni: '', address: '', whatsapp: '' }
     receiptFile = null
+    adultConfirmed = false
     showFormStep()
   })
 
   function resetAfterClose() {
     formData = { firstName: '', lastName: '', dni: '', address: '', whatsapp: '' }
     receiptFile = null
+    adultConfirmed = false
     selectedNumbers = []
     if (window.renderGrid) window.renderGrid()
     if (window.updateFloatBar) window.updateFloatBar()
@@ -80,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const html = `
       <form class="purchase-form" id="purchase-payment-step">
         <p class="purchase-hold-note">
-          Transferí el monto y subí el comprobante: tus números quedan reservados al enviar la reserva, hasta que el organizador valide tu pago.
+          Tus números quedan reservados hasta que el organizador valide tu pago.
         </p>
 
         <div class="bank-box">
@@ -101,6 +104,11 @@ document.addEventListener('DOMContentLoaded', () => {
           </label>
           <span class="file-field__name" id="pf-receipt-name">${escapeHtml(receiptFile ? receiptFile.name : '')}</span>
         </div>
+
+        <label class="checkbox-field">
+          <input type="checkbox" id="pf-adult" ${adultConfirmed ? 'checked' : ''} />
+          <span>Confirmo que soy mayor de edad</span>
+        </label>
 
         <p class="purchase-error" id="pf-error"></p>
 
@@ -127,6 +135,11 @@ document.addEventListener('DOMContentLoaded', () => {
       errorEl.classList.remove('is-visible')
     })
 
+    document.getElementById('pf-adult').addEventListener('change', (e) => {
+      adultConfirmed = e.target.checked
+      errorEl.classList.remove('is-visible')
+    })
+
     backBtn.addEventListener('click', showFormStep)
 
     document.getElementById('purchase-payment-step').addEventListener('submit', async (e) => {
@@ -139,6 +152,11 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       if (receiptFile.size > MAX_RECEIPT_MB * 1024 * 1024) {
         showError(`El comprobante pesa demasiado (máximo ${MAX_RECEIPT_MB} MB).`)
+        return
+      }
+
+      if (!adultConfirmed) {
+        showError('Confirmá que sos mayor de edad para enviar la reserva.')
         return
       }
 
