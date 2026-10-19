@@ -175,11 +175,6 @@ En la página pública de la rifa, tocar una tarjeta de premio abre un modal con
 imagen (si tiene) y la descripción completa — el mismo patrón de modal que ya se
 usaba para ver el detalle de quién compró un número.
 
-La rifa de ejemplo (la de la moto) también tiene fotos ahora: son 3 ilustraciones
-simples en SVG que armé para esta demo, guardadas en `assets/sample-prizes/`
-(`moto.svg`, `tv.svg`, `electrodomesticos.svg`) — carpeta pensada como algo
-temporal, para reemplazar el día que tengas fotos reales de los premios.
-
 ### Footer en login y en la página de boletos
 
 `login.html` y `rifa.html` (donde se marcan los números) ahora tienen un footer
@@ -190,9 +185,9 @@ simple al final, con link a Inicio y a las tres páginas legales.
 Sección del panel (`me.html`, `js/creator/account.js`) con cuatro botones:
 - **Pedir mis datos**: `GET /usuarios/me/data`, muestra los datos en un modal (personales, bancarios, rifas, compras de créditos y solicitudes) y recién ahí un botón descarga el `.json`.
 - **Solicitar devolución de los créditos**: pide confirmación y manda `POST /requests/devolucion`; el aviso final muestra el código, los créditos devueltos y el monto a reintegrar.
-- **Contactar a soporte**: formulario (motivo + descripción de 10 a 500 caracteres) que manda
+- **Contactar a soporte**: formulario (motivo + descripción de 10 a 1000 caracteres) que manda
   `POST /requests/request` (motivos: SOPORTE, ERROR y OTRO; DEVOLUCION tiene su propio botón).
-- **Desactivar cuenta**: pide confirmación y manda `POST /usuarios/me/desactivar` (sin respuesta). Si sale bien, borra la sesión y lleva a `index.html`.
+- **Desactivar cuenta**: el modal avisa que se cierran automáticamente las rifas abiertas y que hay que atender cada solicitud pendiente (las de "Validar pagos") antes de poder desactivar; "Continuar" (botón rojo, del mismo tamaño que "Cancelar") manda `POST /usuarios/me/desactivar` (sin respuesta). Si sale bien, borra la sesión y lleva a `index.html`; si el backend lo rechaza, la ventana de error muestra el motivo.
 
 ### Panel de control (solo soporte)
 
@@ -204,6 +199,39 @@ Tiene tres bandejas, "Recibidos", "Revisados" y "Todos" (`GET /requests/request/
 recién al entrar a la sección. Los estados del backend son `RECIBIDA` y `RESUELTA`; en pantalla
 `RESUELTA` se muestra como "Revisada". Ocultar la sección es solo visual: el backend debe validar que solo soporte
 pueda usar esos endpoints.
+
+### Errores del servidor
+
+Cuando el backend responde con una excepción (o no hay conexión), `js/api.js` abre sola una
+ventana (`js/common/error-modal.js`, estilos en `css/error-modal.css`) que muestra solo dos cosas:
+un título corto y el mensaje que manda el backend, tal cual llega (`ErrorMessage.message`,
+normalmente en español). Casos particulares:
+
+- El título sale de la excepción (`EXCEPTION_TITLES`, con las del backend en español); si llega
+  una que no está en la tabla, se usa el título del código HTTP. Cuando agregues excepciones
+  nuevas conviene sumarlas ahí, pero funciona igual sin hacerlo.
+- Si falla la validación (`MethodArgumentNotValidException`), el mensaje de Spring es un texto
+  técnico, así que se muestra uno corto. Si el archivo supera el límite de subida
+  (`MaxUploadSizeExceededException`, mensaje de Spring en inglés), se usa el texto propio del 413.
+- En errores 5xx no se muestra el texto del servidor (puede traer datos internos): sale un mensaje
+  genérico. Los textos propios del frontend (`friendlyMessage` en `js/api.js`) son solo de respaldo,
+  para cuando no hay conexión o el servidor no mandó mensaje.
+- Es una capa aparte de `Modal`: si el error ocurre dentro de otro modal (la reserva, una
+  confirmación), ese queda intacto debajo y se puede reintentar. Si ya hay un error abierto no se
+  abre otro.
+- No se abre cuando la sesión venció (ahí se vuelve al login) ni al cargar la página pública de
+  una rifa (que ya muestra su propio mensaje: `silent: true` en `Api.getPublicRaffle`).
+- Los formularios y confirmaciones no repiten el error dentro del modal; solo quedan los
+  mensajes propios del frontend (por ejemplo, "Confirmá que sos mayor de edad").
+
+### Pantalla de carga (prueba)
+
+`me.html` y `rifa.html` arrancan con una pantalla de carga (un círculo girando, `#page-loader`,
+`js/common/page-loader.js` y `css/page-loader.css`) que tapa la página para que no se vea cómo se
+va armando. Se quita cuando la página avisa que ya tiene sus datos (`PageLoader.done()`), pero
+nunca antes de 2 segundos ni después de 3 (contados desde que empieza a cargar la página). Los
+tiempos y el interruptor están en `js/config.js` (`PAGE_LOADER_ENABLED`, `PAGE_LOADER_MIN_MS`,
+`PAGE_LOADER_MAX_MS`); con `PAGE_LOADER_ENABLED = false` desaparece sin tocar nada más.
 
 ### Logos reales de Google y GitHub
 
@@ -223,9 +251,8 @@ terminos.html
 terminos-y-condiciones.html
 privacidad.html
 cookies.html
-icons.svg
 
-assets/sample-prizes/    → imágenes de ejemplo para la rifa de la moto (temporal)
+assets/logo/icon.png     → el ícono del sitio (favicon, PNG), enlazado desde todas las páginas
 
 css/
   tokens.css              → paleta, tipografía, espaciados, radios (variables CSS)
@@ -234,6 +261,8 @@ css/
   buttons.css             → .btn, .btn-primary, .btn-secondary, .back-button
   badges.css              → .badge y sus variantes de color
   modal.css                → el modal genérico (overlay + panel), con su animación de entrada
+  error-modal.css           → la ventana de errores
+  page-loader.css           → la pantalla de carga
   forms.css                 → .field, compartido por el perfil, crear rifa y la reserva
   confirmation.css          → pantalla de "listo ✓" compartida por varios flujos
   legal.css                  → páginas legales (prosa larga)
@@ -255,17 +284,21 @@ js/
                               y las utilidades para pintar datos de forma segura (escapeHtml, safeUrl)
   data/plans.js             → los 3 paquetes de créditos que se muestran en el panel
   common/modal.js           → abrir/cerrar el modal genérico
+  common/error-modal.js     → ventana con el error de una petición (título + mensaje del backend; la abre js/api.js)
+  common/page-loader.js     → pantalla de carga del panel y de la página de la rifa (prueba)
   common/icons.js           → íconos de línea (svg embebido en JS) usados en todo el sitio
   common/render-icons.js    → pinta los <span data-icon="..."> del HTML estático
   common/image-utils.js     → recorta cualquier imagen subida a un cuadrado 1:1
   common/scroll-reveal.js   → animación de aparición al hacer scroll (clase .reveal)
   landing/faq.js            → acordeón de preguntas frecuentes
   auth/login.js             → botón de Google: lleva al backend, que hace el login
-  auth/session.js           → captura el token (#token=...) que devuelve el backend, lo guarda y arma authHeaders()
+  auth/session.js           → captura el token (#token=...) que devuelve el backend, lo guarda
   creator/tabs.js           → cambiar entre las 6 secciones del panel
   creator/state.js          → datos del creador (GET /usuarios/me) compartidos entre las secciones del panel
   creator/profile.js        → cargar y guardar el formulario de perfil
   creator/create-raffle.js  → formulario de publicación (premios con imagen): sube las imágenes y crea la rifa
+  creator/account.js        → sección "Cuenta y privacidad" (datos, devolución, soporte, desactivar cuenta)
+  creator/control-panel.js  → "Panel de control" de soporte (solicitudes de los usuarios)
   creator/payments.js       → las 3 bandejas de reservas + modal de detalle con el comprobante (aceptar / rechazar)
   creator/raffles.js        → saldo de créditos, compra con Mercado Pago (3 pasos + vuelta del pago), tarjetas de "mis rifas"
   raffle/number-grid.js     → trae la rifa del backend según la URL, pinta la grilla y los premios, maneja la selección

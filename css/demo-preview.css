@@ -34,12 +34,6 @@
   display: inline-block;
 }
 
-.demo-card__url {
-  font-size: 0.8rem;
-  color: var(--color-text-faint);
-  font-family: monospace;
-}
-
 .demo-card__content {
   padding: var(--space-6);
 }

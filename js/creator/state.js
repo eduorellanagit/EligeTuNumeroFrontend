@@ -50,16 +50,3 @@ function loadCreatorProfile(force) {
   }
   return creatorProfilePromise
 }
-
-// Mensaje de error en una ventana (usa el modal genérico). Sirve para fallos que no tienen
-// un lugar propio en la pantalla, como aceptar un pago o cerrar una rifa.
-function showErrorModal(message, title) {
-  const html = `
-    <div class="purchase-confirmed">
-      <p>${escapeHtml(message)}</p>
-      <button class="btn btn-primary" id="error-modal-ok" style="margin-top: 20px;">Entendido</button>
-    </div>
-  `
-  Modal.open(title || 'Algo salió mal', html)
-  document.getElementById('error-modal-ok').addEventListener('click', () => Modal.close())
-}

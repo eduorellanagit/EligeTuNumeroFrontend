@@ -42,15 +42,16 @@
 }
 
 .btn-danger {
-  background: var(--color-surface);
-  color: var(--color-danger);
-  border-color: var(--color-danger-bg);
+  background: var(--color-danger);
+  color: #fff;
+  border-color: var(--color-danger);
+  box-shadow: 0 4px 14px rgba(194, 43, 58, 0.22);
 }
 
 .btn-danger:hover {
-  background: var(--color-danger-bg);
-  border-color: var(--color-danger);
+  filter: brightness(0.92);
   transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(194, 43, 58, 0.3);
 }
 
 .btn-block {

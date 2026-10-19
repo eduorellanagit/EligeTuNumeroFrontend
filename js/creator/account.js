@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     { value: 'OTRO', label: 'Otro' },
   ]
   const DESCRIPTION_MIN = 10
-  const DESCRIPTION_MAX = 500
+  const DESCRIPTION_MAX = 1000
 
   function showInfoModal(title, message) {
     Modal.open(
@@ -162,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       openDataModal(await Api.getMyData())
     } catch (err) {
-      showErrorModal(err.message)
+      // La ventana de error ya explica qué pasó (js/api.js).
     } finally {
       button.disabled = false
       button.textContent = label
@@ -189,8 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
     Modal.open(
       'Devolución de créditos',
       `<div class="purchase-confirmed">
-        <p>Vamos a pedir la devolución de tus compras de créditos de los últimos 10 días. ¿Querés continuar?</p>
-        <p class="create-raffle-error" id="refund-error" style="margin-top: 16px;"></p>
+        <p>Vamos a pedir la devolución de tus compras de créditos de los últimos 10 días. Los créditos de esas compras se descuentan de tu saldo. ¿Querés continuar?</p>
         <div class="detail-actions">
           <button class="btn btn-secondary" id="refund-cancel-btn">Cancelar</button>
           <button class="btn btn-primary" id="refund-confirm-btn">Solicitar devolución</button>
@@ -199,22 +198,19 @@ document.addEventListener('DOMContentLoaded', () => {
     )
     const cancelBtn = document.getElementById('refund-cancel-btn')
     const confirmBtn = document.getElementById('refund-confirm-btn')
-    const errorEl = document.getElementById('refund-error')
     cancelBtn.addEventListener('click', () => Modal.close())
     confirmBtn.addEventListener('click', async () => {
       cancelBtn.disabled = true
       confirmBtn.disabled = true
-      errorEl.classList.remove('is-visible')
       try {
         const refund = await Api.requestCreditRefund()
         showInfoModal('Devolución solicitada', refundMessage(refund))
         // La devolución puede cambiar el saldo de créditos.
         if (window.refreshRafflesPanel) window.refreshRafflesPanel()
       } catch (err) {
+        // La ventana de error ya explica qué pasó (js/api.js).
         cancelBtn.disabled = false
         confirmBtn.disabled = false
-        errorEl.textContent = err.message
-        errorEl.classList.add('is-visible')
       }
     })
   }
@@ -266,10 +262,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const code = created && created.codigo ? ` Tu código es ${created.codigo}.` : ''
         showInfoModal('Solicitud enviada', 'Recibimos tu solicitud.' + code)
       } catch (err) {
+        // La ventana de error ya explica qué pasó (js/api.js).
         cancelBtn.disabled = false
         sendBtn.disabled = false
-        errorEl.textContent = err.message
-        errorEl.classList.add('is-visible')
       }
     })
   }
@@ -280,8 +275,11 @@ document.addEventListener('DOMContentLoaded', () => {
       'Desactivar cuenta',
       `<div class="purchase-confirmed">
         <p>¿Estás seguro de que querés desactivar tu cuenta?</p>
-        <p class="create-raffle-error" id="deactivate-error" style="margin-top: 16px;"></p>
-        <div class="detail-actions">
+        <p class="deactivate-note">
+          Al desactivarla, se van a cerrar automáticamente todas tus rifas abiertas. Además, tenés que
+          atender cada solicitud pendiente (en "Validar pagos") antes de poder desactivar la cuenta.
+        </p>
+        <div class="detail-actions detail-actions--equal">
           <button class="btn btn-secondary" id="deactivate-cancel-btn">Cancelar</button>
           <button class="btn btn-danger" id="deactivate-confirm-btn">Continuar</button>
         </div>
@@ -289,19 +287,16 @@ document.addEventListener('DOMContentLoaded', () => {
     )
     const cancelBtn = document.getElementById('deactivate-cancel-btn')
     const confirmBtn = document.getElementById('deactivate-confirm-btn')
-    const errorEl = document.getElementById('deactivate-error')
     cancelBtn.addEventListener('click', () => Modal.close())
     confirmBtn.addEventListener('click', async () => {
       cancelBtn.disabled = true
       confirmBtn.disabled = true
-      errorEl.classList.remove('is-visible')
       try {
         await Api.deactivateAccount()
       } catch (err) {
+        // La ventana de error ya explica qué pasó (por ejemplo, solicitudes sin atender).
         cancelBtn.disabled = false
         confirmBtn.disabled = false
-        errorEl.textContent = err.message
-        errorEl.classList.add('is-visible')
         return
       }
 

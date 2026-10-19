@@ -45,16 +45,6 @@
   gap: var(--space-5);
 }
 
-.navbar__login {
-  font-weight: 700;
-  color: var(--color-text);
-  transition: color 0.15s ease;
-}
-
-.navbar__login:hover {
-  color: var(--color-primary);
-}
-
 @media (max-width: 760px) {
   .navbar__links {
     display: none;

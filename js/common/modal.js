@@ -29,10 +29,6 @@ const Modal = (function () {
     onCloseCallback = onClose || null
   }
 
-  function setBody(html) {
-    if (bodyEl) bodyEl.innerHTML = html
-  }
-
   function close() {
     if (!overlay) return
     overlay.classList.remove('is-open')
@@ -41,5 +37,5 @@ const Modal = (function () {
 
   document.addEventListener('DOMContentLoaded', init)
 
-  return { open, close, setBody }
+  return { open, close }
 })()

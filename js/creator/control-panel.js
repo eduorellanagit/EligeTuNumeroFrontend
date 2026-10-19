@@ -127,17 +127,15 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   }
 
-  async function markReviewed(req, buttons, errorEl) {
+  async function markReviewed(req, buttons) {
     buttons.forEach((b) => b && (b.disabled = true))
-    errorEl.classList.remove('is-visible')
     try {
       await Api.markRequestReviewed(req.id)
       Modal.close()
       await loadAll()
     } catch (err) {
+      // La ventana de error ya explica qué pasó (js/api.js).
       buttons.forEach((b) => b && (b.disabled = false))
-      errorEl.textContent = err.message
-      errorEl.classList.add('is-visible')
     }
   }
 
@@ -172,7 +170,6 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="detail-receipt-box report-description">${escapeHtml(req.description) || 'Sin descripción'}</div>
       </div>
 
-      <p class="create-raffle-error" id="request-error" style="margin-top: 16px;"></p>
       <div class="detail-actions">
         <button class="btn btn-secondary" id="request-close-btn">Cerrar</button>
         ${reviewBtnHTML}
@@ -183,9 +180,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const closeBtn = document.getElementById('request-close-btn')
     const reviewBtn = document.getElementById('request-review-btn')
-    const errorEl = document.getElementById('request-error')
     closeBtn.addEventListener('click', () => Modal.close())
-    if (reviewBtn) reviewBtn.addEventListener('click', () => markReviewed(req, [closeBtn, reviewBtn], errorEl))
+    if (reviewBtn) reviewBtn.addEventListener('click', () => markReviewed(req, [closeBtn, reviewBtn]))
   }
 
   tabButtons.forEach((btn) => {

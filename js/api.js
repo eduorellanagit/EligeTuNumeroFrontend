@@ -34,23 +34,39 @@ function onlyDigits(value) {
 // Errores
 // ---------------------------------------------------------------------------
 
+// extra (opcional): lo que mandó el backend en su ErrorMessage: { exception } (nombre de la clase,
+// sirve para elegir el título de la ventana de error)
 class ApiError extends Error {
-  constructor(status, message) {
+  constructor(status, message, extra) {
     super(message)
     this.name = 'ApiError'
     this.status = status
+    Object.assign(this, extra || {})
   }
 }
 
-// El backend responde con códigos HTTP; acá se traducen a algo que entienda una persona.
-// Si el servidor mandó un detalle propio (400 y 409), se usa ese.
+// Abre la ventana con el detalle del error (js/common/error-modal.js), si la página la trae.
+function reportApiError(err) {
+  if (typeof ErrorModal !== 'undefined') ErrorModal.open(err)
+}
+
+// El mensaje que se muestra es el que manda el backend, tal cual llega (normalmente en español).
+// Estos textos propios son solo de respaldo: sirven cuando no hay conexión o cuando el servidor
+// no mandó ningún mensaje (por ejemplo una página de error que no es JSON).
 function friendlyMessage(status, detail) {
   const clean = typeof detail === 'string' ? detail.trim() : ''
+  // Errores del servidor (5xx): nunca se muestra su texto, puede traer datos internos.
+  if (status >= 500) {
+    return status === 502
+      ? 'No pudimos comunicarnos con Mercado Pago. Probá de nuevo en un rato.'
+      : 'Algo salió mal de nuestro lado. Probá de nuevo en unos minutos.'
+  }
+  if (clean) return clean
   switch (status) {
     case 0:
       return 'No pudimos conectar con el servidor. Revisá tu conexión y probá de nuevo.'
     case 400:
-      return clean || 'Revisá los datos ingresados e intentá de nuevo.'
+      return 'Revisá los datos ingresados e intentá de nuevo.'
     case 401:
       return 'Tu sesión venció. Iniciá sesión de nuevo.'
     case 402:
@@ -58,19 +74,15 @@ function friendlyMessage(status, detail) {
     case 403:
       return 'No tenés permiso para hacer esto.'
     case 404:
-      return clean || 'No encontramos lo que buscabas.'
+      return 'No encontramos lo que buscabas.'
     case 409:
-      return clean || 'Algo cambió mientras tanto y la acción ya no es posible. Actualizá la página e intentá de nuevo.'
+      return 'Algo cambió mientras tanto y la acción ya no es posible. Actualizá la página e intentá de nuevo.'
     case 413:
       return 'El archivo es demasiado pesado (máximo 8 MB).'
     case 415:
       return 'Ese tipo de archivo no está permitido.'
-    case 502:
-      return 'No pudimos comunicarnos con Mercado Pago. Probá de nuevo en un rato.'
     default:
-      return status >= 500
-        ? 'Algo salió mal de nuestro lado. Probá de nuevo en unos minutos.'
-        : clean || 'No se pudo completar la acción.'
+      return 'No se pudo completar la acción.'
   }
 }
 
@@ -85,9 +97,10 @@ function tunnelHeaders() {
   return /ngrok/i.test(API_BASE_URL) ? { 'ngrok-skip-browser-warning': 'true' } : {}
 }
 
-// options: { method, body (objeto → JSON), formData, auth (true = manda el token) }
+// options: { method, body (objeto → JSON), formData, auth (true = manda el token),
+//            silent (true = no abre la ventana de error: la pantalla ya muestra el fallo ella misma) }
 async function apiRequest(path, options) {
-  const { method = 'GET', body, formData, auth = false } = options || {}
+  const { method = 'GET', body, formData, auth = false, silent = false } = options || {}
   const headers = { ...tunnelHeaders() }
 
   if (auth) {
@@ -112,23 +125,42 @@ async function apiRequest(path, options) {
   try {
     response = await fetch(API_BASE_URL + path, { method, headers, body: payload })
   } catch (e) {
-    throw new ApiError(0, friendlyMessage(0))
+    const offline = new ApiError(0, friendlyMessage(0))
+    if (!silent) reportApiError(offline)
+    throw offline
   }
 
   if (!response.ok) {
-    // Token vencido o inválido: se borra la sesión y se vuelve al login.
-    if (auth && response.status === 401) {
+    // Token vencido o inválido: se borra la sesión y se vuelve al login (sin ventana de error).
+    const sessionExpired = auth && response.status === 401
+    if (sessionExpired) {
       logoutAndRedirect('expired=1')
     }
 
     let detail = ''
+    let extra = {}
     try {
       const data = await response.json()
       detail = data.detail || data.message || ''
+      extra = { exception: data.exception || '' }
     } catch (e) {
-      // la respuesta no traía JSON; se usa el mensaje por defecto del código
+      // la respuesta no traía JSON; se usa el mensaje de respaldo del código
     }
-    throw new ApiError(response.status, friendlyMessage(response.status, detail))
+
+    // Errores de validación (@Valid): el "message" del backend es un texto técnico de Spring, así
+    // que se muestra un mensaje corto.
+    if (extra.exception === 'MethodArgumentNotValidException') {
+      detail = 'Hay datos que no son válidos. Revisá lo que ingresaste e intentá de nuevo.'
+    }
+    // Archivo que supera el límite de subida: el mensaje lo arma Spring (en inglés), no el backend.
+    // Se usa el texto propio de respaldo para el 413.
+    if (extra.exception === 'MaxUploadSizeExceededException') {
+      detail = ''
+    }
+
+    const apiError = new ApiError(response.status, friendlyMessage(response.status, detail), extra)
+    if (!silent && !sessionExpired) reportApiError(apiError)
+    throw apiError
   }
 
   if (response.status === 204) return null
@@ -159,7 +191,7 @@ const Api = {
 
   // --- Página pública de una rifa y reserva de números (no necesitan sesión)
   getPublicRaffle: (ownerSlug, raffleSlug) =>
-    apiRequest('/rifas/' + encodeURIComponent(ownerSlug) + '/' + encodeURIComponent(raffleSlug)),
+    apiRequest('/rifas/' + encodeURIComponent(ownerSlug) + '/' + encodeURIComponent(raffleSlug), { silent: true }),
 
   // datos = { numeros, nombre, apellido, dni, whatsapp, direccion }; comprobante = File
   reserve: (raffleId, datos, comprobante) => {

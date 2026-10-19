@@ -291,7 +291,8 @@ document.addEventListener('DOMContentLoaded', () => {
       renderPrizes()
       prizesContainer.scrollLeft = 0
     } catch (err) {
-      showError(err.message)
+      // Los fallos de la API los explica la ventana de error (js/api.js); acá solo los demás.
+      if (!(err instanceof ApiError)) showError(err.message)
     } finally {
       submitBtn.textContent = submitLabel
       refreshCreditsWarning()
@@ -299,10 +300,11 @@ document.addEventListener('DOMContentLoaded', () => {
   })
 
   function showCreatedSuccess(ownerSlug, raffleSlug, title) {
+    // Mismo link que abre "Ver página pública": rifa.html junto a la página actual, sea que se
+    // sirva como /me.html o como /me (Cloudflare quita el .html), sin arrastrar nada más de la ruta.
     const link =
-      window.location.origin +
-      window.location.pathname.replace('me.html', '') +
-      'rifa.html?creador=' +
+      new URL('rifa.html', window.location.href).href.split(/[?#]/)[0] +
+      '?creador=' +
       encodeURIComponent(ownerSlug) +
       '&rifa=' +
       encodeURIComponent(raffleSlug)

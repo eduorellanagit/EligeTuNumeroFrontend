@@ -77,6 +77,5 @@ function enhanceCustomSelects(root) {
   })
 }
 
-window.enhanceCustomSelects = enhanceCustomSelects
 
 document.addEventListener('DOMContentLoaded', () => enhanceCustomSelects(document))

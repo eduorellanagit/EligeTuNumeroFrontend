@@ -185,11 +185,12 @@ document.addEventListener('DOMContentLoaded', () => {
         backBtn.disabled = false
         submitBtn.textContent = 'Enviar reserva'
 
+        // Los fallos de la API los explica la ventana de error (js/api.js).
         if (err.status === 409 || err.status === 404) {
           // Alguien se adelantó o la rifa cambió: se actualiza la grilla de fondo.
-          showError(err.message + ' Cerrá esta ventana y elegí otros números.')
+          showError('Cerrá esta ventana y elegí otros números.')
           if (window.reloadRaffle) window.reloadRaffle()
-        } else {
+        } else if (!(err instanceof ApiError)) {
           showError(err.message)
         }
       }

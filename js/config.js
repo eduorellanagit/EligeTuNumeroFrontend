@@ -17,3 +17,11 @@ const API_BASE_URL = 'https://bagging-exuberant-cascade.ngrok-free.dev/api/v1'
 // se termine, alcanza con poner esto en false para que desaparezcan todos los
 // carteles relacionados (landing, login) sin tocar el HTML.
 const PROMO_FREE_CREDIT_ACTIVE = true
+
+// Pantalla de carga (círculo girando) que tapa el panel y la página de la rifa mientras se piden
+// los datos, para que no se vea cómo se va armando todo. Dura entre PAGE_LOADER_MIN_MS y
+// PAGE_LOADER_MAX_MS: si los datos llegan antes del mínimo, espera; si tardan más del máximo,
+// se muestra lo que haya. Es una prueba: poniendo PAGE_LOADER_ENABLED en false desaparece.
+const PAGE_LOADER_ENABLED = true
+const PAGE_LOADER_MIN_MS = 2000
+const PAGE_LOADER_MAX_MS = 3000

@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       savedNote.style.display = 'inline'
       if (window.refreshCreateRaffleCredits) window.refreshCreateRaffleCredits()
     } catch (err) {
-      showError(err.message)
+      // La ventana de error ya explica qué pasó (js/api.js).
     } finally {
       submitBtn.disabled = false
     }

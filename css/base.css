@@ -60,12 +60,6 @@ input, textarea, select {
   outline-offset: 2px;
 }
 
-.container {
-  max-width: var(--container);
-  margin: 0 auto;
-  padding: 0 var(--space-5);
-}
-
 .container-narrow {
   max-width: var(--container-narrow);
   margin: 0 auto;

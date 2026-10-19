@@ -79,6 +79,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   if (!creatorSlug || !raffleSlug) {
     showRaffleMessage('Este link no es válido', 'Pedile al organizador que te pase el link completo de la rifa.')
+    PageLoader.done()
     return
   }
 
@@ -240,7 +241,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     })
   }
 
-  window.toggleNumber = toggleNumber
   function toggleNumber(number) {
     if (!isRaffleActive()) return
     const entry = currentRaffle.numbers.find((n) => n.number === number)
@@ -277,9 +277,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       err.status === 404 ? 'No encontramos esta rifa' : 'No pudimos cargar la rifa',
       err.status === 404 ? 'Revisá que el link esté completo o pedile uno nuevo al organizador.' : err.message
     )
+    PageLoader.done()
     return
   }
   renderAll()
+  PageLoader.done()
 })
 
 function updateFloatBar() {

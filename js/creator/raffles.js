@@ -134,7 +134,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       statusEl.textContent = 'Te llevamos a Mercado Pago para completar el pago...'
       window.location.href = checkoutUrl
     } catch (err) {
-      statusEl.textContent = err.message
+      // Si falló la API, la ventana de error ya explica qué pasó (js/api.js).
+      statusEl.textContent = err instanceof ApiError ? '' : err.message
       confirmBtn.disabled = false
       backBtn.disabled = false
     }
@@ -318,8 +319,8 @@ document.addEventListener('DOMContentLoaded', async () => {
           await Api.closeRaffle(btn.dataset.closeRaffle)
           await loadRaffles()
         } catch (err) {
+          // La ventana de error ya explica qué pasó (js/api.js).
           btn.disabled = false
-          showErrorModal(err.message, 'No se pudo cerrar la rifa')
         }
       })
     })
@@ -346,7 +347,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  window.renderMyRaffles = renderRaffles
   window.refreshRafflesPanel = async function () {
     try {
       await loadCreatorProfile(true)
@@ -368,6 +368,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     creditContainer.innerHTML = `<p class="validator-empty">${escapeHtml(err.message)}</p>`
   }
   await loadRaffles()
+  PageLoader.done()
 
   const params = new URLSearchParams(window.location.search)
 

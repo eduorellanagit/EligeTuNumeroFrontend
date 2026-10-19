@@ -12,13 +12,15 @@
     rel="stylesheet"
   />
   
-  <link rel="icon" type="image/svg+xml" href="assets/logo/logito.svg">
+  <link rel="icon" type="image/png" href="assets/logo/icon.png">
 
   <link rel="stylesheet" href="css/tokens.css" />
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/animations.css" />
   <link rel="stylesheet" href="css/buttons.css" />
   <link rel="stylesheet" href="css/modal.css" />
+  <link rel="stylesheet" href="css/error-modal.css" />
+  <link rel="stylesheet" href="css/page-loader.css" />
   <link rel="stylesheet" href="css/forms.css" />
   <link rel="stylesheet" href="css/public-raffle.css" />
   <link rel="stylesheet" href="css/carousel.css" />
@@ -28,6 +30,13 @@
   <link rel="stylesheet" href="css/simple-footer.css" />
 </head>
 <body>
+
+  <!-- Pantalla de carga: se quita sola (js/common/page-loader.js) -->
+  <div class="page-loader" id="page-loader" role="status" aria-live="polite">
+    <div class="page-loader__spinner" aria-hidden="true"></div>
+    <p class="page-loader__text">Cargando...</p>
+  </div>
+
 
   <div class="raffle-page">
     <header class="raffle-topbar">
@@ -109,6 +118,8 @@
 
   <script src="js/config.js"></script>
   <script src="js/auth/session.js"></script>
+  <script src="js/common/page-loader.js"></script>
+  <script src="js/common/error-modal.js"></script>
   <script src="js/api.js"></script>
   <script src="js/common/icons.js"></script>
   <script src="js/common/render-icons.js"></script>

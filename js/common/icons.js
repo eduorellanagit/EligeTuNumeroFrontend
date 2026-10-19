@@ -1,5 +1,5 @@
-// Mismo dibujo que icons.svg, pero como texto embebido: así funcionan los
-// íconos aunque la página se abra directo desde el disco (sin servidor).
+// Íconos de línea como texto embebido: así funcionan aunque la página se abra
+// directo desde el disco (sin servidor).
 // Uso:
 //   1) En HTML estático: <span data-icon="user"></span> y que lo pinte
 //      render-icons.js solo.

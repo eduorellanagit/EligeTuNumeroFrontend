@@ -120,9 +120,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Aceptar o rechazar. Si sale bien, se cierra el modal y se actualizan bandejas y rifas
   // (aceptar cambia cuántos números figuran como vendidos).
-  async function decide(req, action, buttons, errorEl) {
+  async function decide(req, action, buttons) {
     buttons.forEach((b) => b && (b.disabled = true))
-    errorEl.classList.remove('is-visible')
     try {
       if (action === 'accept') await Api.acceptReservation(req.id)
       else await Api.rejectReservation(req.id)
@@ -131,9 +130,8 @@ document.addEventListener('DOMContentLoaded', () => {
       await loadAll()
       if (window.refreshRafflesPanel) window.refreshRafflesPanel()
     } catch (err) {
+      // La ventana de error ya explica qué pasó (js/api.js).
       buttons.forEach((b) => b && (b.disabled = false))
-      errorEl.textContent = err.message
-      errorEl.classList.add('is-visible')
     }
   }
 
@@ -158,7 +156,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const actionsHTML =
       activeTab === 'pendientes'
         ? `
-        <p class="create-raffle-error" id="detail-error" style="margin-top: 16px;"></p>
         <div class="detail-actions">
           <button class="btn btn-secondary" id="detail-reject-btn">Rechazar pago</button>
           <button class="btn btn-primary" id="detail-accept-btn">Aceptar pago</button>
@@ -207,9 +204,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const acceptBtn = document.getElementById('detail-accept-btn')
     const rejectBtn = document.getElementById('detail-reject-btn')
-    const errorEl = document.getElementById('detail-error')
-    if (acceptBtn) acceptBtn.addEventListener('click', () => decide(req, 'accept', [acceptBtn, rejectBtn], errorEl))
-    if (rejectBtn) rejectBtn.addEventListener('click', () => decide(req, 'reject', [acceptBtn, rejectBtn], errorEl))
+    if (acceptBtn) acceptBtn.addEventListener('click', () => decide(req, 'accept', [acceptBtn, rejectBtn]))
+    if (rejectBtn) rejectBtn.addEventListener('click', () => decide(req, 'reject', [acceptBtn, rejectBtn]))
   }
 
   tabButtons.forEach((btn) => {
@@ -222,8 +218,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Las 3 bandejas se piden solo al entrar a "Validar pagos" (y cada vez que se entra, para ver las reservas nuevas).
   const paymentsTab = document.querySelector('.sidebar__tab[data-tab="pagos"]')
   if (paymentsTab) paymentsTab.addEventListener('click', loadAll)
-
-  window.refreshPaymentsPanel = loadAll
 
   // No se pide nada al cargar la página: las bandejas se piden recién al entrar a "Validar pagos".
   render()

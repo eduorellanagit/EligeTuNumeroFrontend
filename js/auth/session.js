@@ -22,13 +22,6 @@ function clearAuthToken() {
   localStorage.removeItem(TOKEN_KEY)
 }
 
-// Headers listos para pegarle a cualquier endpoint de /api/v1/ que necesite
-// sesión. Uso: fetch(url, { headers: { ...authHeaders() } })
-function authHeaders() {
-  const token = getAuthToken()
-  return token ? { Authorization: 'Bearer ' + token } : {}
-}
-
 // Borra la sesión y vuelve al login (por ejemplo, cuando el token venció).
 function logoutAndRedirect(query) {
   clearAuthToken()

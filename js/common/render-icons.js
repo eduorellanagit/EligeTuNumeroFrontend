@@ -7,6 +7,5 @@ function renderIconsIn(root) {
     if (Icons[key]) el.innerHTML = Icons[key]
   })
 }
-window.renderIconsIn = renderIconsIn
 
 document.addEventListener('DOMContentLoaded', () => renderIconsIn(document))
