@@ -53,6 +53,15 @@
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
+/* La descripción de cada premio no muestra la barra de desplazamiento */
+.field textarea[data-prize-field] {
+  scrollbar-width: none;
+}
+
+.field textarea[data-prize-field]::-webkit-scrollbar {
+  display: none;
+}
+
 .field textarea:hover {
   border-color: #C7D0E8;
 }

@@ -156,13 +156,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const html = `
       <div class="detail-grid detail-grid--two">
         ${detailItem('Código', req.code)}
-        ${detailItem('Id', req.id)}
-        ${detailItem('Id del usuario', req.userId)}
         ${detailItem('Tipo', req.type)}
         ${detailItem('Email', req.email, true)}
-        ${detailItem('Estado', req.status)}
+        ${detailItem('Id', req.id)}
+        ${detailItem('Id del usuario', req.userId)}
         ${detailItem('Fecha de creación', req.createdAt)}
-        ${detailItem('Última actualización', req.updatedAt, true)}
+        ${detailItem('Última actualización', req.updatedAt)}
+        ${detailItem('Estado', req.status, true)}
       </div>
 
       <div class="detail-receipt">

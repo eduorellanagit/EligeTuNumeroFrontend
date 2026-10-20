@@ -20,7 +20,11 @@
   width: 100%;
   max-width: 560px;
   max-height: 88vh;
-  overflow-y: auto;
+  /* El panel recorta las esquinas redondeadas y solo el cuerpo se desplaza, así la barra
+     de scroll no tapa el borde de las esquinas de la derecha. */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   box-shadow: var(--shadow-lg);
   animation: modalPanelIn 0.22s ease both;
 }
@@ -30,8 +34,7 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--space-5) var(--space-6) var(--space-3);
-  position: sticky;
-  top: 0;
+  flex-shrink: 0;
   background: var(--color-surface);
 }
 
@@ -60,4 +63,6 @@
 
 .modal-body {
   padding: 0 var(--space-6) var(--space-6);
+  overflow-y: auto;
+  min-height: 0;
 }
