@@ -93,7 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
           ['WhatsApp', dataValue(data.whatsapp)],
           ['Email', dataValue(data.email)],
           ['Inicio de sesión con', dataEnum(data.provider)],
-          ['Enlace de tus rifas', dataValue(data.slug)],
           ['Cuenta creada', dataDate(data.creadoEn)],
           ['Créditos disponibles', dataValue(data.creditosDisponibles)],
         ])}
@@ -111,7 +110,6 @@ document.addEventListener('DOMContentLoaded', () => {
           data.listRaffle,
           (r) => [
             ['Título', dataValue(r.titulo)],
-            ['Enlace', dataValue(r.slug)],
             ['Estado', dataEnum(r.raffleStatus)],
             ['Creada', dataDate(r.creadoEn)],
             ['Precio por número', dataMoney(r.precioNumero)],

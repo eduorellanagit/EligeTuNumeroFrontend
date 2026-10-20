@@ -145,7 +145,6 @@ document.addEventListener('DOMContentLoaded', async () => {
           ${prize.image ? `<img class="prize-card__thumb" src="${escapeHtml(prize.image)}" alt="" />` : ''}
           <span class="prize-card__place">${escapeHtml(prize.place)}</span>
           <h3>${escapeHtml(prize.title)}</h3>
-          <p>${escapeHtml(prize.description)}</p>
         </button>
       `
       )
