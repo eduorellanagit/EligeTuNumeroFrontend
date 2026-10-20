@@ -38,23 +38,23 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="purchase-grid">
           <label class="field">
             <span>Nombre</span>
-            <input id="pf-firstName" required maxlength="120" value="${escapeHtml(formData.firstName)}" />
+            <input id="pf-firstName" required maxlength="120" placeholder="Ej: María" value="${escapeHtml(formData.firstName)}" />
           </label>
           <label class="field">
             <span>Apellido</span>
-            <input id="pf-lastName" required maxlength="120" value="${escapeHtml(formData.lastName)}" />
+            <input id="pf-lastName" required maxlength="120" placeholder="Ej: González" value="${escapeHtml(formData.lastName)}" />
           </label>
           <label class="field">
             <span>CUIL / DNI</span>
-            <input id="pf-dni" required maxlength="20" value="${escapeHtml(formData.dni)}" />
+            <input id="pf-dni" required maxlength="20" placeholder="Ej: 34567890" value="${escapeHtml(formData.dni)}" />
           </label>
           <label class="field">
             <span>WhatsApp</span>
-            <input id="pf-whatsapp" required maxlength="30" pattern="\\+?[\\d\\s()\\-]{8,30}" title="Ejemplo: +54 9 381 555-1234" value="${escapeHtml(formData.whatsapp)}" />
+            <input id="pf-whatsapp" required maxlength="30" placeholder="Ej: +54 9 381 555-1234" pattern="\\+?[\\d\\s()\\-]{8,30}" title="Ejemplo: +54 9 381 555-1234" value="${escapeHtml(formData.whatsapp)}" />
           </label>
           <label class="field field--full">
             <span>Dirección</span>
-            <input id="pf-address" required maxlength="200" value="${escapeHtml(formData.address)}" />
+            <input id="pf-address" required maxlength="200" placeholder="Ej: Av. Belgrano 1234, San Miguel de Tucumán" value="${escapeHtml(formData.address)}" />
           </label>
         </div>
 

@@ -21,10 +21,23 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 2px var(--space-3);
 }
 
 .profile-form__readonly-row span {
   color: var(--color-text-faint);
+  flex-shrink: 0;
+}
+
+/* Emails largos: letra más chica y, si aun así no entran, bajan de línea sin cortar palabras raro */
+.profile-form__readonly-row strong {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.profile-form__readonly-row strong.is-long {
+  font-size: 0.85rem;
 }
 
 .profile-form__grid {

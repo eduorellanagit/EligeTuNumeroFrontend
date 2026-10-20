@@ -187,3 +187,17 @@
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
+
+/* Detalle de solicitudes: siempre de a dos por fila (también en celular); lo largo ocupa la fila entera */
+.detail-grid--two {
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3) var(--space-4);
+}
+
+.detail-grid--two .detail-grid__full {
+  grid-column: 1 / -1;
+}
+
+.detail-grid--two p {
+  overflow-wrap: anywhere;
+}

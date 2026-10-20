@@ -97,11 +97,11 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
           <label class="field">
             <span>Título del premio</span>
-            <input data-prize-field="title" data-index="${idx}" maxlength="120" value="${escapeHtml(prize.title)}" />
+            <input data-prize-field="title" data-index="${idx}" maxlength="120" placeholder="Ej: Moto 110cc 0km" value="${escapeHtml(prize.title)}" />
           </label>
           <label class="field">
             <span>Descripción</span>
-            <textarea data-prize-field="description" data-index="${idx}" maxlength="500">${escapeHtml(prize.description)}</textarea>
+            <textarea data-prize-field="description" data-index="${idx}" maxlength="500" placeholder="Ej: Moto nueva, con papeles al día y service incluido.">${escapeHtml(prize.description)}</textarea>
           </label>
           <div class="field">
             <span class="field-label-with-help">

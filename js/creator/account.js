@@ -224,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
       `<div class="support-form">
         <label class="field">
           <span>Motivo</span>
-          <select id="support-type">${options}</select>
+          <select id="support-type" data-custom-select>${options}</select>
         </label>
         <label class="field" style="margin-top: 16px;">
           <span>Descripción (entre ${DESCRIPTION_MIN} y ${DESCRIPTION_MAX} caracteres)</span>
@@ -237,6 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
       </div>`
     )
+    enhanceCustomSelects(document.querySelector('.support-form'))
     const typeEl = document.getElementById('support-type')
     const descEl = document.getElementById('support-description')
     const errorEl = document.getElementById('support-error')

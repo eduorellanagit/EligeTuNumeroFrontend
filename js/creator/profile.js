@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   function fillForm() {
     emailField.textContent = creatorProfile.email
+    emailField.classList.toggle('is-long', creatorProfile.email.length > 20)
     providerField.textContent = creatorProfile.authProvider
     nameInput.value = creatorProfile.name
     dniInput.value = creatorProfile.dni

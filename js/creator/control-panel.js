@@ -139,9 +139,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function detailItem(label, value) {
+  function detailItem(label, value, full) {
     return `
-        <div>
+        <div${full ? ' class="detail-grid__full"' : ''}>
           <span class="detail-label">${label}</span>
           <p>${escapeHtml(value) || '—'}</p>
         </div>`
@@ -154,15 +154,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const reviewBtnHTML = isReviewed(req) ? '' : '<button class="btn btn-primary" id="request-review-btn">Revisado</button>'
 
     const html = `
-      <div class="detail-grid">
+      <div class="detail-grid detail-grid--two">
         ${detailItem('Código', req.code)}
         ${detailItem('Id', req.id)}
         ${detailItem('Id del usuario', req.userId)}
-        ${detailItem('Email', req.email)}
         ${detailItem('Tipo', req.type)}
+        ${detailItem('Email', req.email, true)}
         ${detailItem('Estado', req.status)}
         ${detailItem('Fecha de creación', req.createdAt)}
-        ${detailItem('Última actualización', req.updatedAt)}
+        ${detailItem('Última actualización', req.updatedAt, true)}
       </div>
 
       <div class="detail-receipt">
