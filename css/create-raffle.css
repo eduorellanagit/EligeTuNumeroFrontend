@@ -28,7 +28,7 @@
 
 .form-card__hint--help {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 6px;
   margin-top: 0;
 }
@@ -37,7 +37,6 @@
   flex: none;
   width: 14px;
   height: 14px;
-  margin-top: 2px;
 }
 
 .field textarea {

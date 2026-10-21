@@ -99,8 +99,7 @@ porque el navegador no deja que una página local le hable a la API.
   Los dos valores son los *slugs* que genera el backend (el del creador y el de la
   rifa); el link completo te lo da el panel al publicar. Los datos se piden a
   `GET /rifas/{creador}/{rifa}`.
-- `terminos-y-condiciones.html`, `privacidad.html` y `cookies.html` — páginas legales, por ahora solo con el título (el texto final se carga después).
-- `terminos.html` — versión anterior de los términos y condiciones; ya no está linkeada desde ningún lado.
+- `terminos-y-condiciones.html`, `privacidad.html` y `cookies.html` — páginas legales con el texto v1.0 (vigente desde el 01/11/2026), con índice de secciones; `cookies.html` tiene la política de cookies v1.0.
 
 Desde el panel del creador (`me.html` → "Mis rifas y créditos"), cada rifa activa
 tiene un link "Ver página pública ↗" que abre `rifa.html` con esos datos, **en la
@@ -156,9 +155,7 @@ puede rechazar directamente, sin justificar por qué.
 
 ### Términos y condiciones
 
-Página `terminos.html` (versión anterior, hoy sin links) con los términos de servicio y una explicación breve
-de privacidad de datos, escrita para este modelo de negocio puntual (quién es
-responsable de qué, cómo se usan el DNI/CBU/WhatsApp que se piden, etc.). Los
+Los textos están en `terminos-y-condiciones.html` y `privacidad.html` (HTML escrito a mano a partir de los documentos v1.0; para actualizarlos se edita la sección correspondiente y la fecha de vigencia). En los términos, el botón de arrepentimiento de la cláusula 4.6 lleva a `me.html?tab=cuenta` (el panel abre "Cuenta y privacidad"). Los
 footers de la landing, `login.html` y `rifa.html` ahora linkean a tres páginas separadas:
 Términos y condiciones, Privacidad de uso y Política de cookies (vacías por ahora).
 
@@ -224,6 +221,17 @@ normalmente en español). Casos particulares:
 - Los formularios y confirmaciones no repiten el error dentro del modal; solo quedan los
   mensajes propios del frontend (por ejemplo, "Confirmá que sos mayor de edad").
 
+### SEO
+
+Todas las páginas tienen `<title>` y descripción propios. Las públicas (inicio, login, rifa y
+las tres legales) suman link canónico y etiquetas Open Graph/Twitter (vista previa al compartir
+el link) con el dominio `https://eligetunumero.com`; el inicio agrega datos estructurados
+(JSON-LD de Organization y WebSite). `me.html` lleva `noindex`.
+En `rifa.html` el título, la descripción, el canónico y la imagen (la del primer premio) se
+completan con los datos de la rifa (`updateSeoTags` en `js/raffle/number-grid.js`). Además hay
+`robots.txt` y `sitemap.xml` en la raíz. Si cambia el dominio, hay que actualizarlo en esas
+etiquetas y en ambos archivos.
+
 ### Pantalla de carga (prueba)
 
 `me.html` y `rifa.html` arrancan con una pantalla de carga (un círculo girando, `#page-loader`,
@@ -247,7 +255,6 @@ index.html
 login.html
 me.html
 rifa.html
-terminos.html
 terminos-y-condiciones.html
 privacidad.html
 cookies.html

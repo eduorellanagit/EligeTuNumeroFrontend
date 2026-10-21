@@ -372,6 +372,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const params = new URLSearchParams(window.location.search)
 
+  // me.html?tab=cuenta (por ejemplo, desde los Términos y condiciones) abre esa sección del panel.
+  const tabParam = params.get('tab')
+  if (tabParam) {
+    const tabBtn = document.querySelector(`.sidebar__tab[data-tab="${CSS.escape(tabParam)}"]`)
+    if (tabBtn && !tabBtn.hidden) tabBtn.click()
+  }
+
   // Volvemos de Mercado Pago: se muestra el resultado y se limpia la URL.
   const paymentResult = params.get('pago')
   if (paymentResult) {

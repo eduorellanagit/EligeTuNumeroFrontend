@@ -56,6 +56,12 @@
   font-size: 2rem;
 }
 
+@media (max-width: 560px) {
+  .raffle-header h1 {
+    font-size: calc(2rem - 1px);
+  }
+}
+
 /* La descripción ocupa todo el ancho, en una fila propia debajo del título y la cuenta regresiva */
 .raffle-header__description {
   flex: 0 0 100%;

@@ -16,9 +16,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function showInfoModal(title, message) {
     Modal.open(
       title,
-      `<div class="purchase-confirmed">
+      `<div class="modal-message">
         <p>${escapeHtml(message)}</p>
-        <button class="btn btn-primary" id="info-modal-ok" style="margin-top: 20px;">Entendido</button>
+        <button class="btn btn-primary btn-block" id="info-modal-ok">Entendido</button>
       </div>`
     )
     document.getElementById('info-modal-ok').addEventListener('click', () => Modal.close())
@@ -186,11 +186,11 @@ document.addEventListener('DOMContentLoaded', () => {
   function openRefundModal() {
     Modal.open(
       'Devolución de créditos',
-      `<div class="purchase-confirmed">
+      `<div class="modal-message">
         <p>Vamos a pedir la devolución de tus compras de créditos de los últimos 10 días. Los créditos de esas compras se descuentan de tu saldo. ¿Querés continuar?</p>
-        <div class="detail-actions">
+        <div class="detail-actions detail-actions--equal">
           <button class="btn btn-secondary" id="refund-cancel-btn">Cancelar</button>
-          <button class="btn btn-primary" id="refund-confirm-btn">Solicitar devolución</button>
+          <button class="btn btn-primary" id="refund-confirm-btn">Continuar</button>
         </div>
       </div>`
     )
@@ -258,8 +258,8 @@ document.addEventListener('DOMContentLoaded', () => {
       sendBtn.disabled = true
       try {
         const created = await Api.createRequest({ requestsType: typeEl.value, description })
-        const code = created && created.codigo ? ` Tu código es ${created.codigo}.` : ''
-        showInfoModal('Solicitud enviada', 'Recibimos tu solicitud.' + code)
+        const code = created && created.codigo ? ` Su código es ${created.codigo}.` : ''
+        showInfoModal('Solicitud enviada', 'La solicitud fue enviada con éxito.' + code)
       } catch (err) {
         // La ventana de error ya explica qué pasó (js/api.js).
         cancelBtn.disabled = false
@@ -272,8 +272,8 @@ document.addEventListener('DOMContentLoaded', () => {
   function openDeactivateModal() {
     Modal.open(
       'Desactivar cuenta',
-      `<div class="purchase-confirmed">
-        <p>¿Estás seguro de que querés desactivar tu cuenta?</p>
+      `<div class="modal-message">
+        <p>¿Estás seguro de que deseas continuar con la desactivación de su cuenta?</p>
         <p class="deactivate-note">
           Al desactivarla, se van a cerrar automáticamente todas tus rifas abiertas. Además, tenés que
           atender cada solicitud pendiente (en "Validar pagos") antes de poder desactivar la cuenta.
@@ -304,9 +304,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const goHome = () => window.location.replace('index.html')
       Modal.open(
         'Cuenta desactivada',
-        `<div class="purchase-confirmed">
+        `<div class="modal-message">
           <p>Tu cuenta fue desactivada.</p>
-          <button class="btn btn-primary" id="deactivate-done-btn" style="margin-top: 20px;">Listo</button>
+          <button class="btn btn-primary btn-block" id="deactivate-done-btn">Listo</button>
         </div>`,
         goHome
       )

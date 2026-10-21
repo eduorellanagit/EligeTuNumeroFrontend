@@ -83,3 +83,19 @@
 .legal-nav a:hover {
   color: var(--color-primary);
 }
+
+.legal-section {
+  scroll-margin-top: var(--space-5);
+}
+
+.legal-section h3 {
+  font-size: 1.05rem;
+  margin: var(--space-5) 0 var(--space-2);
+}
+
+.legal-section a,
+.legal-intro a {
+  color: var(--color-primary);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}

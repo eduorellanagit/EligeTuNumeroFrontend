@@ -85,12 +85,38 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   headerEl.innerHTML = '<p class="raffle-header__description">Cargando rifa...</p>'
 
+  // SEO / redes: título, descripción, link canónico e imagen de la rifa en las etiquetas <meta>
+  // (para buscadores y para la vista previa al compartir el link). Solo con lo que ya es público.
+  function updateSeoTags() {
+    const title = currentRaffle.title + ' — EligeTuNumero'
+    const description =
+      'Elegí tu número en "' + currentRaffle.title + '". ' +
+      String(currentRaffle.description || '').replace(/\s+/g, ' ').trim().slice(0, 140)
+    const url =
+      new URL('rifa.html', window.location.href).href.split(/[?#]/)[0] +
+      '?creador=' + encodeURIComponent(creatorSlug) + '&rifa=' + encodeURIComponent(raffleSlug)
+    const firstImage = (currentRaffle.prizes.find((p) => p.image) || {}).image
+    const set = (id, attr, value) => {
+      const el = document.getElementById(id)
+      if (el && value) el.setAttribute(attr, value)
+    }
+    set('meta-description', 'content', description)
+    set('meta-canonical', 'href', url)
+    set('meta-og-title', 'content', title)
+    set('meta-og-description', 'content', description)
+    set('meta-og-url', 'content', url)
+    set('meta-og-image', 'content', safeUrl(firstImage || ''))
+    set('meta-tw-title', 'content', title)
+    set('meta-tw-description', 'content', description)
+  }
+
   // Trae la rifa del servidor. Se vuelve a llamar después de reservar (o si un número ya no está
   // libre) para que la grilla muestre el estado real.
   async function loadRaffle() {
     const dto = await Api.getPublicRaffle(creatorSlug, raffleSlug)
     currentRaffle = toPublicRaffleModel(dto)
     document.title = currentRaffle.title + ' — EligeTuNumero'
+    updateSeoTags()
 
     // Si alguien más reservó un número que yo había elegido, se saca de mi selección.
     selectedNumbers = selectedNumbers.filter((n) =>

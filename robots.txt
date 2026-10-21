@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /me.html
+Disallow: /me
+
+Sitemap: https://eligetunumero.com/sitemap.xml

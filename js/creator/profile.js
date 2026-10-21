@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       return
     }
     if (!/^\+?[\d\s()-]{8,30}$/.test(whatsapp)) {
-      showError('El WhatsApp no es válido. Ejemplo: +54 9 381 555-1234')
+      showError('El WhatsApp no es válido. Ejemplo: 3813401680')
       return
     }
     if (!/^\d{22}$/.test(cbu)) {

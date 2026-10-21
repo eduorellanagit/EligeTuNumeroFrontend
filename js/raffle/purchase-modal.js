@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </label>
           <label class="field">
             <span>WhatsApp</span>
-            <input id="pf-whatsapp" required maxlength="30" placeholder="Ej: +54 9 381 555-1234" pattern="\\+?[\\d\\s()\\-]{8,30}" title="Ejemplo: +54 9 381 555-1234" value="${escapeHtml(formData.whatsapp)}" />
+            <input id="pf-whatsapp" required maxlength="30" placeholder="Ej: 3813401680" pattern="\\+?[\\d\\s()\\-]{8,30}" title="Ejemplo: 3813401680" value="${escapeHtml(formData.whatsapp)}" />
           </label>
           <label class="field field--full">
             <span>Dirección</span>

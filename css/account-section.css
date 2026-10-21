@@ -104,6 +104,22 @@
 }
 
 /* Aviso del modal "Desactivar cuenta" */
+/* Mensajes y confirmaciones del modal: texto alineado a la izquierda y pegado al título,
+   con el mismo espacio arriba y abajo (los botones llevan su propio margen) */
+.modal-message {
+  text-align: left;
+}
+
+.modal-message p {
+  margin: 0;
+}
+
+.modal-message > .btn-block,
+.modal-message > .detail-actions {
+  margin-top: var(--space-5);
+}
+
+.modal-message .deactivate-note,
 .deactivate-note {
   margin-top: var(--space-3);
   color: var(--color-text-secondary);
