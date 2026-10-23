@@ -25,13 +25,13 @@ function clearAuthToken() {
 // Borra la sesión y vuelve al login (por ejemplo, cuando el token venció).
 function logoutAndRedirect(query) {
   clearAuthToken()
-  window.location.replace('login.html' + (query ? '?' + query : ''))
+  window.location.replace('/login.html' + (query ? '?' + query : ''))
 }
 
 // Si no hay sesión, manda al login. Devuelve true si se puede seguir.
 function requireLogin() {
   if (getAuthToken()) return true
-  window.location.replace('login.html')
+  window.location.replace('/login.html')
   return false
 }
 
