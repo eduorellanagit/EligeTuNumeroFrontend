@@ -145,7 +145,7 @@
   <script>
     // "Volver": con sesión iniciada lleva al panel (Mis rifas); sin sesión, al inicio.
     document.getElementById('raffle-back-btn').addEventListener('click', () => {
-      window.location.href = getAuthToken() ? 'me.html' : 'index.html'
+      window.location.href = getAuthToken() ? '/me.html' : '/index.html'
     })
     document.getElementById('raffle-footer-year').textContent = '© ' + new Date().getFullYear() + ' EligeTuNumero'
   </script>
