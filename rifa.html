@@ -26,22 +26,22 @@
     rel="stylesheet"
   />
   
-  <link rel="icon" type="image/png" href="assets/logo/icon.png">
+  <link rel="icon" type="image/png" href="/assets/logo/icon.png">
 
-  <link rel="stylesheet" href="css/tokens.css" />
-  <link rel="stylesheet" href="css/base.css" />
-  <link rel="stylesheet" href="css/animations.css" />
-  <link rel="stylesheet" href="css/buttons.css" />
-  <link rel="stylesheet" href="css/modal.css" />
-  <link rel="stylesheet" href="css/error-modal.css" />
-  <link rel="stylesheet" href="css/page-loader.css" />
-  <link rel="stylesheet" href="css/forms.css" />
-  <link rel="stylesheet" href="css/public-raffle.css" />
-  <link rel="stylesheet" href="css/carousel.css" />
-  <link rel="stylesheet" href="css/number-grid.css" />
-  <link rel="stylesheet" href="css/purchase-modal.css" />
-  <link rel="stylesheet" href="css/confirmation.css" />
-  <link rel="stylesheet" href="css/simple-footer.css" />
+  <link rel="stylesheet" href="/css/tokens.css" />
+  <link rel="stylesheet" href="/css/base.css" />
+  <link rel="stylesheet" href="/css/animations.css" />
+  <link rel="stylesheet" href="/css/buttons.css" />
+  <link rel="stylesheet" href="/css/modal.css" />
+  <link rel="stylesheet" href="/css/error-modal.css" />
+  <link rel="stylesheet" href="/css/page-loader.css" />
+  <link rel="stylesheet" href="/css/forms.css" />
+  <link rel="stylesheet" href="/css/public-raffle.css" />
+  <link rel="stylesheet" href="/css/carousel.css" />
+  <link rel="stylesheet" href="/css/number-grid.css" />
+  <link rel="stylesheet" href="/css/purchase-modal.css" />
+  <link rel="stylesheet" href="/css/confirmation.css" />
+  <link rel="stylesheet" href="/css/simple-footer.css" />
 </head>
 <body>
 
@@ -54,7 +54,7 @@
 
   <div class="raffle-page">
     <header class="raffle-topbar">
-      <a href="index.html" class="raffle-topbar__logo">EligeTuNumero</a>
+      <a href="/index.html" class="raffle-topbar__logo">EligeTuNumero</a>
       <button class="back-button" id="raffle-back-btn"><span data-icon="arrow-left"></span> Volver</button>
     </header>
 
@@ -103,10 +103,10 @@
       <div class="simple-footer__inner">
         <span class="simple-footer__logo">EligeTuNumero</span>
         <div class="simple-footer__links">
-          <a href="index.html">Inicio</a>
-          <a href="terminos-y-condiciones.html">Términos y condiciones</a>
-          <a href="privacidad.html">Privacidad de uso</a>
-          <a href="cookies.html">Política de cookies</a>
+          <a href="/index.html">Inicio</a>
+          <a href="/terminos-y-condiciones.html">Términos y condiciones</a>
+          <a href="/privacidad.html">Privacidad de uso</a>
+          <a href="/cookies.html">Política de cookies</a>
         </div>
         <span class="simple-footer__copy" id="raffle-footer-year">© 2026 EligeTuNumero</span>
       </div>
@@ -130,17 +130,18 @@
     </div>
   </div>
 
-  <script src="js/config.js"></script>
-  <script src="js/auth/session.js"></script>
-  <script src="js/common/page-loader.js"></script>
-  <script src="js/common/error-modal.js"></script>
-  <script src="js/api.js"></script>
-  <script src="js/common/icons.js"></script>
-  <script src="js/common/render-icons.js"></script>
-  <script src="js/common/modal.js"></script>
-  <script src="js/raffle/number-grid.js"></script>
-  <script src="js/common/scroll-reveal.js"></script>
-  <script src="js/raffle/purchase-modal.js"></script>
+  <script src="/js/config.js"></script>
+  <script src="/js/auth/session.js"></script>
+  <script src="/js/common/page-loader.js"></script>
+  <script src="/js/common/error-modal.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/common/validators.js"></script>
+  <script src="/js/common/icons.js"></script>
+  <script src="/js/common/render-icons.js"></script>
+  <script src="/js/common/modal.js"></script>
+  <script src="/js/raffle/number-grid.js"></script>
+  <script src="/js/common/scroll-reveal.js"></script>
+  <script src="/js/raffle/purchase-modal.js"></script>
   <script>
     // "Volver": con sesión iniciada lleva al panel (Mis rifas); sin sesión, al inicio.
     document.getElementById('raffle-back-btn').addEventListener('click', () => {

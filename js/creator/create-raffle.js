@@ -97,11 +97,11 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
           <label class="field">
             <span>Título del premio</span>
-            <input data-prize-field="title" data-index="${idx}" maxlength="120" placeholder="Ej: Moto 110cc 0km" value="${escapeHtml(prize.title)}" />
+            <input data-prize-field="title" data-index="${idx}" maxlength="40" placeholder="Ej: Moto 110cc 0km" value="${escapeHtml(prize.title)}" />
           </label>
           <label class="field">
             <span>Descripción</span>
-            <textarea data-prize-field="description" data-index="${idx}" maxlength="500" placeholder="Ej: Moto nueva, con papeles al día y service incluido.">${escapeHtml(prize.description)}</textarea>
+            <textarea data-prize-field="description" data-index="${idx}" maxlength="150" placeholder="Ej: Moto nueva, con papeles al día y service incluido.">${escapeHtml(prize.description)}</textarea>
           </label>
           <div class="field">
             <span class="field-label-with-help">
@@ -130,6 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
       el.addEventListener('input', () => {
         prizes[Number(el.dataset.index)][el.dataset.prizeField] = el.value
       })
+      attachCounter(el, el.dataset.prizeField === 'title' ? 10 : 30, el.dataset.prizeField === 'title' ? 40 : 150)
     })
 
     prizesContainer.querySelectorAll('[data-remove-prize]').forEach((btn) => {
@@ -187,6 +188,11 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   })
 
+  const counterUpdaters = [
+    attachCounter(document.getElementById('cr-title'), 15, 45),
+    attachCounter(document.getElementById('cr-description'), 50, 200),
+    attachCounter(document.getElementById('cr-rules'), 50, 1000),
+  ]
   renderPrizes()
   prizesContainer.addEventListener('scroll', updatePrizeCarouselButtons)
   window.addEventListener('resize', updatePrizeCarouselButtons)
@@ -236,16 +242,27 @@ document.addEventListener('DOMContentLoaded', () => {
     // Los campos de cada premio no llevan "required" (la lista puede ser
     // larga y quedar fuera de la vista); se valida acá a mano y, si falta
     // algo, se desliza directo hasta ese premio.
-    const invalidIndex = prizes.findIndex((p) => !p.title.trim() || !p.description.trim())
+    const prizeError = (p) =>
+      Validate.length(p.title, 10, 40, 'El título del premio') || Validate.length(p.description, 30, 150, 'La descripción del premio')
+    const invalidIndex = prizes.findIndex((p) => prizeError(p))
     if (invalidIndex !== -1) {
       const invalidCard = prizesContainer.querySelectorAll('.prize-form-card')[invalidIndex]
       if (invalidCard) invalidCard.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' })
-      showError(`Completá el título y la descripción del premio N° ${invalidIndex + 1}.`)
+      showError(`Premio N° ${invalidIndex + 1}: ${prizeError(prizes[invalidIndex])}`)
       return
     }
 
     const title = document.getElementById('cr-title').value.trim()
     const description = document.getElementById('cr-description').value.trim()
+    const rules = document.getElementById('cr-rules').value.trim()
+    const textError =
+      Validate.length(title, 15, 45, 'El título de la rifa') ||
+      Validate.length(description, 50, 200, 'La descripción') ||
+      Validate.length(rules, 50, 1000, 'Las reglas y condiciones')
+    if (textError) {
+      showError(textError)
+      return
+    }
     const totalNumbers = Number(document.getElementById('cr-quantity').value)
     const pricePerNumber = Number(document.getElementById('cr-price').value)
     const daysLeft = Number(document.getElementById('cr-duration').value)
@@ -272,6 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
         await Api.createRaffle({
           titulo: title,
           descripcion: description,
+          reglas: rules,
           premios: finalPrizes,
           totalNumeros: totalNumbers,
           precioPorNumero: pricePerNumber,
@@ -279,14 +297,15 @@ document.addEventListener('DOMContentLoaded', () => {
           diasVigencia: daysLeft,
         })
       ).replace(/"/g, '')
-      const [ownerSlug, raffleSlug] = created.includes('/') ? created.split('/') : [creatorProfile.slug, created]
+      const [ownerSlug, raffleId] = created.includes('/') ? created.split('/') : [creatorProfile.slug, created]
 
       // El crédito ya se descontó en el servidor: se actualiza el saldo y la lista de rifas.
       await loadCreatorProfile(true).catch(() => {})
       if (window.refreshRafflesPanel) window.refreshRafflesPanel()
-      showCreatedSuccess(ownerSlug, raffleSlug, title)
+      showCreatedSuccess(ownerSlug, raffleId, title)
 
       form.reset()
+      counterUpdaters.forEach((u) => u())
       prizes = emptyPrizes(MIN_PRIZES)
       renderPrizes()
       prizesContainer.scrollLeft = 0
@@ -299,15 +318,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   })
 
-  function showCreatedSuccess(ownerSlug, raffleSlug, title) {
-    // Mismo link que abre "Ver página pública": rifa.html junto a la página actual, sea que se
-    // sirva como /me.html o como /me (Cloudflare quita el .html), sin arrastrar nada más de la ruta.
-    const link =
-      new URL('rifa.html', window.location.href).href.split(/[?#]/)[0] +
-      '?creador=' +
-      encodeURIComponent(ownerSlug) +
-      '&rifa=' +
-      encodeURIComponent(raffleSlug)
+  function showCreatedSuccess(ownerSlug, raffleId, title) {
+    // Link público: /rf/{slug del creador}/{id de la rifa} (Cloudflare lo sirve con rifa.html).
+    const link = window.location.origin + '/rf/' + encodeURIComponent(ownerSlug) + '/' + encodeURIComponent(raffleId)
     const html = `
       <div class="purchase-confirmed">
         <div class="purchase-confirmed__icon">${Icons.check}</div>

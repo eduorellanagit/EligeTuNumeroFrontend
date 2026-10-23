@@ -112,7 +112,7 @@
               </label>
               <label class="field">
                 <span>DNI (sin puntos)</span>
-                <input id="profile-dni" required inputmode="numeric" maxlength="10" placeholder="Ej: 34567890" />
+                <input id="profile-dni" required inputmode="numeric" maxlength="8" placeholder="Ej: 34567890" />
               </label>
               <label class="field">
                 <span>WhatsApp de atención pública</span>
@@ -128,7 +128,7 @@
               </label>
               <label class="field">
                 <span>Alias</span>
-                <input id="profile-alias" required maxlength="60" placeholder="Ej: juan.perez.mp" />
+                <input id="profile-alias" required maxlength="20" placeholder="Ej: juan.perez.mp" />
               </label>
             </div>
 
@@ -161,11 +161,16 @@
               <div class="create-raffle-grid">
                 <label class="field field--full">
                   <span>Título</span>
-                  <input id="cr-title" placeholder="Ej: Gran Sorteo Moto 110cc 0km" required maxlength="160" />
+                  <input id="cr-title" placeholder="Ej: Gran Sorteo Moto 110cc 0km" required maxlength="45" />
                 </label>
                 <label class="field field--full">
-                  <span>Descripción y reglas</span>
-                  <textarea id="cr-description" placeholder="Contá de qué se trata el sorteo y las condiciones para participar." required maxlength="2000"></textarea>
+                  <span>Descripción</span>
+                  <textarea id="cr-description" placeholder="Contá de qué se trata el sorteo." required maxlength="200"></textarea>
+                </label>
+                <label class="field field--full">
+                  <span>Reglas y condiciones</span>
+                  <textarea id="cr-rules" placeholder="Ej: El sorteo se realiza el 30/11 por la Lotería Nacional. Solo mayores de 18." required maxlength="1000"></textarea>
+                  <small class="field-help">Conviene incluir la fecha del sorteo y cómo se elige al ganador.</small>
                 </label>
               </div>
             </div>
@@ -191,9 +196,9 @@
                 <label class="field">
                   <span>Cantidad de números</span>
                   <select id="cr-quantity" data-custom-select>
-                    <option value="50">50</option>
+                    <option value="30">30</option>
+                    <option value="60">60</option>
                     <option value="100" selected>100</option>
-                    <option value="200">200</option>
                   </select>
                 </label>
                 <label class="field">
@@ -280,7 +285,7 @@
                 <h3>Devolución de créditos</h3>
                 <p>Pedí la devolución de tus compras de créditos de los últimos 10 días.</p>
               </div>
-              <button type="button" class="btn btn-secondary" data-account-action="refund-credits">Solicitar devolución de los créditos</button>
+              <button type="button" class="btn btn-secondary" data-account-action="refund-credits">Solicitar devolución</button>
             </div>
 
             <div class="account-action">
@@ -338,6 +343,7 @@
 
   <script src="js/config.js"></script>
   <script src="js/data/plans.js"></script>
+  <script src="js/common/validators.js"></script>
   <script src="js/common/icons.js"></script>
   <script src="js/common/custom-select.js"></script>
   <script src="js/common/render-icons.js"></script>

@@ -61,11 +61,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     const cbu = onlyDigits(cbuInput.value)
     const whatsapp = whatsappInput.value.trim()
 
+    const nameErr = Validate.personName(nameInput.value, 'el nombre') || Validate.personName(holderInput.value, 'el titular')
+    if (nameErr) {
+      showError(nameErr)
+      return
+    }
+    const aliasErr = Validate.alias(aliasInput.value)
+    if (aliasErr) {
+      showError(aliasErr)
+      return
+    }
     if (!/^\d{7,8}$/.test(dni)) {
       showError('El DNI debe tener 7 u 8 dígitos (sin puntos).')
       return
     }
-    if (!/^\+?[\d\s()-]{8,30}$/.test(whatsapp)) {
+    if (Validate.whatsapp(whatsapp)) {
       showError('El WhatsApp no es válido. Ejemplo: 3813401680')
       return
     }

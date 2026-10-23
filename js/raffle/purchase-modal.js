@@ -46,15 +46,15 @@ document.addEventListener('DOMContentLoaded', () => {
           </label>
           <label class="field">
             <span>CUIL / DNI</span>
-            <input id="pf-dni" required maxlength="20" placeholder="Ej: 34567890" value="${escapeHtml(formData.dni)}" />
+            <input id="pf-dni" required inputmode="numeric" maxlength="8" placeholder="Ej: 34567890" value="${escapeHtml(formData.dni)}" />
           </label>
           <label class="field">
             <span>WhatsApp</span>
-            <input id="pf-whatsapp" required maxlength="30" placeholder="Ej: 3813401680" pattern="\\+?[\\d\\s()\\-]{8,30}" title="Ejemplo: 3813401680" value="${escapeHtml(formData.whatsapp)}" />
+            <input id="pf-whatsapp" required maxlength="30" placeholder="Ej: 3813401680" value="${escapeHtml(formData.whatsapp)}" />
           </label>
           <label class="field field--full">
             <span>Dirección</span>
-            <input id="pf-address" required maxlength="200" placeholder="Ej: Av. Belgrano 1234, San Miguel de Tucumán" value="${escapeHtml(formData.address)}" />
+            <input id="pf-address" required maxlength="100" placeholder="Ej: Av. Belgrano 1234, San Miguel de Tucumán" value="${escapeHtml(formData.address)}" />
           </label>
         </div>
 
@@ -65,6 +65,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('purchase-form-step').addEventListener('submit', (e) => {
       e.preventDefault()
+      const fieldError =
+        Validate.personName(document.getElementById('pf-firstName').value, 'el nombre') ||
+        Validate.personName(document.getElementById('pf-lastName').value, 'el apellido') ||
+        Validate.dni(document.getElementById('pf-dni').value) ||
+        Validate.whatsapp(document.getElementById('pf-whatsapp').value) ||
+        Validate.address(document.getElementById('pf-address').value)
+      if (fieldError) {
+        ErrorModal.open({ status: 400, message: fieldError })
+        return
+      }
       formData = {
         firstName: document.getElementById('pf-firstName').value,
         lastName: document.getElementById('pf-lastName').value,

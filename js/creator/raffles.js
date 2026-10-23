@@ -279,11 +279,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       const toneByStatus = { ACTIVA: 'badge-success', CERRADA: 'badge-neutral', EXPIRADA: 'badge-danger' }
       const closeButtonHTML =
         raffle.status === 'ACTIVA'
-          ? `<button class="btn btn-secondary" data-close-raffle="${escapeHtml(raffle.slug)}">Cerrar rifa</button>`
+          ? `<button class="btn btn-secondary" data-close-raffle="${escapeHtml(raffle.id)}">Cerrar rifa</button>`
           : ''
       const viewLinkHTML =
         raffle.status === 'ACTIVA' && creatorProfile.slug
-          ? `<a class="raffle-card__view-link" href="rifa.html?creador=${encodeURIComponent(creatorProfile.slug)}&rifa=${encodeURIComponent(raffle.slug)}">Ver página pública ↗</a>`
+          ? `<a class="raffle-card__view-link" href="/rf/${encodeURIComponent(creatorProfile.slug)}/${encodeURIComponent(raffle.id)}">Ver página pública ↗</a>`
           : ''
       const daysLeftLabel = raffle.status === 'ACTIVA' ? `${raffle.daysLeft} días restantes` : 'Finalizada'
 

@@ -54,6 +54,12 @@ const ErrorModal = (function () {
     UserProfileIncomplete: 'Perfil incompleto',
     UserAlreadyDeactivated: 'La cuenta ya está desactivada',
     PendingReservationsExist: 'Tenés reservas pendientes',
+    InvalidRaffleParameter: 'Parámetro de rifa no válido',
+    MaxReservationWithDni: 'Demasiadas reservas pendientes',
+    TextTooLong: 'Texto demasiado largo',
+    HttpMessageNotReadableException: 'Datos inválidos',
+    MethodArgumentTypeMismatchException: 'Datos inválidos',
+    MissingRequestHeaderException: 'Sesión no válida',
   }
 
   function titleFor(err) {

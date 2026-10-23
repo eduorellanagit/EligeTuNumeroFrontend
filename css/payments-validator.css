@@ -159,7 +159,8 @@
 }
 
 /* Dos botones del mismo tamaño, repartiéndose todo el ancho */
-.detail-actions--equal .btn {
+.detail-actions--equal .btn,
+.detail-actions--full .btn {
   flex: 1;
 }
 

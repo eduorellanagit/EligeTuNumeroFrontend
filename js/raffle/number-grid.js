@@ -24,6 +24,7 @@ function toPublicRaffleModel(dto) {
     id: dto.id,
     title: dto.titulo,
     description: dto.descripcion,
+    rules: dto.reglas,
     status: dto.estado,
     organizer: {
       name: organizer.nombre,
@@ -59,9 +60,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   const gridEl = document.getElementById('number-grid')
   if (!headerEl || !gridEl) return
 
-  const params = new URLSearchParams(window.location.search)
-  const creatorSlug = params.get('creador')
-  const raffleSlug = params.get('rifa')
+  // Ruta pública: /rf/{slug del creador}/{id de la rifa}
+  const pathParts = window.location.pathname.split('/').filter(Boolean)
+  const rfIndex = pathParts.indexOf('rf')
+  const creatorSlug = rfIndex !== -1 ? decodeURIComponent(pathParts[rfIndex + 1] || '') : ''
+  const raffleSlug = rfIndex !== -1 ? decodeURIComponent(pathParts[rfIndex + 2] || '') : ''  // id numérico
 
   // Mensaje a pantalla completa cuando no hay rifa para mostrar (link roto, rifa inexistente, error de red).
   function showRaffleMessage(title, text) {
@@ -92,9 +95,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const description =
       'Elegí tu número en "' + currentRaffle.title + '". ' +
       String(currentRaffle.description || '').replace(/\s+/g, ' ').trim().slice(0, 140)
-    const url =
-      new URL('rifa.html', window.location.href).href.split(/[?#]/)[0] +
-      '?creador=' + encodeURIComponent(creatorSlug) + '&rifa=' + encodeURIComponent(raffleSlug)
+    const url = window.location.origin + '/rf/' + encodeURIComponent(creatorSlug) + '/' + encodeURIComponent(raffleSlug)
     const firstImage = (currentRaffle.prizes.find((p) => p.image) || {}).image
     const set = (id, attr, value) => {
       const el = document.getElementById(id)
@@ -140,9 +141,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             Escribir por WhatsApp
           </a>`
       : ''
-    const descriptionHTML = currentRaffle.description
-      ? `<p class="raffle-header__description">${escapeHtml(currentRaffle.description)}</p>`
-      : ''
+    const descriptionHTML =
+      currentRaffle.description || currentRaffle.rules
+        ? `<p class="raffle-header__description">${escapeHtml(currentRaffle.description || '')}${
+            currentRaffle.rules ? '\n\n' + escapeHtml(currentRaffle.rules) : ''
+          }</p>`
+        : ''
     const countdownHTML = active
       ? `<strong>${currentRaffle.daysLeft}</strong><span>${currentRaffle.daysLeft === 1 ? 'día restante' : 'días restantes'}</span>`
       : `<strong>—</strong><span>ya no se reservan números</span>`
@@ -152,7 +156,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         <p class="raffle-header__eyebrow">${eyebrows[currentRaffle.status] || 'Rifa'}</p>
         <h1>${escapeHtml(currentRaffle.title)}</h1>
         <div class="raffle-header__organizer">
-          <span>Organiza <strong>${escapeHtml(currentRaffle.organizer.name)}</strong> · DNI ${escapeHtml(currentRaffle.organizer.dni)}</span>
+          <span>Organizador <strong>${escapeHtml(currentRaffle.organizer.name)}</strong> · DNI ${escapeHtml(currentRaffle.organizer.dni)}</span>
           ${whatsappHTML}
         </div>
       </div>
@@ -241,6 +245,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   function renderGrid() {
     const active = isRaffleActive()
+    gridEl.dataset.total = currentRaffle.totalNumbers
     gridEl.innerHTML = currentRaffle.numbers
       .map(({ number, status }) => {
         const isSelected = selectedNumbers.includes(number)

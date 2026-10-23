@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="detail-receipt-box report-description">${escapeHtml(req.description) || 'Sin descripción'}</div>
       </div>
 
-      <div class="detail-actions">
+      <div class="detail-actions${isReviewed(req) ? ' detail-actions--full' : ''}">
         <button class="btn btn-secondary" id="request-close-btn">Cerrar</button>
         ${reviewBtnHTML}
       </div>

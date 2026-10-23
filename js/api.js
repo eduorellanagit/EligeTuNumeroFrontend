@@ -180,8 +180,8 @@ const Api = {
   // --- Rifas del creador
   getMyRaffles: () => apiRequest('/rifas/me', { auth: true }),
   createRaffle: (data) => apiRequest('/rifas', { method: 'POST', body: data, auth: true }),
-  closeRaffle: (raffleSlug) =>
-    apiRequest('/rifas/' + encodeURIComponent(raffleSlug) + '/cerrar', { method: 'POST', auth: true }),
+  closeRaffle: (raffleId) =>
+    apiRequest('/rifas/' + encodeURIComponent(raffleId) + '/cerrar', { method: 'POST', auth: true }),
 
   uploadPrizeImage: (file) => {
     const form = new FormData()
@@ -190,8 +190,8 @@ const Api = {
   },
 
   // --- Página pública de una rifa y reserva de números (no necesitan sesión)
-  getPublicRaffle: (ownerSlug, raffleSlug) =>
-    apiRequest('/rifas/' + encodeURIComponent(ownerSlug) + '/' + encodeURIComponent(raffleSlug), { silent: true }),
+  getPublicRaffle: (ownerSlug, raffleId) =>
+    apiRequest('/rifas/' + encodeURIComponent(ownerSlug) + '/' + encodeURIComponent(raffleId), { silent: true }),
 
   // datos = { numeros, nombre, apellido, dni, whatsapp, direccion }; comprobante = File
   reserve: (raffleId, datos, comprobante) => {

@@ -96,8 +96,15 @@
   box-shadow: none;
 }
 
+/* 30 → 5×6, 60 → 6×10, 100 → 10×10 */
+.number-grid[data-total="30"] { grid-template-columns: repeat(6, 1fr); }
+.number-grid[data-total="60"] { grid-template-columns: repeat(10, 1fr); }
+
 @media (max-width: 700px) {
-  .number-grid {
+  .number-grid,
+  .number-grid[data-total="60"],
+  .number-grid[data-total="100"] {
     grid-template-columns: repeat(6, 1fr);
   }
+  .number-grid[data-total="30"] { grid-template-columns: repeat(5, 1fr); }
 }

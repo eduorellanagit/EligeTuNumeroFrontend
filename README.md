@@ -181,7 +181,7 @@ simple al final, con link a Inicio y a las tres páginas legales.
 
 Sección del panel (`me.html`, `js/creator/account.js`) con cuatro botones:
 - **Pedir mis datos**: `GET /usuarios/me/data`, muestra los datos en un modal (personales, bancarios, rifas, compras de créditos y solicitudes) y recién ahí un botón descarga el `.json`.
-- **Solicitar devolución de los créditos**: pide confirmación y manda `POST /requests/devolucion`; el aviso final muestra el código, los créditos devueltos y el monto a reintegrar.
+- **Solicitar devolución**: pide confirmación y manda `POST /requests/devolucion`; el aviso final muestra el código, los créditos devueltos y el monto a reintegrar.
 - **Contactar a soporte**: formulario (motivo + descripción de 10 a 1000 caracteres) que manda
   `POST /requests/request` (motivos: SOPORTE, ERROR y OTRO; DEVOLUCION tiene su propio botón).
 - **Desactivar cuenta**: el modal avisa que se cierran automáticamente las rifas abiertas y que hay que atender cada solicitud pendiente (las de "Validar pagos") antes de poder desactivar; "Continuar" (botón rojo, del mismo tamaño que "Cancelar") manda `POST /usuarios/me/desactivar` (sin respuesta). Si sale bien, borra la sesión y lleva a `index.html`; si el backend lo rechaza, la ventana de error muestra el motivo.
@@ -415,3 +415,10 @@ una transición de alto en vez de aparecer de golpe. Los keyframes compartidos
 viven en `css/animations.css`; cada componente agrega su propio `transition` en su
 propio archivo. Si el sistema tiene `prefers-reduced-motion` activado, la regla
 global en `base.css` desactiva todas las animaciones y transiciones del sitio.
+
+## Link público y límites (backend 22-10)
+
+- Link de rifa: `https://eligetunumero.com/rf/{slug_creador}/{id_rifa}`. `_redirects` (`/rf/* /rifa.html 200`) lo sirve con `rifa.html`, que lee slug e id de `location.pathname` y llama a `GET /rifas/{slug}/{id}`. Por eso `rifa.html` usa rutas absolutas (`/css/...`).
+- Cerrar rifa: `POST /rifas/{id}/cerrar`.
+- Cantidad de números: 30 / 60 / 100.
+- Límites: título rifa 15–45, descripción 50–200, reglas 50–1000, título premio 10–40, descripción premio 30–150 (contadores en `js/common/validators.js`, que también valida nombre, DNI, WhatsApp, CBU, alias, domicilio).
