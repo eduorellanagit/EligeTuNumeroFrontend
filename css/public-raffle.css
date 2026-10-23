@@ -257,3 +257,11 @@
     text-align: center;
   }
 }
+
+/* Sin barra de desplazamiento visible en la rifa pública (el scroll sigue funcionando). */
+html {
+  scrollbar-width: none;
+}
+html::-webkit-scrollbar {
+  display: none;
+}

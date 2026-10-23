@@ -38,3 +38,9 @@
     transform: rotate(360deg);
   }
 }
+
+/* Variante para acciones largas (por ejemplo publicar una rifa): se pone y se saca con JS. */
+.page-loader--action {
+  background: rgba(247, 248, 252, 0.92);
+  z-index: 150;
+}

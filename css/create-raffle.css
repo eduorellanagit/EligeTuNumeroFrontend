@@ -2,7 +2,7 @@
   margin-top: var(--space-6);
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
+  gap: var(--space-4);
   min-width: 0;
 }
 
@@ -104,7 +104,7 @@
 .create-raffle-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--space-5);
+  gap: var(--space-3) var(--space-4);
   min-width: 0;
 }
 
@@ -159,7 +159,7 @@
   padding: var(--space-4);
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--space-2);
   min-width: 0;
 }
 
@@ -301,4 +301,14 @@
   .create-raffle-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* Sin barra de desplazamiento visible en Perfil y Crear rifa (la página sigue haciendo scroll). */
+html:has(.panel-section.is-active[data-section="perfil"]),
+html:has(.panel-section.is-active[data-section="crear"]) {
+  scrollbar-width: none;
+}
+html:has(.panel-section.is-active[data-section="perfil"])::-webkit-scrollbar,
+html:has(.panel-section.is-active[data-section="crear"])::-webkit-scrollbar {
+  display: none;
 }

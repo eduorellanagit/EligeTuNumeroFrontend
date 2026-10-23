@@ -97,11 +97,11 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
           <label class="field">
             <span>Título del premio</span>
-            <input data-prize-field="title" data-index="${idx}" maxlength="40" placeholder="Ej: Moto 110cc 0km" value="${escapeHtml(prize.title)}" />
+            <input data-prize-field="title" data-index="${idx}" maxlength="40" placeholder="" value="${escapeHtml(prize.title)}" />
           </label>
           <label class="field">
             <span>Descripción</span>
-            <textarea data-prize-field="description" data-index="${idx}" maxlength="150" placeholder="Ej: Moto nueva, con papeles al día y service incluido.">${escapeHtml(prize.description)}</textarea>
+            <textarea data-prize-field="description" data-index="${idx}" maxlength="150" placeholder="">${escapeHtml(prize.description)}</textarea>
           </label>
           <div class="field">
             <span class="field-label-with-help">
@@ -268,6 +268,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const daysLeft = Number(document.getElementById('cr-duration').value)
     const maxPerPurchase = Number(document.getElementById('cr-max-per-purchase').value)
 
+    // Pantalla de carga mientras se suben las imágenes y se publica la rifa.
+    const publishingEl = document.createElement('div')
+    publishingEl.className = 'page-loader page-loader--action'
+    publishingEl.setAttribute('role', 'status')
+    publishingEl.innerHTML =
+      '<div class="page-loader__spinner" aria-hidden="true"></div><p class="page-loader__text">Publicando tu rifa...</p>'
+    document.body.appendChild(publishingEl)
+
     // Mientras se publica el botón queda bloqueado: un doble clic descontaría 2 créditos.
     const submitLabel = submitBtn.textContent
     submitBtn.disabled = true
@@ -299,6 +307,8 @@ document.addEventListener('DOMContentLoaded', () => {
       ).replace(/"/g, '')
       const [ownerSlug, raffleId] = created.includes('/') ? created.split('/') : [creatorProfile.slug, created]
 
+      publishingEl.remove()
+
       // El crédito ya se descontó en el servidor: se actualiza el saldo y la lista de rifas.
       await loadCreatorProfile(true).catch(() => {})
       if (window.refreshRafflesPanel) window.refreshRafflesPanel()
@@ -313,6 +323,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Los fallos de la API los explica la ventana de error (js/api.js); acá solo los demás.
       if (!(err instanceof ApiError)) showError(err.message)
     } finally {
+      publishingEl.remove()
       submitBtn.textContent = submitLabel
       refreshCreditsWarning()
     }
