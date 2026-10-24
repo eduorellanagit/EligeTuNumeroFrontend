@@ -151,6 +151,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             Escribir por WhatsApp
           </a>`
       : ''
+    const downloadHTML = `<button class="raffle-header__download" id="download-image-btn" type="button">Descargar imagen</button>`
     const descriptionHTML =
       currentRaffle.description || currentRaffle.rules
         ? `<p class="raffle-header__description">${escapeHtml(currentRaffle.description || '')}${
@@ -168,6 +169,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         <div class="raffle-header__organizer">
           <span>Organizador <strong>${escapeHtml(currentRaffle.organizer.name)}</strong> · DNI ${escapeHtml(currentRaffle.organizer.dni)}</span>
           ${whatsappHTML}
+          ${downloadHTML}
         </div>
       </div>
       <div class="raffle-header__countdown">
@@ -175,6 +177,22 @@ document.addEventListener('DOMContentLoaded', async () => {
       </div>
       ${descriptionHTML}
     `
+
+    // "Descargar imagen": PNG vertical con la grilla y el link de esta rifa (js/raffle/share-image.js).
+    const downloadBtn = document.getElementById('download-image-btn')
+    if (downloadBtn) {
+      downloadBtn.addEventListener('click', async () => {
+        const label = downloadBtn.textContent
+        downloadBtn.disabled = true
+        downloadBtn.textContent = 'Generando...'
+        try {
+          await ShareImage.download(currentRaffle, creatorSlug, raffleSlug)
+        } finally {
+          downloadBtn.disabled = false
+          downloadBtn.textContent = label
+        }
+      })
+    }
   }
 
   function renderPrizes() {

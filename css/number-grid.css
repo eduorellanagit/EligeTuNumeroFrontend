@@ -29,7 +29,7 @@
 }
 
 .grid-legend .dot-paid {
-  background: var(--color-danger);
+  background: var(--color-neutral);
 }
 
 .number-grid {
@@ -75,8 +75,8 @@
 }
 
 .number-cell--pagado {
-  background: var(--color-danger-bg);
-  color: var(--color-danger);
+  background: var(--color-neutral-bg);
+  color: var(--color-neutral);
   cursor: not-allowed;
   opacity: 0.85;
 }
@@ -96,15 +96,25 @@
   box-shadow: none;
 }
 
-/* 30 → 5×6, 60 → 6×10, 100 → 10×10 */
-.number-grid[data-total="30"] { grid-template-columns: repeat(6, 1fr); }
-.number-grid[data-total="60"] { grid-template-columns: repeat(10, 1fr); }
+/* Columnas por cantidad de números, sin dejar casilleros sueltos en la última fila:
+   PC:       30 → 10×3 · 60 → 15×4 · 100 → 20×5
+   Tablet:   10 columnas para las tres (30, 60 y 100 son múltiplos de 10)
+   Celular:  30 → 5×6 · 60 → 6×10 · 100 → 5×20 */
+.number-grid[data-total="30"] { grid-template-columns: repeat(10, 1fr); }
+.number-grid[data-total="60"] { grid-template-columns: repeat(15, 1fr); }
+.number-grid[data-total="100"] { grid-template-columns: repeat(20, 1fr); }
 
-@media (max-width: 700px) {
+@media (max-width: 1000px) {
   .number-grid,
+  .number-grid[data-total="30"],
   .number-grid[data-total="60"],
   .number-grid[data-total="100"] {
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(10, 1fr);
   }
+}
+
+@media (max-width: 700px) {
   .number-grid[data-total="30"] { grid-template-columns: repeat(5, 1fr); }
+  .number-grid[data-total="60"] { grid-template-columns: repeat(6, 1fr); }
+  .number-grid[data-total="100"] { grid-template-columns: repeat(5, 1fr); }
 }
