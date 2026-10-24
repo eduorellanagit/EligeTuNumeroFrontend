@@ -11,8 +11,8 @@ const ShareImage = (function () {
     bg: '#F5F7FB',
     primary: '#234DE0',
     text: '#4B5468',
-    disponible: { bg: '#E4F6EC', fg: '#147A46' },
-    reservado: { bg: '#FCF0DA', fg: '#B5720B' },
+    disponible: { bg: '#147A46', fg: '#FFFFFF' },
+    reservado: { bg: '#B5720B', fg: '#FFFFFF' },
     pagado: { bg: '#7A8294', fg: '#FFFFFF' },
   }
   const PUBLIC_DOMAIN = 'eligetunumero.com'
