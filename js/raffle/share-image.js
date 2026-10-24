@@ -13,7 +13,7 @@ const ShareImage = (function () {
     text: '#4B5468',
     disponible: { bg: '#E4F6EC', fg: '#147A46' },
     reservado: { bg: '#FCF0DA', fg: '#B5720B' },
-    pagado: { bg: '#ECEEF2', fg: '#6B7385' },
+    pagado: { bg: '#7A8294', fg: '#FFFFFF' },
   }
   const PUBLIC_DOMAIN = 'eligetunumero.com'
 
@@ -188,7 +188,7 @@ const ShareImage = (function () {
     const items = [
       ['Disponible', C.disponible.fg],
       ['Reservado', C.reservado.fg],
-      ['Pagado', C.pagado.fg],
+      ['Pagado', C.pagado.bg],
     ]
     setFont(ctx, 600, 28)
     const widths = items.map(([label]) => 22 + 12 + ctx.measureText(label).width)
@@ -226,11 +226,32 @@ const ShareImage = (function () {
     return canvas
   }
 
+  // Descarga la imagen y además la abre en una pestaña nueva.
+  // Importante: la pestaña se abre ya mismo, dentro del clic (si se abriera después de generar la imagen,
+  // el navegador la tomaría como ventana emergente y la bloquearía). Después se le pone la imagen.
   async function download(raffle, ownerSlug, raffleId) {
-    const canvas = await render(raffle, ownerSlug, raffleId)
+    let tab = null
+    try {
+      tab = window.open('', '_blank')
+      if (tab) tab.document.title = 'Generando imagen...'
+    } catch (err) {
+      tab = null
+    }
+
+    let canvas
+    try {
+      canvas = await render(raffle, ownerSlug, raffleId)
+    } catch (err) {
+      if (tab) tab.close()
+      throw err
+    }
+
     await new Promise((resolve) => {
       canvas.toBlob((blob) => {
-        if (!blob) return resolve()
+        if (!blob) {
+          if (tab) tab.close()
+          return resolve()
+        }
         const url = URL.createObjectURL(blob)
         const a = document.createElement('a')
         a.href = url
@@ -238,7 +259,11 @@ const ShareImage = (function () {
         document.body.appendChild(a)
         a.click()
         a.remove()
-        setTimeout(() => URL.revokeObjectURL(url), 2000)
+        if (tab && !tab.closed) {
+          tab.location.href = url
+        }
+        // el link queda vivo un rato: la pestaña nueva lo necesita para mostrar la imagen
+        setTimeout(() => URL.revokeObjectURL(url), 5 * 60 * 1000)
         resolve()
       }, 'image/png')
     })

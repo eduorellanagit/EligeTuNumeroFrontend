@@ -380,7 +380,7 @@ y se vuelve a `login.html`. Las páginas que exigen sesión (`me.html`) llevan
 
 ### Errores
 
-El resultado del pago de créditos (realizado / pendiente / rechazado) se muestra en `js/creator/raffles.js`.
+El resultado del pago de créditos (realizado / pendiente / rechazado) se muestra en `js/creator/raffles.js`. El aviso de pago pendiente usa la variante ancha `.purchase-confirmed--wide` (`css/confirmation.css`) y menciona "Cuenta y privacidad > Soporte" para reportar problemas.
 
 `apiRequest` traduce los códigos HTTP a mensajes en español (por ejemplo, 402 → "No
 tenés créditos suficientes", 409 → "Algo cambió mientras tanto..."). Si el backend manda un
@@ -431,6 +431,6 @@ global en `base.css` desactiva todas las animaciones y transiciones del sitio.
 - "Reglas y condiciones" con un área de 3 filas (la descripción tiene 2); espacios más compactos en Perfil, Crear rifa y el modal de compra.
 - Rifa pública: título, "Escribir por WhatsApp" y fila del organizador más juntos, y menos espacio antes de "Premios en juego".
 - Barra de desplazamiento oculta en Perfil, Crear rifa y la rifa pública (el scroll sigue funcionando).
-- Grilla de números sin casilleros sueltos: PC 30 → 10×3, 60 → 15×4, 100 → 20×5; tablet (≤1000 px) 10 columnas; celular (≤700 px) 30 → 5×6, 60 → 6×10, 100 → 5×20. El precio por número va en la misma línea que "Elegí tus números" (óvalo más chico).
-- **Descargar imagen** (rifa pública, junto a "Escribir por WhatsApp"): `js/raffle/share-image.js` dibuja en un `<canvas>` una imagen de 1080×1920 (título, descripción, precio, grilla con el estado de cada número, leyenda y cuadro con el link) y la descarga como PNG (`rifa-{slug}-{id}.png`). Todo ocurre en el navegador. El link de la imagen siempre usa el dominio público: `eligetunumero.com/rf/{slug}/{id}`. Grilla en la imagen: 30 → 6×5, 60 → 10×6, 100 → 10×10. Usa la fuente Inter (cargada desde Google Fonts en `rifa.html`).
-- Los números **pagados** ahora se ven en **gris** (`--color-neutral` / `--color-neutral-bg` en `css/tokens.css`), en la grilla, la leyenda y la imagen descargable; el rojo queda solo para errores.
+- Grilla de números sin casilleros sueltos: PC y tablet: siempre **10 columnas** (30 → 10×3, 60 → 10×6, 100 → 10×10); celular (≤700 px) 30 → 5×6, 60 → 6×10, 100 → 5×20. El precio por número va en la misma línea que "Elegí tus números" (óvalo más chico).
+- **Descargar imagen** (rifa pública, junto a "Escribir por WhatsApp"): `js/raffle/share-image.js` dibuja en un `<canvas>` una imagen de 1080×1920 (título, descripción, precio, grilla con el estado de cada número, leyenda y cuadro con el link) y la descarga como PNG (`rifa-{slug}-{id}.png`); además la abre en una pestaña nueva (la pestaña se abre en el mismo clic, antes de generar la imagen, para que el navegador no la bloquee). Todo ocurre en el navegador. El link de la imagen siempre usa el dominio público: `eligetunumero.com/rf/{slug}/{id}`. Grilla en la imagen: 30 → 6×5, 60 → 10×6, 100 → 10×10. Usa la fuente Inter (cargada desde Google Fonts en `rifa.html`).
+- Los números **pagados** se ven en **gris fuerte con texto blanco** (`--color-paid` / `--color-paid-text` en `css/tokens.css`; en la imagen, la paleta `C.pagado` de `share-image.js`), en la grilla, la leyenda y la imagen descargable; el rojo queda solo para errores.

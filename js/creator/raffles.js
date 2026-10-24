@@ -168,12 +168,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   //  - 'waiting': Mercado Pago dejó el pago pendiente (por ejemplo, un pago en efectivo que todavía no se hizo).
   //  - 'crediting': el pago se aprobó pero los créditos todavía no aparecen (el aviso al backend tarda unos segundos).
   function showPaymentPendingStep(reason) {
+    // Mismo mensaje para los dos casos ('waiting' y 'crediting'): en ambos el pago sigue pendiente.
     const text =
-      reason === 'crediting'
-        ? 'Tu pago está pendiente de confirmación. Los créditos se suman solos a tu cuenta apenas Mercado Pago lo confirme; podés volver a revisar en unos minutos. No hace falta que vuelvas a pagar.'
-        : 'Mercado Pago todavía no confirmó el pago. Apenas lo apruebe, los créditos se suman solos a tu cuenta. No hace falta que vuelvas a pagar.'
+      'Tu pago está pendiente de confirmación. Los créditos se suman solos a tu cuenta apenas Mercado Pago lo confirme,<br>' +
+      'podés volver a revisar en unos minutos. No hace falta que vuelvas a pagar. ' +
+      'Cualquier problema reportelo en Cuenta y privacidad &gt; Soporte'
     const html = `
-      <div class="purchase-confirmed">
+      <div class="purchase-confirmed purchase-confirmed--wide">
         <div class="purchase-confirmed__icon purchase-confirmed__icon--pending">${Icons.clock}</div>
         <h4>Pago pendiente</h4>
         <p>${text}</p>
