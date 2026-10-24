@@ -68,6 +68,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Mensaje a pantalla completa cuando no hay rifa para mostrar (link roto, rifa inexistente, error de red).
   function showRaffleMessage(title, text) {
+    // Link roto o rifa inexistente: que no se indexe.
+    const robots = document.querySelector('meta[name="robots"]')
+    if (robots) robots.setAttribute('content', 'noindex,nofollow')
     headerEl.innerHTML = `
       <div>
         <p class="raffle-header__eyebrow">Rifa</p>
@@ -97,6 +100,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       String(currentRaffle.description || '').replace(/\s+/g, ' ').trim().slice(0, 140)
     const url = window.location.origin + '/rf/' + encodeURIComponent(creatorSlug) + '/' + encodeURIComponent(raffleSlug)
     const firstImage = (currentRaffle.prizes.find((p) => p.image) || {}).image
+    // El canónico no está fijo en rifa.html (cada rifa tiene su link /rf/slug/id): se crea acá.
+    if (!document.getElementById('meta-canonical')) {
+      const link = document.createElement('link')
+      link.rel = 'canonical'
+      link.id = 'meta-canonical'
+      document.head.appendChild(link)
+    }
     const set = (id, attr, value) => {
       const el = document.getElementById(id)
       if (el && value) el.setAttribute(attr, value)

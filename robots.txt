@@ -1,6 +1,9 @@
 User-agent: *
 Allow: /
+Allow: /rf/
 Disallow: /me.html
 Disallow: /me
+Disallow: /rifa.html
+Disallow: /rifa
 
 Sitemap: https://eligetunumero.com/sitemap.xml

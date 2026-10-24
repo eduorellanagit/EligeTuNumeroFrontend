@@ -333,15 +333,34 @@ document.addEventListener('DOMContentLoaded', () => {
     // Link público: /rf/{slug del creador}/{id de la rifa} (Cloudflare lo sirve con rifa.html).
     const link = window.location.origin + '/rf/' + encodeURIComponent(ownerSlug) + '/' + encodeURIComponent(raffleId)
     const html = `
-      <div class="purchase-confirmed">
-        <div class="purchase-confirmed__icon">${Icons.check}</div>
-        <h4>¡"${escapeHtml(title)}" está publicada!</h4>
-        <p>Compartí este link para que la gente empiece a elegir números.</p>
+      <div class="modal-message">
+        <p>"${escapeHtml(title)}" ya está publicada. Compartí este link para que la gente empiece a elegir números.</p>
         <div class="raffle-created__link-box">${escapeHtml(link)}</div>
-        <button class="btn btn-primary" id="created-go-to-raffles" style="margin-top: 20px;">Ver en Mis rifas</button>
+        <div class="detail-actions detail-actions--equal">
+          <button class="btn btn-secondary" id="created-copy-link" type="button">Copiar link</button>
+          <button class="btn btn-primary" id="created-go-to-raffles" type="button">Ver mis rifas</button>
+        </div>
       </div>
     `
     Modal.open('Rifa publicada', html)
+
+    const copyBtn = document.getElementById('created-copy-link')
+    copyBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(link)
+      } catch (e) {
+        // Sin permiso de portapapeles: se selecciona el texto para copiarlo a mano.
+        const box = document.querySelector('.raffle-created__link-box')
+        const range = document.createRange()
+        range.selectNodeContents(box)
+        const selection = window.getSelection()
+        selection.removeAllRanges()
+        selection.addRange(range)
+        document.execCommand && document.execCommand('copy')
+      }
+      copyBtn.textContent = '¡Copiado!'
+      setTimeout(() => { copyBtn.textContent = 'Copiar link' }, 2000)
+    })
     document.getElementById('created-go-to-raffles').addEventListener('click', () => {
       Modal.close()
       document.querySelector('.sidebar__tab[data-tab="rifas"]').click()

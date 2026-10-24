@@ -210,19 +210,21 @@ document.addEventListener('DOMContentLoaded', () => {
   function showConfirmedStep() {
     const numbersLabel = selectedNumbers.join(', ')
     const html = `
-      <div class="purchase-confirmed">
-        <div class="purchase-confirmed__icon">${Icons.check}</div>
-        <h4>Solicitud enviada</h4>
+      <div class="modal-message">
         <p>
           Le avisamos al organizador que reservaste el número${selectedNumbers.length > 1 ? 's' : ''}
-          ${numbersLabel}. En cuanto valide tu comprobante, tu boleto queda confirmado.
+          ${escapeHtml(numbersLabel)}. En cuanto valide tu comprobante, tu boleto queda confirmado.
         </p>
-        <button class="btn btn-primary" id="pf-done-btn">Listo</button>
+        <div class="detail-actions detail-actions--equal">
+          <button class="btn btn-secondary" id="pf-close-btn" type="button">Cerrar</button>
+          <button class="btn btn-primary" id="pf-done-btn" type="button">Continuar</button>
+        </div>
       </div>
     `
-    // Al cerrarse (con el botón o de cualquier otra forma) se limpia la selección.
+    // Al cerrarse (con los botones o de cualquier otra forma) se limpia la selección.
     Modal.open('Reserva enviada', html, resetAfterClose)
 
+    document.getElementById('pf-close-btn').addEventListener('click', () => Modal.close())
     document.getElementById('pf-done-btn').addEventListener('click', () => Modal.close())
   }
 })

@@ -93,16 +93,17 @@ porque el navegador no deja que una página local le hable a la API.
 - `me.html` — Panel privado del creador: perfil y cobro, **crear rifa**, validador
   de pagos, mis rifas y créditos. Las seis secciones (la última, solo para soporte, es "Panel de control") se muestran/ocultan con JS,
   no son páginas distintas.
-- `rifa.html?creador=juanperez&rifa=moto-110` — Página pública de una rifa (grilla de
-  números, premios, modal de reserva + comprobante). Como es todo estático, usamos
-  parámetros de URL (`?creador=...&rifa=...`) en vez de rutas tipo `/juanperez/moto-110`.
-  Los dos valores son los *slugs* que genera el backend (el del creador y el de la
-  rifa); el link completo te lo da el panel al publicar. Los datos se piden a
-  `GET /rifas/{creador}/{rifa}`.
+- `/rf/{slug_creador}/{id_rifa}` (por ejemplo `/rf/juanperez/12`) — Página pública de una
+  rifa (grilla de números, premios, reglas, modal de reserva + comprobante). Cloudflare la
+  sirve con `rifa.html` gracias a `_redirects` (`/rf/* /rifa 200`); la página lee el slug y el
+  id de `location.pathname` y pide los datos a `GET /rifas/{slug}/{id}`. Como la URL tiene
+  varios niveles, `rifa.html` usa rutas **absolutas** (`/css/...`, `/js/...`) y los botones
+  que navegan (Volver, login) también (`/me.html`, `/login.html`). Los links viejos
+  `rifa.html?creador=...&rifa=...` ya no funcionan. El link completo te lo da el panel al publicar.
 - `terminos-y-condiciones.html`, `privacidad.html` y `cookies.html` — páginas legales con el texto v1.0 (vigente desde el 01/11/2026), con índice de secciones; `cookies.html` tiene la política de cookies v1.0.
 
 Desde el panel del creador (`me.html` → "Mis rifas y créditos"), cada rifa activa
-tiene un link "Ver página pública ↗" que abre `rifa.html` con esos datos, **en la
+tiene un link "Ver página pública ↗" que abre `/rf/{slug}/{id}`, **en la
 misma pestaña** — ver la sección de navegación más abajo.
 
 ### Navegación: todo en una sola pestaña, con botón de volver
@@ -137,16 +138,17 @@ Google, porque ahí se pierde la URL).
 ### Crear rifa
 
 Nueva sección en el panel (`me.html` → "Crear rifa") con el formulario completo de
-la especificación: título, descripción y reglas, entre 1 y 10 premios (se agregan
+la especificación: título, descripción y reglas y condiciones (campos separados), entre 3 y 9 premios (se agregan
 de a uno, cada uno con título, descripción e imagen opcional), cantidad de números
-(50/100/200), precio por número, máximo de números por compra (1/3/5) y plazo de
+(30/60/100), precio por número, máximo de números por compra (1/3/5) y plazo de
 vigencia (20/25/30 días). Al publicar:
 
 - Se valida que tengas al menos 1 crédito (si no, se avisa y no se puede publicar).
 - Se descuenta 1 crédito en el momento de confirmar.
-- La rifa aparece en "Mis rifas y créditos" y su página pública en `rifa.html`
+- La rifa aparece en "Mis rifas y créditos" y su página pública en `/rf/{slug}/{id}`
   muestra los datos reales que cargaste (no la rifa de ejemplo).
-- Se muestra el link único para compartir, tal como describe la especificación.
+- Mientras se publica aparece una pantalla de carga ("Publicando tu rifa...").
+- Se muestra el modal "Rifa publicada" con el link para compartir y dos botones: **Copiar link** y **Ver mis rifas** (la X también lo cierra).
 
 ### Validador de pagos: rechazar no pide motivo
 
@@ -227,9 +229,9 @@ Todas las páginas tienen `<title>` y descripción propios. Las públicas (inici
 las tres legales) suman link canónico y etiquetas Open Graph/Twitter (vista previa al compartir
 el link) con el dominio `https://eligetunumero.com`; el inicio agrega datos estructurados
 (JSON-LD de Organization y WebSite). `me.html` lleva `noindex`.
-En `rifa.html` el título, la descripción, el canónico y la imagen (la del primer premio) se
-completan con los datos de la rifa (`updateSeoTags` en `js/raffle/number-grid.js`). Además hay
-`robots.txt` y `sitemap.xml` en la raíz. Si cambia el dominio, hay que actualizarlo en esas
+En `rifa.html` el título, la descripción, el canónico (`/rf/{slug}/{id}`, creado por JS: la página no trae uno fijo) y la imagen (la del primer premio) se
+completan con los datos de la rifa (`updateSeoTags` en `js/raffle/number-grid.js`). Si el link es inválido o la rifa no existe, la página se marca `noindex`. Además hay
+`robots.txt` (permite `/rf/`, bloquea `/me`, `/rifa` y `/rifa.html` para que no se indexe la plantilla) y `sitemap.xml` en la raíz; las rifas no están en el sitemap porque cambian todo el tiempo. Si cambia el dominio, hay que actualizarlo en esas
 etiquetas y en ambos archivos.
 
 ### Pantalla de carga (prueba)
@@ -360,11 +362,11 @@ poné `http://localhost:8080/api/v1`.
 | Login | Inicia sesión con Google | `GET /usuarios/login` (navegación, no `fetch`) |
 | Panel | Datos y créditos del creador | `GET /usuarios/me` |
 | Mi perfil | Guardar datos de cobro | `PUT /usuarios/me/perfil` |
-| Mis rifas | Listar / cerrar | `GET /rifas/me` · `POST /rifas/{slug}/cerrar` |
+| Mis rifas | Listar / cerrar | `GET /rifas/me` · `POST /rifas/{id}/cerrar` |
 | Crear rifa | Subir imagen de un premio / publicar | `POST /rifas/imagen` · `POST /rifas` |
 | Validar pagos | Ver / aceptar / rechazar reservas | `GET /reservas?estado=` · `POST /reservas/{id}/aceptar` · `/rechazar` |
 | Comprar créditos | Crear la compra y pagar en Mercado Pago | `POST /creditos/comprar` |
-| Página pública | Ver la rifa / reservar números | `GET /rifas/{creador}/{rifa}` · `POST /rifas/{id}/reservar` |
+| Página pública | Ver la rifa / reservar números | `GET /rifas/{slug}/{id}` · `POST /rifas/{id}/reservar` |
 
 ### Sesión
 
@@ -418,7 +420,14 @@ global en `base.css` desactiva todas las animaciones y transiciones del sitio.
 
 ## Link público y límites (backend 22-10)
 
-- Link de rifa: `https://eligetunumero.com/rf/{slug_creador}/{id_rifa}`. `_redirects` (`/rf/* /rifa.html 200`) lo sirve con `rifa.html`, que lee slug e id de `location.pathname` y llama a `GET /rifas/{slug}/{id}`. Por eso `rifa.html` usa rutas absolutas (`/css/...`).
+- Link de rifa: `https://eligetunumero.com/rf/{slug_creador}/{id_rifa}`. `_redirects` (`/rf/* /rifa 200`) lo sirve con `rifa.html`, que lee slug e id de `location.pathname` y llama a `GET /rifas/{slug}/{id}`. Por eso `rifa.html` usa rutas absolutas (`/css/...`).
 - Cerrar rifa: `POST /rifas/{id}/cerrar`.
 - Cantidad de números: 30 / 60 / 100.
 - Límites: título rifa 15–45, descripción 50–200, reglas 50–1000, título premio 10–40, descripción premio 30–150 (contadores en `js/common/validators.js`, que también valida nombre, DNI, WhatsApp, CBU, alias, domicilio).
+
+## Cambios de interfaz (23/10)
+
+- Modales de "Rifa publicada" y "Reserva enviada" con el mismo formato que el resto (texto a la izquierda, dos botones iguales). En la reserva, **Cerrar** y **Continuar** cierran el modal; en la rifa, **Copiar link** y **Ver mis rifas**.
+- "Reglas y condiciones" con un área más alta; espacios más compactos en Perfil, Crear rifa y el modal de compra.
+- Rifa pública: título, "Escribir por WhatsApp" y fila del organizador más juntos, y menos espacio antes de "Premios en juego".
+- Barra de desplazamiento oculta en Perfil, Crear rifa y la rifa pública (el scroll sigue funcionando).
