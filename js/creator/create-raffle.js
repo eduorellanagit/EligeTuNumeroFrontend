@@ -333,8 +333,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Link público: /rf/{slug del creador}/{id de la rifa} (Cloudflare lo sirve con rifa.html).
     const link = window.location.origin + '/rf/' + encodeURIComponent(ownerSlug) + '/' + encodeURIComponent(raffleId)
     const html = `
-      <div class="modal-message">
-        <p>"${escapeHtml(title)}" ya está publicada. Compartí este link para que la gente empiece a elegir números.</p>
+      <div class="purchase-confirmed">
+        <div class="purchase-confirmed__icon">${Icons.check}</div>
+        <h4>¡"${escapeHtml(title)}" está publicada!</h4>
+        <p>Compartí este link para que la gente empiece a elegir números.</p>
         <div class="raffle-created__link-box">${escapeHtml(link)}</div>
         <div class="detail-actions detail-actions--equal">
           <button class="btn btn-secondary" id="created-copy-link" type="button">Copiar link</button>

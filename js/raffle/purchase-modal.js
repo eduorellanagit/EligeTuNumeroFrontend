@@ -210,7 +210,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function showConfirmedStep() {
     const numbersLabel = selectedNumbers.join(', ')
     const html = `
-      <div class="modal-message">
+      <div class="purchase-confirmed">
+        <div class="purchase-confirmed__icon">${Icons.check}</div>
+        <h4>Solicitud enviada</h4>
         <p>
           Le avisamos al organizador que reservaste el número${selectedNumbers.length > 1 ? 's' : ''}
           ${escapeHtml(numbersLabel)}. En cuanto valide tu comprobante, tu boleto queda confirmado.

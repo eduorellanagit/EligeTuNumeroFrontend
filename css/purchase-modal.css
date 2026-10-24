@@ -110,5 +110,5 @@
 
 /* "Confirmo que soy mayor de edad" más pegado al botón de subir comprobante */
 .purchase-form .checkbox-field {
-  margin-top: calc(var(--space-2) - var(--space-5));
+  margin-top: calc(var(--space-3) - var(--space-5));
 }

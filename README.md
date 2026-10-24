@@ -427,7 +427,7 @@ global en `base.css` desactiva todas las animaciones y transiciones del sitio.
 
 ## Cambios de interfaz (23/10)
 
-- Modales de "Rifa publicada" y "Reserva enviada" con el mismo formato que el resto (texto a la izquierda, dos botones iguales). En la reserva, **Cerrar** y **Continuar** cierran el modal; en la rifa, **Copiar link** y **Ver mis rifas**.
-- "Reglas y condiciones" con un área más alta; espacios más compactos en Perfil, Crear rifa y el modal de compra.
+- Modales de "Rifa publicada" y "Reserva enviada" con el diseño de resultado (ícono, título y texto centrados) y dos botones que se reparten todo el ancho. En la reserva, **Cerrar** y **Continuar** cierran el modal; en la rifa, **Copiar link** y **Ver mis rifas**.
+- "Reglas y condiciones" con un área de 3 filas (la descripción tiene 2); espacios más compactos en Perfil, Crear rifa y el modal de compra.
 - Rifa pública: título, "Escribir por WhatsApp" y fila del organizador más juntos, y menos espacio antes de "Premios en juego".
 - Barra de desplazamiento oculta en Perfil, Crear rifa y la rifa pública (el scroll sigue funcionando).

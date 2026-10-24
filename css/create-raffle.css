@@ -33,8 +33,21 @@
   margin-top: 0;
 }
 
+.form-card__hint--help {
+  line-height: 1;
+}
+
 .form-card__hint--help [data-icon] {
   flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+}
+
+.form-card__hint--help [data-icon] .icon-svg {
+  display: block;
   width: 14px;
   height: 14px;
 }
@@ -315,5 +328,5 @@ html:has(.panel-section.is-active[data-section="crear"])::-webkit-scrollbar {
 
 /* Reglas y condiciones: área más alta (admite hasta 1000 caracteres) */
 .field textarea#cr-rules {
-  min-height: 220px;
+  min-height: 120px; /* 3 filas (la descripción mide 2) */
 }

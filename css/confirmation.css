@@ -39,3 +39,18 @@
 .purchase-confirmed__icon--error {
   background: var(--color-danger-bg);
 }
+
+/* Dos botones que se reparten todo el ancho (Cerrar / Continuar, Copiar link / Ver mis rifas) */
+.purchase-confirmed .detail-actions {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+}
+
+.purchase-confirmed .detail-actions .btn {
+  flex: 1;
+}
+
+.purchase-confirmed .raffle-created__link-box {
+  margin: 0 0 var(--space-2);
+}
