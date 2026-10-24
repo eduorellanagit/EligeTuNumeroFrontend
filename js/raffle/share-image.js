@@ -11,9 +11,10 @@ const ShareImage = (function () {
     bg: '#F5F7FB',
     primary: '#234DE0',
     text: '#4B5468',
-    disponible: { bg: '#E4F6EC', fg: '#147A46' },
-    reservado: { bg: '#FCF0DA', fg: '#B5720B' },
-    pagado: { bg: '#7A8294', fg: '#FFFFFF' },
+    // mismos colores que la web (--cell-* en css/tokens.css)
+    disponible: { bg: '#2E9E68', fg: '#FFFFFF' },
+    reservado: { bg: '#D58A0C', fg: '#FFFFFF' },
+    pagado: { bg: '#858DA0', fg: '#FFFFFF' },
   }
   const PUBLIC_DOMAIN = 'eligetunumero.com'
 
@@ -186,8 +187,8 @@ const ShareImage = (function () {
 
     // --- leyenda
     const items = [
-      ['Disponible', C.disponible.fg],
-      ['Reservado', C.reservado.fg],
+      ['Disponible', C.disponible.bg],
+      ['Reservado', C.reservado.bg],
       ['Pagado', C.pagado.bg],
     ]
     setFont(ctx, 600, 28)
@@ -226,32 +227,12 @@ const ShareImage = (function () {
     return canvas
   }
 
-  // Descarga la imagen y además la abre en una pestaña nueva.
-  // Importante: la pestaña se abre ya mismo, dentro del clic (si se abriera después de generar la imagen,
-  // el navegador la tomaría como ventana emergente y la bloquearía). Después se le pone la imagen.
+  // Descarga la imagen como PNG (no se abre en otra pestaña).
   async function download(raffle, ownerSlug, raffleId) {
-    let tab = null
-    try {
-      tab = window.open('', '_blank')
-      if (tab) tab.document.title = 'Generando imagen...'
-    } catch (err) {
-      tab = null
-    }
-
-    let canvas
-    try {
-      canvas = await render(raffle, ownerSlug, raffleId)
-    } catch (err) {
-      if (tab) tab.close()
-      throw err
-    }
-
+    const canvas = await render(raffle, ownerSlug, raffleId)
     await new Promise((resolve) => {
       canvas.toBlob((blob) => {
-        if (!blob) {
-          if (tab) tab.close()
-          return resolve()
-        }
+        if (!blob) return resolve()
         const url = URL.createObjectURL(blob)
         const a = document.createElement('a')
         a.href = url
@@ -259,11 +240,7 @@ const ShareImage = (function () {
         document.body.appendChild(a)
         a.click()
         a.remove()
-        if (tab && !tab.closed) {
-          tab.location.href = url
-        }
-        // el link queda vivo un rato: la pestaña nueva lo necesita para mostrar la imagen
-        setTimeout(() => URL.revokeObjectURL(url), 5 * 60 * 1000)
+        setTimeout(() => URL.revokeObjectURL(url), 2000)
         resolve()
       }, 'image/png')
     })

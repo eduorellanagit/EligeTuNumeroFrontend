@@ -21,15 +21,15 @@
 }
 
 .grid-legend .dot-available {
-  background: var(--color-success);
+  background: var(--cell-available);
 }
 
 .grid-legend .dot-reserved {
-  background: var(--color-warning);
+  background: var(--cell-reserved);
 }
 
 .grid-legend .dot-paid {
-  background: var(--color-paid);
+  background: var(--cell-paid);
 }
 
 .number-grid {
@@ -63,20 +63,19 @@
 }
 
 .number-cell--disponible {
-  background: var(--color-success-bg);
-  color: var(--color-success);
+  background: var(--cell-available);
+  color: var(--cell-text);
 }
 
 .number-cell--reservado {
-  background: var(--color-warning-bg);
-  color: var(--color-warning);
+  background: var(--cell-reserved);
+  color: var(--cell-text);
   cursor: not-allowed;
-  opacity: 0.85;
 }
 
 .number-cell--pagado {
-  background: var(--color-paid);
-  color: var(--color-paid-text);
+  background: var(--cell-paid);
+  color: var(--cell-text);
   cursor: not-allowed;
 }
 

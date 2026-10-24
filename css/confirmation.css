@@ -21,7 +21,7 @@
 
 .purchase-confirmed h4 {
   font-size: 1.2rem;
-  margin-bottom: var(--space-3);
+  margin-bottom: var(--space-4);
 }
 
 .purchase-confirmed p {
@@ -29,6 +29,15 @@
   line-height: 1.55;
   max-width: 380px;
   margin: 0 auto var(--space-6);
+}
+
+/* Texto seguido de dos botones: el mismo espacio arriba (título) y abajo (botones) del texto */
+.purchase-confirmed p:has(+ .detail-actions) {
+  margin-bottom: var(--space-4);
+}
+
+.purchase-confirmed p + .detail-actions {
+  margin-top: 0;
 }
 
 /* Mensaje largo (pago pendiente): el texto usa casi todo el ancho del modal */
