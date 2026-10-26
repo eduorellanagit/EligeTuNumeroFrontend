@@ -10,7 +10,7 @@
 // cifrar por internet, y Mercado Pago exige https para avisar los pagos.
 // Si el túnel cambia de dirección (ngrok gratis la cambia al reiniciar si no tenés dominio fijo),
 // es lo único que hay que actualizar. Para desarrollo sin túnel: 'http://localhost:8080/api/v1'.
-const API_BASE_URL = 'https://bagging-exuberant-cascade.ngrok-free.dev/api/v1'
+const API_BASE_URL = 'https://api.eligetunumero.com/api/v1'
 
 // Promo de lanzamiento: 1 crédito gratis para cuentas nuevas. Pensada para el
 // primer mes (o hasta que la plataforma ya tenga un tiempo andando) — cuando
