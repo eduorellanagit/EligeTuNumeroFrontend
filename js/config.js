@@ -2,15 +2,14 @@
 // Se carga primero que cualquier otro script para que todos puedan usar estas
 // constantes.
 //
-// Al desplegar, cambiá API_BASE_URL por la URL pública de tu backend (https) y
-// asegurate de que el backend tenga esta misma web como FRONTEND_URL (sirve
-// para el CORS y para volver acá después de iniciar sesión o de pagar).
-// Hoy apunta al túnel de ngrok que expone el backend local. Se usa https (el mismo dominio
-// también responde por http): con http el token y los datos de las personas viajarían sin
-// cifrar por internet, y Mercado Pago exige https para avisar los pagos.
-// Si el túnel cambia de dirección (ngrok gratis la cambia al reiniciar si no tenés dominio fijo),
-// es lo único que hay que actualizar. Para desarrollo sin túnel: 'http://localhost:8080/api/v1'.
-const API_BASE_URL = 'https://api.eligetunumero.com/api/v1'
+// Dirección del backend. Se elige sola según desde dónde se abre el sitio:
+//  - desde tu PC (localhost / 127.0.0.1): backend local, http://localhost:8080
+//  - publicado (eligetunumero.com): backend del servidor, https://api.eligetunumero.com
+// El backend tiene que tener esta misma web como FRONTEND_URL (sirve para el CORS y para volver
+// acá después de iniciar sesión o de pagar). Siempre https en producción: con http el token y los
+// datos de las personas viajarían sin cifrar, y Mercado Pago/Google exigen https.
+const IS_LOCAL_HOST = ['localhost', '127.0.0.1'].includes(window.location.hostname)
+const API_BASE_URL = IS_LOCAL_HOST ? 'http://localhost:8080/api/v1' : 'https://api.eligetunumero.com/api/v1'
 
 // Promo de lanzamiento: 1 crédito gratis para cuentas nuevas. Pensada para el
 // primer mes (o hasta que la plataforma ya tenga un tiempo andando) — cuando

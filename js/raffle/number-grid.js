@@ -278,11 +278,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       .map(({ number, status }) => {
         const isSelected = selectedNumbers.includes(number)
         const isAvailable = active && status === 'disponible'
-        const limitReached = !isSelected && isAvailable && selectedNumbers.length >= getMaxSelectableNumbers()
+        // Al llegar al máximo de números por compra, los que no se pueden elegir se ven más claros.
+        // Esto incluye a los disponibles y también a los reservados (en revisión) y pagados.
+        const maxReached = active && !isSelected && selectedNumbers.length >= getMaxSelectableNumbers()
+        const limitReached = maxReached && isAvailable
         const cssClass = isSelected
           ? 'number-cell--selected'
-          : limitReached
-          ? 'number-cell--disponible number-cell--limit'
+          : maxReached
+          ? 'number-cell--' + status + ' number-cell--limit'
           : 'number-cell--' + status
         return `
           <button

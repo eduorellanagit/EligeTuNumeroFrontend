@@ -168,19 +168,20 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ---- Solicitar devolución de los créditos
-  // Arma el mensaje con lo que devuelve el backend: código, créditos devueltos y monto del reintegro.
-  function refundMessage(refund) {
-    let message = 'Recibimos tu solicitud de devolución de créditos.'
-    if (!refund) return message
-    if (refund.codigo) message += ` Tu código es ${refund.codigo}.`
+  // Arma el aviso con lo que devuelve el backend: código, créditos devueltos y monto del reintegro.
+  function refundParagraphs(refund) {
+    const intro = 'Recibimos tu solicitud de devolución de créditos.'
+    if (!refund) return [intro]
+    const lines = []
+    if (refund.codigo) lines.push(`Código de consulta: ${refund.codigo}.`)
     if (refund.creditosDevueltos !== undefined && refund.creditosDevueltos !== null) {
-      message += ` Créditos devueltos: ${refund.creditosDevueltos}.`
+      lines.push(`Créditos devueltos: ${refund.creditosDevueltos}.`)
     }
     const amount = Number(refund.montoReintegro)
     if (refund.montoReintegro !== undefined && refund.montoReintegro !== null && !isNaN(amount)) {
-      message += ` Monto a reintegrar: $${amount.toLocaleString('es-AR')}.`
+      lines.push(`Monto a reintegrar: $${amount.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}.`)
     }
-    return message
+    return lines.length ? [[intro + ' Estos son los datos:', ...lines]] : [intro]
   }
 
   function openRefundModal() {
@@ -202,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
       confirmBtn.disabled = true
       try {
         const refund = await Api.requestCreditRefund()
-        showInfoModal('Devolución solicitada', refundMessage(refund))
+        Modal.notice('Devolución solicitada', refundParagraphs(refund))
         // La devolución puede cambiar el saldo de créditos.
         if (window.refreshRafflesPanel) window.refreshRafflesPanel()
       } catch (err) {

@@ -145,62 +145,30 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // PAGO REALIZADO: Mercado Pago aprobó el pago y el backend ya acreditó los créditos.
   function showSuccessStep(plan) {
-    const html = `
-      <div class="purchase-confirmed">
-        <div class="purchase-confirmed__icon">${Icons.check}</div>
-        <h4>¡Pago realizado!</h4>
-        <p>
-          ${
-            plan
-              ? 'Sumamos ' + (plan.raffles === 1 ? '1 rifa' : plan.raffles + ' rifas') + ' a tu cuenta.'
-              : 'Ya sumamos los créditos a tu cuenta.'
-          }
-          Ya podés publicar una rifa nueva desde "Crear rifa".
-        </p>
-        <button class="btn btn-primary" id="credit-purchase-done">Listo</button>
-      </div>
-    `
-    Modal.open('Pago realizado', html)
-    document.getElementById('credit-purchase-done').addEventListener('click', () => Modal.close())
+    const credited = plan
+      ? 'Sumamos ' + (plan.raffles === 1 ? '1 rifa' : plan.raffles + ' rifas') + ' a tu cuenta.'
+      : 'Ya sumamos los créditos a tu cuenta.'
+    Modal.notice('Pago realizado', [credited + ' Ya podés publicar una rifa nueva desde "Crear rifa".'])
   }
 
-  // PAGO PENDIENTE. Hay dos casos:
-  //  - 'waiting': Mercado Pago dejó el pago pendiente (por ejemplo, un pago en efectivo que todavía no se hizo).
-  //  - 'crediting': el pago se aprobó pero los créditos todavía no aparecen (el aviso al backend tarda unos segundos).
-  function showPaymentPendingStep(reason) {
-    // Mismo mensaje para los dos casos ('waiting' y 'crediting'): en ambos el pago sigue pendiente.
-    const text =
-      'Tu pago está pendiente de confirmación. Los créditos se suman solos a tu cuenta apenas Mercado Pago lo confirme,<br>' +
-      'podés volver a revisar en unos minutos. No hace falta que vuelvas a pagar. ' +
-      'Cualquier problema reportelo en Cuenta y privacidad &gt; Soporte'
-    const html = `
-      <div class="purchase-confirmed purchase-confirmed--wide">
-        <div class="purchase-confirmed__icon purchase-confirmed__icon--pending">${Icons.clock}</div>
-        <h4>Pago pendiente</h4>
-        <p>${text}</p>
-        <button class="btn btn-primary" id="credit-purchase-done">Entendido</button>
-      </div>
-    `
-    Modal.open('Pago pendiente', html)
-    document.getElementById('credit-purchase-done').addEventListener('click', () => Modal.close())
+  // PAGO PENDIENTE (Mercado Pago dejó el pago sin confirmar, o se aprobó pero los créditos todavía no
+  // aparecen porque el aviso al backend tarda unos segundos).
+  function showPaymentPendingStep() {
+    Modal.notice('Pago pendiente', [
+      [
+        'Tu pago está pendiente de confirmación. Revise en unos minutos. No hace falta que vuelvas a pagar.',
+        'Cualquier problema reportelo en Cuenta y privacidad, luego en Soporte.',
+      ],
+    ])
   }
 
   // PAGO RECHAZADO: el pago no se completó (rechazado, cancelado o abandonado). No se cobra nada.
   function showPaymentFailedStep() {
-    const html = `
-      <div class="purchase-confirmed">
-        <div class="purchase-confirmed__icon purchase-confirmed__icon--error">${Icons.close}</div>
-        <h4>Pago rechazado</h4>
-        <p>No se pudo completar el pago y no se te cobró nada. Podés intentarlo de nuevo con otro medio de pago cuando quieras.</p>
-        <div class="purchase-actions">
-          <button class="btn btn-secondary" id="credit-purchase-cancel">Cerrar</button>
-          <button class="btn btn-primary" id="credit-purchase-retry">Volver a intentar</button>
-        </div>
-      </div>
-    `
-    Modal.open('Pago rechazado', html)
-    document.getElementById('credit-purchase-cancel').addEventListener('click', () => Modal.close())
-    document.getElementById('credit-purchase-retry').addEventListener('click', () => openBuyCreditsModal(null))
+    Modal.notice(
+      'Pago rechazado',
+      ['No se pudo completar el pago y no se te cobró nada. Podés intentarlo de nuevo con otro medio de pago cuando quieras.'],
+      { acceptLabel: 'Volver a intentar', onAccept: () => openBuyCreditsModal(null) }
+    )
   }
 
   // Consulta el saldo cada segundo (hasta 10 segundos) esperando que el backend acredite la compra.
@@ -243,19 +211,18 @@ document.addEventListener('DOMContentLoaded', async () => {
       return
     }
     if (result === 'pendiente') {
-      showPaymentPendingStep('waiting')
+      showPaymentPendingStep()
       return
     }
     if (result !== 'ok') return // valor desconocido: no se muestra nada
 
     let closedByUser = false
-    Modal.open(
-      'Confirmando tu pago',
-      '<div class="purchase-confirmed"><p>Estamos confirmando el pago con Mercado Pago. Esto puede tardar unos segundos...</p></div>',
-      () => {
+    Modal.notice('Confirmando tu pago', ['Estamos confirmando el pago con Mercado Pago. Esto puede tardar unos segundos...'], {
+      buttons: false,
+      onClose: () => {
         closedByUser = true
-      }
-    )
+      },
+    })
 
     const credited = await waitForCredits(pending && typeof pending.creditsBefore === 'number' ? pending.creditsBefore : null)
     renderCreditBalance()
@@ -263,7 +230,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (closedByUser) return
 
     if (credited) showSuccessStep(plan)
-    else showPaymentPendingStep('crediting')
+    else showPaymentPendingStep()
   }
 
   // -------- Lista de rifas --------

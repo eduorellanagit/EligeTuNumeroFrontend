@@ -346,14 +346,15 @@ Todo lo que habla con el servidor está en `js/api.js` (una función por endpoin
 URL base se cambia en un solo lugar: `js/config.js`.
 
 ```js
-const API_BASE_URL = 'https://bagging-exuberant-cascade.ngrok-free.dev/api/v1'   // túnel de ngrok al backend local
+const IS_LOCAL_HOST = ['localhost', '127.0.0.1'].includes(window.location.hostname)
+const API_BASE_URL = IS_LOCAL_HOST ? 'http://localhost:8080/api/v1' : 'https://api.eligetunumero.com/api/v1'
 ```
 
-Con ngrok gratuito, el navegador recibe una página de aviso la primera vez que entra al
-dominio; `js/api.js` manda el header `ngrok-skip-browser-warning` en las llamadas `fetch` para
-saltearla (solo si la URL es de ngrok). El login es una navegación de página, así que ahí la
-página de aviso aparece una vez y alcanza con tocar "Visit Site". Para trabajar sin túnel,
-poné `http://localhost:8080/api/v1`.
+Se elige sola: si abrís el sitio desde tu PC (`localhost`, por ejemplo con `npx wrangler dev`)
+habla con el backend local en el puerto 8080; publicado en `eligetunumero.com` habla con
+`https://api.eligetunumero.com` (backend en el servidor de Oracle, con Docker y Caddy).
+Si alguna vez necesitás un túnel de ngrok, poné su URL a mano: `js/api.js` manda el header
+`ngrok-skip-browser-warning` solo cuando la URL contiene "ngrok".
 
 ### Qué endpoint usa cada pantalla
 
@@ -380,7 +381,7 @@ y se vuelve a `login.html`. Las páginas que exigen sesión (`me.html`) llevan
 
 ### Errores
 
-El resultado del pago de créditos (realizado / pendiente / rechazado) se muestra en `js/creator/raffles.js`. El aviso de pago pendiente usa la variante ancha `.purchase-confirmed--wide` (`css/confirmation.css`) y menciona "Cuenta y privacidad > Soporte" para reportar problemas.
+El resultado del pago de créditos (realizado / pendiente / rechazado) se muestra en `js/creator/raffles.js`. Todos esos avisos (y el de devolución de créditos) usan `Modal.notice(...)` de `js/common/modal.js`: la misma estructura del modal de "Desactivar cuenta" (título y texto a la izquierda, sin ícono) con dos botones, "Cerrar" y "Aceptar" (azul); en "Pago rechazado" el segundo es "Volver a intentar". El aviso de pago pendiente menciona "Cuenta y privacidad, luego en Soporte" para reportar problemas.
 
 `apiRequest` traduce los códigos HTTP a mensajes en español (por ejemplo, 402 → "No
 tenés créditos suficientes", 409 → "Algo cambió mientras tanto..."). Si el backend manda un
@@ -395,7 +396,7 @@ imágenes y comprobantes por `safeUrl()` (solo `http`/`https`).
 ### CORS y cómo servir el frontend
 
 El navegador solo deja que esta web le hable a la API si el backend la autoriza. El backend
-permite `http://localhost:5500` y, además, el origen que tenga en `FRONTEND_URL`. En
+permite el origen que tenga en `FRONTEND_URL` (y las direcciones fijas de `CorsConfig`). En
 producción, poné ahí la URL pública de este frontend (sin barra final) y cambiá
 `API_BASE_URL` por la del backend. Esa misma variable es la que usa el backend para volver
 acá después de iniciar sesión (`/me.html#token=...`) y después de pagar en Mercado Pago
@@ -434,3 +435,11 @@ global en `base.css` desactiva todas las animaciones y transiciones del sitio.
 - Grilla de números sin casilleros sueltos: PC y tablet: siempre **10 columnas** (30 → 10×3, 60 → 10×6, 100 → 10×10); celular (≤700 px) 30 → 5×6, 60 → 6×10, 100 → 5×20. El precio por número va en la misma línea que "Elegí tus números" (óvalo más chico).
 - **Descargar imagen** (rifa pública, junto a "Escribir por WhatsApp"): `js/raffle/share-image.js` dibuja en un `<canvas>` una imagen de 1080×1920 (título, descripción, precio, grilla con el estado de cada número, leyenda y cuadro con el link) y la descarga como PNG (`rifa-{slug}-{id}.png`); solo descarga, no abre la imagen en otra pestaña. Todo ocurre en el navegador. El link de la imagen siempre usa el dominio público: `eligetunumero.com/rf/{slug}/{id}`. Grilla en la imagen: 30 → 6×5, 60 → 10×6, 100 → 10×10. Usa la fuente Inter (cargada desde Google Fonts en `rifa.html`).
 - Los números **pagados** Los casilleros usan tres colores de fuerza parecida con **número blanco**: verde `#2E9E68` (disponible), ámbar `#D58A0C` (reservado) y gris `#858DA0` (pagado). Están en `--cell-available`, `--cell-reserved`, `--cell-paid` y `--cell-text` de `css/tokens.css`, y en la paleta `C` de `js/raffle/share-image.js` (hay que cambiarlos en los dos lados para que la imagen coincida con la web). Valen para la grilla, la leyenda y la imagen descargable; el rojo queda solo para errores.
+
+## Cambios de interfaz (26/10)
+
+- `API_BASE_URL` se elige sola (localhost en tu PC, `https://api.eligetunumero.com/api/v1` publicado). El sitio queda en `https://eligetunumero.com` (sin `www`).
+- Avisos de la compra de créditos (pago realizado, pendiente, rechazado, confirmando) y de la devolución de créditos: estructura del modal de "Desactivar cuenta", sin ícono, con botones "Cerrar" y "Aceptar". Textos nuevos de "Pago pendiente" y "Devolución solicitada" (código de consulta, créditos devueltos y monto a reintegrar con dos decimales, ej. `$4,99`).
+- Rifa pública: al llegar al máximo de números por compra, también los números reservados (en revisión) y pagados se ven más claros, igual que los disponibles.
+- "Reserva enviada" y "Rifa publicada": más espacio entre el texto y los botones.
+- Colores de la grilla: verde, ámbar y gris con número blanco (`--cell-*` en `css/tokens.css`). "Descargar imagen" solo descarga (no abre pestaña nueva).

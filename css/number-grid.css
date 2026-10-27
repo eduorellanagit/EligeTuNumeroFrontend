@@ -84,6 +84,8 @@
   color: #fff;
 }
 
+/* Al llegar al máximo de números por compra, todos los que no se pueden elegir (disponibles,
+   en revisión y pagados) se ven más claros */
 .number-cell--limit {
   cursor: not-allowed;
   opacity: 0.45;

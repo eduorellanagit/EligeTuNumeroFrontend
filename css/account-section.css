@@ -119,6 +119,11 @@
   margin-top: var(--space-5);
 }
 
+/* Avisos (Modal.notice): igual que el de desactivar cuenta, pero con botón azul y sin ícono */
+.modal-message--notice p + p {
+  margin-top: var(--space-3);
+}
+
 .modal-message .deactivate-note,
 .deactivate-note {
   margin-top: var(--space-3);
