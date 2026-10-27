@@ -87,7 +87,7 @@ porque el navegador no deja que una página local le hable a la API.
 
 - `index.html` — Landing pública (hero, cómo funciona, precios, preguntas frecuentes).
 - `login.html` — Ingresar / registrarse. Como describe la especificación, es solo
-  OAuth2 con Google (GitHub todavía no está disponible en el backend): no hay
+  OAuth2 con Google (es el único proveedor; ya no hay botón de GitHub): no hay
   contraseña, y si es tu primera vez tu cuenta se crea sola al continuar. El botón
   lleva al backend, que hace el ida y vuelta con Google y te devuelve a `me.html`.
 - `me.html` — Panel privado del creador: perfil y cobro, **crear rifa**, validador
@@ -243,11 +243,10 @@ nunca antes de 2 segundos ni después de 3 (contados desde que empieza a cargar 
 tiempos y el interruptor están en `js/config.js` (`PAGE_LOADER_ENABLED`, `PAGE_LOADER_MIN_MS`,
 `PAGE_LOADER_MAX_MS`); con `PAGE_LOADER_ENABLED = false` desaparece sin tocar nada más.
 
-### Logos reales de Google y GitHub
+### Logo real de Google
 
-En `login.html`, los botones de "Continuar con Google" y "GitHub (próximamente)"
-ya no muestran una letra suelta: tienen el logo real de cada uno (el "G" de cuatro
-colores de Google y la marca de GitHub) en SVG.
+En `login.html`, el botón "Continuar con Google" muestra el logo real (el "G" de cuatro
+colores) en SVG. El botón de GitHub se sacó.
 
 
 ## Estructura
@@ -404,8 +403,7 @@ acá después de iniciar sesión (`/me.html#token=...`) y después de pagar en M
 
 ### Qué quedó fuera
 
-- **Login con GitHub:** el botón está visible pero deshabilitado ("próximamente"), porque el
-  backend solo implementa Google.
+- **Login con GitHub:** se sacó el botón; el backend solo implementa Google.
 - **Cerrar sesión:** el panel no tiene botón para eso (la sesión se cierra sola al vencer
   el token).
 
@@ -443,3 +441,12 @@ global en `base.css` desactiva todas las animaciones y transiciones del sitio.
 - Rifa pública: al llegar al máximo de números por compra, también los números reservados (en revisión) y pagados se ven más claros, igual que los disponibles.
 - "Reserva enviada" y "Rifa publicada": más espacio entre el texto y los botones.
 - Colores de la grilla: verde, ámbar y gris con número blanco (`--cell-*` en `css/tokens.css`). "Descargar imagen" solo descarga (no abre pestaña nueva).
+
+## Cambios de interfaz (27/10)
+
+- Devolución de créditos: el modal de confirmación ahora dice "Vamos a pedir la devolución de tus compras de créditos de los últimos 10 días. ¿Querés continuar?".
+- Planes (landing): menos espacio entre el subtítulo y el precio en USD.
+- "De la idea al link compartible": sección más ancha (980 px en PC) y sin el margen extra de la lista; en celular los pasos quedan más pegados a los costados.
+- Beneficios del hero en 2 columnas × 2 filas (100 %, 0 %, 10 min y "1 link"), con el texto de abajo un poco más chico en celular.
+- Login: se quitó el botón "GitHub (próximamente)".
+- Rifa pública: el DNI del organizador va en negrita y oscuro, igual que el nombre.

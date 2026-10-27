@@ -3,6 +3,13 @@
   scroll-margin-top: 90px;
 }
 
+/* Sección más ancha que el resto (760px) y con menos margen en los costados */
+.how .container-narrow {
+  max-width: 980px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
 .how__heading {
   font-size: 2.1rem;
   text-align: center;
@@ -17,6 +24,8 @@
 
 .how__steps {
   margin-top: var(--space-7);
+  padding-left: 0;
+  list-style: none;
   display: flex;
   flex-direction: column;
   gap: var(--space-6);
@@ -51,4 +60,15 @@
 .how__step p {
   color: var(--color-text-secondary);
   line-height: 1.55;
+}
+
+@media (max-width: 700px) {
+  .how {
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
+  }
+
+  .how__step {
+    gap: var(--space-4);
+  }
 }

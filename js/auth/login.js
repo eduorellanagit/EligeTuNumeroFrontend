@@ -1,7 +1,7 @@
 // Botón "Continuar con Google". El inicio de sesión lo hace el backend: acá se navega
 // directo a /usuarios/login, que redirige a Google; al terminar, el backend vuelve a
 // me.html#token=... (ese token lo captura js/auth/session.js) o a login.html?error=1.
-// GitHub todavía no está disponible en el backend, por eso el botón queda deshabilitado.
+// Por ahora el único proveedor es Google.
 document.addEventListener('DOMContentLoaded', () => {
   const providerButtons = document.querySelectorAll('.auth-provider-btn')
   const loadingEl = document.getElementById('auth-loading')
@@ -25,11 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
   else if (params.get('expired')) showMessage('Tu sesión venció. Iniciá sesión de nuevo.')
 
   providerButtons.forEach((btn) => {
-    if (btn.dataset.provider !== 'Google') {
-      btn.disabled = true
-      return
-    }
-
     btn.addEventListener('click', () => {
       providerButtons.forEach((b) => (b.disabled = true))
       showMessage('Conectando con Google...')

@@ -107,7 +107,7 @@
   display: block;
 }
 
-/* Proveedor todavía no disponible (GitHub) */
+/* Botón deshabilitado mientras se conecta con Google */
 .auth-provider-btn:disabled {
   opacity: 0.55;
   cursor: not-allowed;

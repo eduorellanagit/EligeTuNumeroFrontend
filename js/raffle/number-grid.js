@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         <p class="raffle-header__eyebrow">${eyebrows[currentRaffle.status] || 'Rifa'}</p>
         <h1>${escapeHtml(currentRaffle.title)}</h1>
         <div class="raffle-header__organizer">
-          <span>Organizador <strong>${escapeHtml(currentRaffle.organizer.name)}</strong> · DNI ${escapeHtml(currentRaffle.organizer.dni)}</span>
+          <span>Organizador <strong>${escapeHtml(currentRaffle.organizer.name)}</strong> · DNI <strong>${escapeHtml(currentRaffle.organizer.dni)}</strong></span>
           ${whatsappHTML}
           ${downloadHTML}
         </div>

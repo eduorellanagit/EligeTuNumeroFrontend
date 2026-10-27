@@ -188,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
     Modal.open(
       'Devolución de créditos',
       `<div class="modal-message">
-        <p>Vamos a pedir la devolución de tus compras de créditos de los últimos 10 días. Los créditos de esas compras se descuentan de tu saldo. ¿Querés continuar?</p>
+        <p>Vamos a pedir la devolución de tus compras de créditos de los últimos 10 días. ¿Querés continuar?</p>
         <div class="detail-actions detail-actions--equal">
           <button class="btn btn-secondary" id="refund-cancel-btn">Cancelar</button>
           <button class="btn btn-primary" id="refund-confirm-btn">Continuar</button>
