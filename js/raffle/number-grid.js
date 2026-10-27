@@ -143,6 +143,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     updateFloatBar()
   }
 
+  // "Ver reglas" (junto a las referencias de los números): abre un modal con las reglas y condiciones.
+  function setupRulesButton() {
+    const rulesBtn = document.getElementById('view-rules-btn')
+    if (!rulesBtn) return
+    const rules = (currentRaffle.rules || '').trim()
+    rulesBtn.hidden = !rules
+    rulesBtn.onclick = () => {
+      Modal.open('Reglas y condiciones', `<p class="rules-modal__text">${escapeHtml(rules)}</p>`)
+    }
+  }
+
   function renderHeader() {
     const active = isRaffleActive()
     const eyebrows = { ACTIVA: 'Rifa activa', CERRADA: 'Rifa cerrada', EXPIRADA: 'Rifa finalizada' }
@@ -152,12 +163,10 @@ document.addEventListener('DOMContentLoaded', async () => {
           </a>`
       : ''
     const downloadHTML = `<button class="raffle-header__download" id="download-image-btn" type="button">Descargar imagen</button>`
-    const descriptionHTML =
-      currentRaffle.description || currentRaffle.rules
-        ? `<p class="raffle-header__description">${escapeHtml(currentRaffle.description || '')}${
-            currentRaffle.rules ? '\n\n' + escapeHtml(currentRaffle.rules) : ''
-          }</p>`
-        : ''
+    // Las reglas y condiciones ya no se muestran acá: van en el modal de "Ver reglas".
+    const descriptionHTML = currentRaffle.description
+      ? `<p class="raffle-header__description">${escapeHtml(currentRaffle.description)}</p>`
+      : ''
     const countdownHTML = active
       ? `<strong>${currentRaffle.daysLeft}</strong><span>${currentRaffle.daysLeft === 1 ? 'día restante' : 'días restantes'}</span>`
       : `<strong>—</strong><span>ya no se reservan números</span>`
@@ -179,6 +188,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     `
 
     // "Descargar imagen": PNG vertical con la grilla y el link de esta rifa (js/raffle/share-image.js).
+    setupRulesButton()
     const downloadBtn = document.getElementById('download-image-btn')
     if (downloadBtn) {
       downloadBtn.addEventListener('click', async () => {

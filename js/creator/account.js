@@ -315,7 +315,13 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   }
 
+  // ---- Cerrar sesión
+  function logout() {
+    logoutAndRedirect()
+  }
+
   const handlers = {
+    logout,
     'export-data': exportData,
     'refund-credits': openRefundModal,
     'contact-support': openSupportModal,

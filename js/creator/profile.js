@@ -13,13 +13,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   const holderInput = document.getElementById('profile-holder')
   const cbuInput = document.getElementById('profile-cbu')
   const aliasInput = document.getElementById('profile-alias')
-  const savedNote = document.getElementById('profile-saved-note')
-  const errorNote = document.getElementById('profile-error')
   const submitBtn = form.querySelector('button[type="submit"]')
 
+  // Los avisos de validación se muestran en la ventana de error, como en el resto del sitio.
   function showError(message) {
-    errorNote.textContent = message
-    errorNote.style.display = 'inline'
+    ErrorModal.open({ status: 400, message })
   }
 
   function fillForm() {
@@ -53,8 +51,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault()
-    savedNote.style.display = 'none'
-    errorNote.style.display = 'none'
 
     // Misma validación que hace el servidor, para avisar antes de enviar.
     const dni = onlyDigits(dniInput.value)
@@ -97,8 +93,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       applyCreatorProfile(saved)
       fillForm()
 
-      savedNote.textContent = 'Cambios guardados.'
-      savedNote.style.display = 'inline'
+      Modal.notice('Perfil actualizado', ['Su perfil ya fue actualizado. Estos datos aparecerán en su rifa publicada.'], {
+        closeLabel: 'Cancelar',
+        acceptLabel: 'Continuar',
+      })
       if (window.refreshCreateRaffleCredits) window.refreshCreateRaffleCredits()
     } catch (err) {
       // La ventana de error ya explica qué pasó (js/api.js).
@@ -107,10 +105,4 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   })
 
-  ;[nameInput, dniInput, whatsappInput, holderInput, cbuInput, aliasInput].forEach((input) => {
-    input.addEventListener('input', () => {
-      savedNote.style.display = 'none'
-      errorNote.style.display = 'none'
-    })
-  })
 })

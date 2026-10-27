@@ -450,3 +450,11 @@ global en `base.css` desactiva todas las animaciones y transiciones del sitio.
 - Beneficios del hero en 2 columnas × 2 filas (100 %, 0 %, 10 min y "1 link"), con el texto de abajo un poco más chico en celular.
 - Login: se quitó el botón "GitHub (próximamente)".
 - Rifa pública: el DNI del organizador va en negrita y oscuro, igual que el nombre.
+
+## Cambios de interfaz (27/10 noche)
+
+- **Cuenta y privacidad**: nueva tarjeta "Cerrar sesión" (botón blanco con texto azul). Borra el token y vuelve a `login.html`.
+- **Crear rifa > Premios**: subtítulo "Cargá al menos 3 premios y hasta 9, uno por uno." y debajo "Las fotos se recortan solas en cuadrado (1:1)." (una línea en PC, dos en celular). Se quitó la etiqueta "Auto" de "Imagen del premio".
+- **Perfil y cobro**: los avisos (éxito y errores) ahora son modales. Éxito usa `Modal.notice('Perfil actualizado', …)` con botones Cancelar/Continuar; errores usan `ErrorModal`.
+- **Reglas y condiciones**: botón "Ver reglas" junto a la leyenda de estados de los números. Abre un modal "Reglas y condiciones". Ya no se muestran en el encabezado de la rifa.
+- **De la idea al link compartible**: en celular los pasos tienen 20px de margen lateral.

@@ -7,6 +7,29 @@
   color: var(--color-text-secondary);
 }
 
+/* "Ver reglas": enlace al final de las referencias */
+.grid-legend__rules {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-weight: 700;
+  color: var(--color-primary);
+  cursor: pointer;
+}
+
+.grid-legend__rules:hover {
+  text-decoration: underline;
+}
+
+.rules-modal__text {
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
 .grid-legend span {
   display: inline-flex;
   align-items: center;

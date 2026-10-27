@@ -133,8 +133,6 @@
             </div>
 
             <div class="profile-form__footer">
-              <span class="profile-form__saved" id="profile-saved-note" style="display: none;">Cambios guardados.</span>
-              <span class="profile-form__error" id="profile-error" style="display: none;"></span>
               <button type="submit" class="btn btn-primary">Guardar cambios</button>
             </div>
           </form>
@@ -177,9 +175,9 @@
 
             <div class="form-card">
               <h3>Premios</h3>
-              <p class="form-card__hint">Cargá al menos 3 premios y hasta 9, uno por uno.</p>
-              <p class="form-card__hint form-card__hint--help">
-                <span data-icon="help"></span> Las fotos se recortan solas en cuadrado (1:1).
+              <p class="form-card__hint">
+                Cargá al menos 3 premios y hasta 9, uno por uno.
+                <span class="form-card__hint-line">Las fotos se recortan solas en cuadrado (1:1).</span>
               </p>
               <div class="prize-carousel-wrapper">
                 <div class="prizes-grid" id="prizes-container"></div>
@@ -294,6 +292,14 @@
                 <p>Escribinos si tenés una duda o un problema con tu cuenta o tus rifas.</p>
               </div>
               <button type="button" class="btn btn-secondary" data-account-action="contact-support">Contactar a soporte</button>
+            </div>
+
+            <div class="account-action">
+              <div class="account-action__text">
+                <h3>Cerrar sesión</h3>
+                <p>Al salir se tendrá que volver a iniciar sesión para ingresar a tu cuenta.</p>
+              </div>
+              <button type="button" class="btn btn-secondary" data-account-action="logout">Cerrar sesión</button>
             </div>
 
             <div class="account-action account-action--danger">

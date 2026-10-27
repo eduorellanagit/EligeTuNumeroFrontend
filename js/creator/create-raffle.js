@@ -104,10 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <textarea data-prize-field="description" data-index="${idx}" maxlength="150" placeholder="">${escapeHtml(prize.description)}</textarea>
           </label>
           <div class="field">
-            <span class="field-label-with-help">
-              Imagen del premio
-              <span class="help-badge">Auto</span>
-            </span>
+            <span class="field-label-with-help">Imagen del premio</span>
             <label class="upload-btn">
               <input type="file" accept="image/*" data-prize-image="${idx}" class="upload-btn__input" />
               ${Icons.upload} ${prize.image ? 'Cambiar imagen' : 'Subir imagen'}

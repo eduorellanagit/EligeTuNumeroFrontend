@@ -90,3 +90,14 @@
   font-size: 0.78rem;
   color: var(--color-text-secondary);
 }
+
+/* Segunda frase del subtítulo de Premios: en la misma línea en PC, debajo en celular */
+.form-card__hint-line {
+  display: inline;
+}
+
+@media (max-width: 700px) {
+  .form-card__hint-line {
+    display: block;
+  }
+}
