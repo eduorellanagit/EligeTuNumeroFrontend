@@ -458,3 +458,12 @@ global en `base.css` desactiva todas las animaciones y transiciones del sitio.
 - **Perfil y cobro**: los avisos (éxito y errores) ahora son modales. Éxito usa `Modal.notice('Perfil actualizado', …)` con botones Cancelar/Continuar; errores usan `ErrorModal`.
 - **Reglas y condiciones**: botón "Ver reglas" junto a la leyenda de estados de los números. Abre un modal "Reglas y condiciones". Ya no se muestran en el encabezado de la rifa.
 - **De la idea al link compartible**: en celular los pasos tienen 20px de margen lateral.
+
+## Cambios de interfaz (28/10)
+
+- Home: textos de los pasos 2 y 5 de "De la idea al link compartible"; en celular +4px de margen solo a la izquierda.
+- Login: al tocar "Continuar con Google" aparece una pantalla de carga hasta que abre Google (se quitó el texto de abajo).
+- Reserva de números: pantalla de carga "Enviando tu reserva..." hasta que aparece el modal con la respuesta.
+- Premios: la descripción es más alta (+12px en PC, +6px en celular).
+- Devolución de créditos: texto "¿Quieres continuar?".
+- Cerrar sesión: ahora pide confirmación en un modal (Cancelar / Continuar).

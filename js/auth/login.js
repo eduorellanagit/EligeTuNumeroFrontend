@@ -27,7 +27,14 @@ document.addEventListener('DOMContentLoaded', () => {
   providerButtons.forEach((btn) => {
     btn.addEventListener('click', () => {
       providerButtons.forEach((b) => (b.disabled = true))
-      showMessage('Conectando con Google...')
+      // Pantalla de carga hasta que se abra el login de Google.
+      const loader = document.createElement('div')
+      loader.className = 'page-loader page-loader--action'
+      loader.setAttribute('role', 'status')
+      loader.innerHTML = '<div class="page-loader__spinner" aria-hidden="true"></div><p class="page-loader__text">Conectando con Google...</p>'
+      document.body.appendChild(loader)
+      // Si vuelven con el botón "atrás", se saca la pantalla de carga.
+      window.addEventListener('pageshow', () => { loader.remove(); providerButtons.forEach((b) => (b.disabled = false)) })
 
       // El plan elegido en la landing se guarda acá porque el viaje a Google y de vuelta pierde la URL.
       if (plan) sessionStorage.setItem(PENDING_PLAN_KEY, plan)

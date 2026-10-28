@@ -174,6 +174,13 @@ document.addEventListener('DOMContentLoaded', () => {
       backBtn.disabled = true
       submitBtn.textContent = 'Enviando...'
 
+      // Pantalla de carga hasta que aparezca el modal con la respuesta.
+      const sendingEl = document.createElement('div')
+      sendingEl.className = 'page-loader page-loader--action'
+      sendingEl.setAttribute('role', 'status')
+      sendingEl.innerHTML = '<div class="page-loader__spinner" aria-hidden="true"></div><p class="page-loader__text">Enviando tu reserva...</p>'
+      document.body.appendChild(sendingEl)
+
       try {
         await Api.reserve(
           currentRaffle.id,
@@ -203,6 +210,8 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (!(err instanceof ApiError)) {
           showError(err.message)
         }
+      } finally {
+        sendingEl.remove()
       }
     })
   }

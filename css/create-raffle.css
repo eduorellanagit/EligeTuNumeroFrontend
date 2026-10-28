@@ -67,7 +67,14 @@
 
 /* La descripción de cada premio no muestra la barra de desplazamiento */
 .field textarea[data-prize-field] {
+  min-height: 92px;
   scrollbar-width: none;
+}
+
+@media (max-width: 700px) {
+  .field textarea[data-prize-field] {
+    min-height: 86px;
+  }
 }
 
 .field textarea[data-prize-field]::-webkit-scrollbar {

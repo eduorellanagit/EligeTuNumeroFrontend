@@ -188,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
     Modal.open(
       'Devolución de créditos',
       `<div class="modal-message">
-        <p>Vamos a pedir la devolución de tus compras de créditos de los últimos 10 días. ¿Querés continuar?</p>
+        <p>Vamos a pedir la devolución de tus compras de créditos de los últimos 10 días. ¿Quieres continuar?</p>
         <div class="detail-actions detail-actions--equal">
           <button class="btn btn-secondary" id="refund-cancel-btn">Cancelar</button>
           <button class="btn btn-primary" id="refund-confirm-btn">Continuar</button>
@@ -317,7 +317,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ---- Cerrar sesión
   function logout() {
-    logoutAndRedirect()
+    Modal.notice('Cerrar sesión', ['¿Desea continuar con el cierre de sesión de su cuenta?'], {
+      closeLabel: 'Cancelar',
+      acceptLabel: 'Continuar',
+      onAccept: () => logoutAndRedirect(),
+    })
   }
 
   const handlers = {
